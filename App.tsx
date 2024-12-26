@@ -1,6 +1,5 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TextInput } from "react-native";
-import { Excercise } from "./src/components/dummy";
 import { LinearGradient } from "expo-linear-gradient";
 import { Navigation } from "./src/screens/Navigation";
 
