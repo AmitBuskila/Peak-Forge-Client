@@ -1,10 +1,9 @@
-import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
 import IonIcons from "react-native-vector-icons/Ionicons";
-import { HomeScreen } from "./HomeScreen";
-import { OtherScreen } from "./OtherScreen";
-import { AddSessionScreen } from "./AddSession";
-import { View, StyleSheet } from "react-native";
+import { AddSessionScreen } from "../screens/AddSession";
+import { OtherScreen } from "../screens/OtherScreen";
+import { HomeStack } from "./stacks/HomeStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,10 +26,11 @@ export const Navigation = () => {
             }
             return <IonIcons name={iconName} size={size} color={color} />;
           },
+          headerShown: false,
         })}
       >
-        <Tab.Screen name={"Home"} component={HomeScreen} />
         <Tab.Screen name={"Other"} component={OtherScreen} />
+        <Tab.Screen name={"Home"} component={HomeStack} />
         <Tab.Screen name={"AddSession"} component={AddSessionScreen} />
       </Tab.Navigator>
     </NavigationContainer>

@@ -1,17 +1,26 @@
 import { FC } from "react";
-import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  SafeAreaView,
+} from "react-native";
 import { SessionTemplate } from "../components/SessionTemplate";
 
 export const HomeScreen: FC<{ navigation: any }> = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>My Templates</Text>
-      <ScrollView style={styles.scrollView} horizontal={true}>
-        <SessionTemplate name="Push x Abs" />
-        <SessionTemplate name="Pull x Legs" />
-        <SessionTemplate />
-      </ScrollView>
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <Text style={styles.title}>My Templates</Text>
+        <ScrollView style={styles.scrollView} horizontal={true}>
+          <SessionTemplate name="Push x Abs" />
+          <SessionTemplate name="Pull x Legs" />
+          <SessionTemplate />
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -19,8 +28,10 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
+    justifyContent: "space-between",
     marginLeft: 15,
   },
+
   title: {
     fontSize: 22,
     fontWeight: "bold",

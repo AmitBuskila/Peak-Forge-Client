@@ -1,14 +1,13 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TextInput } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { Navigation } from "./src/screens/Navigation";
+import { StyleSheet, View } from "react-native";
+import { Navigation } from "./src/navigation/Navigation";
 
 export default function App() {
   return (
-    <LinearGradient colors={["black", "gray"]} style={styles.container}>
+    <View style={styles.container}>
       <Navigation />
       <StatusBar style="auto" />
-    </LinearGradient>
+    </View>
   );
 }
 

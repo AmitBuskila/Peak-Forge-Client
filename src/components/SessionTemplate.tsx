@@ -1,7 +1,26 @@
-import { FC } from "react";
-import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
+import { FC, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Image,
+  GestureResponderEvent,
+  TouchableOpacity,
+} from "react-native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 
 export const SessionTemplate: FC<{ name?: string }> = ({ name }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation<NavigationProp<string>>();
+
+  const handleTemplatePress = (e: GestureResponderEvent) => {
+    setModalVisible(true);
+    if (!name) {
+      navigation.navigate("Template");
+    }
+  };
+
   const SessionIcon = () => {
     return name ? (
       <Image style={styles.image} source={require("../../assets/gym.webp")} />
@@ -10,16 +29,17 @@ export const SessionTemplate: FC<{ name?: string }> = ({ name }) => {
     );
   };
   return (
-    <View
+    <TouchableOpacity
       style={{
         ...styles.card,
         borderStyle: name ? "solid" : "dashed",
         borderColor: name ? "black" : "gray",
       }}
+      onPress={handleTemplatePress}
     >
       <SessionIcon />
       <Text style={styles.name}>{name || "new template"}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
