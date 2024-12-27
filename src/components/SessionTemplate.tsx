@@ -11,14 +11,10 @@ import {
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 
 export const SessionTemplate: FC<{ name?: string }> = ({ name }) => {
-  const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation<NavigationProp<string>>();
 
   const handleTemplatePress = (e: GestureResponderEvent) => {
-    setModalVisible(true);
-    if (!name) {
-      navigation.navigate("Template");
-    }
+    navigation.navigate("Template");
   };
 
   const SessionIcon = () => {
