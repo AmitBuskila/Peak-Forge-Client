@@ -1,19 +1,20 @@
-import { LinearGradient } from "expo-linear-gradient";
 import React, { FC } from "react";
-import { useForm, SubmitErrorHandler, Controller } from "react-hook-form";
+import { Controller, SubmitErrorHandler, useForm } from "react-hook-form";
 import {
   Button,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   View,
-  StyleSheet,
 } from "react-native";
+import { ImagePicker } from "./imagePicker";
 
-type FormValues = {
-  email: string;
-  password: string;
-};
+export interface FormValues {
+  image: string;
+  name: string;
+  description: string;
+}
 
 export const TemplateModal: FC<{}> = () => {
   const {
@@ -23,8 +24,8 @@ export const TemplateModal: FC<{}> = () => {
     control,
     reset,
     formState: { errors },
-  } = useForm();
-  const onSubmit = (data) => {
+  } = useForm<FormValues>();
+  const onSubmit = (data: FormValues) => {
     console.log(data);
   };
 
@@ -39,20 +40,28 @@ export const TemplateModal: FC<{}> = () => {
       }}
     >
       <View style={styles.container}>
-        <Text style={styles.label}>Template Name</Text>
-        <Controller
-          control={control}
-          name="name"
-          rules={{ required: true }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              style={styles.input}
-              onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
-              value={value}
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "column", flex: 1 }}>
+            <Text style={styles.label}>Template Name</Text>
+            <Controller
+              control={control}
+              name="name"
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                />
+              )}
             />
-          )}
-        />
+          </View>
+          <View style={{ flexDirection: "column", marginLeft: 10 }}>
+            <Text style={{ ...styles.label }}>Image</Text>
+            <ImagePicker form={{ control, setValue }} />
+          </View>
+        </View>
         <Text style={styles.label}>Description (optional)</Text>
         <Controller
           control={control}
@@ -60,10 +69,12 @@ export const TemplateModal: FC<{}> = () => {
           rules={{ required: false }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
-              style={styles.input}
+              style={{ ...styles.input, height: 80 }}
               onBlur={onBlur}
               onChangeText={(value) => onChange(value)}
               value={value}
+              multiline={true}
+              textAlignVertical="top"
             />
           )}
         />
