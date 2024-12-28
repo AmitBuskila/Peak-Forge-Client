@@ -9,6 +9,29 @@ interface AnimatedFlatListProps<T>
   renderItem: FlatListProps<T>["renderItem"];
 }
 
+const zoomIn = {
+  0: {
+    scale: 0.9,
+  },
+  1: {
+    scale: 1,
+  },
+};
+
+const zoomOut = {
+  0: {
+    scale: 1,
+  },
+  1: {
+    scale: 0.9,
+  },
+};
+
+Animatable.initializeRegistryWithDefinitions({
+  zoomIn,
+  zoomOut,
+});
+
 export const AnimatedFlatList = <T extends { id: number }>({
   data,
   renderItem,

@@ -1,11 +1,15 @@
-import { StatusBar, StyleSheet, View } from "react-native";
-import { Navigation } from "./src/navigation/Navigation";
 import { useFonts } from "expo-font";
-
-import "./global.css";
 import { SafeAreaView } from "react-native-safe-area-context";
+import "./global.css";
+import { Navigation } from "./src/navigation/Navigation";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect, useState } from "react";
+import { StatusBar } from "expo-status-bar";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+  const [barColor, setBarColor] = useState("#161622");
   const [fontsLoaded, error] = useFonts({
     "Poppins-Black": require("./assets/fonts/Poppins-Black.ttf"),
     "Poppins-Bold": require("./assets/fonts/Poppins-Bold.ttf"),
@@ -18,14 +22,23 @@ export default function App() {
     "Poppins-Thin": require("./assets/fonts/Poppins-Thin.ttf"),
   });
 
+  useEffect(() => {
+    if (error) throw error;
+
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+      setBarColor("primary");
+    }
+  }, [fontsLoaded, error]);
+
   if (!fontsLoaded && !error) {
     return null;
   }
 
   return (
-    <SafeAreaView className="bg-primary h-full color-white">
+    <SafeAreaView className={`bg-${barColor} h-full color-white`}>
       <Navigation />
-      <StatusBar backgroundColor="#000000" barStyle="light-content" />
+      <StatusBar backgroundColor={barColor} style="light" />
     </SafeAreaView>
   );
 }
