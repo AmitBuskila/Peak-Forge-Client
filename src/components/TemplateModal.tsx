@@ -2,11 +2,14 @@ import React, { FC } from "react";
 import { Controller, SubmitErrorHandler, useForm } from "react-hook-form";
 import {
   Button,
+  FlatList,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 import { ImagePicker } from "./imagePicker";
 
@@ -29,9 +32,17 @@ export const TemplateModal: FC<{}> = () => {
     console.log(data);
   };
 
-  const onError: SubmitErrorHandler<FormValues> = (errors, e) => {
-    return console.log(errors);
+  const renderImage = ({ item }: { item: any }) => {
+    return (
+      <TouchableOpacity
+      // style={styles.imageContainer}
+      // onPress={() => selectImage(item.id)}
+      >
+        <Image source={item.uri} />
+      </TouchableOpacity>
+    );
   };
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -77,6 +88,15 @@ export const TemplateModal: FC<{}> = () => {
               textAlignVertical="top"
             />
           )}
+        />
+        <FlatList
+          data={[{ id: "1", uri: require("../../assets/gym.webp") }]}
+          keyExtractor={(item) => item.id}
+          renderItem={renderImage}
+          numColumns={1}
+          scrollEnabled
+          horizontal
+          // contentContainerStyle={styles.list}
         />
 
         <View style={styles.button}>

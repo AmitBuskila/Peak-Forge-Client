@@ -7,62 +7,43 @@ import {
   Image,
   GestureResponderEvent,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { Template } from "../../types/template";
 
-export const SessionTemplate: FC<{ name?: string }> = ({ name }) => {
+export const SessionTemplate: FC<{ template: Template }> = ({
+  template,
+}: {
+  template: Template;
+}) => {
   const navigation = useNavigation<NavigationProp<string>>();
 
   const handleTemplatePress = (e: GestureResponderEvent) => {
     navigation.navigate("Template");
   };
 
-  const SessionIcon = () => {
-    return name ? (
-      <Image style={styles.image} source={require("../../assets/gym.webp")} />
-    ) : (
-      <Image style={styles.image} source={require("../../assets/plus.webp")} />
-    );
-  };
   return (
     <TouchableOpacity
-      style={{
-        ...styles.card,
-        borderStyle: name ? "solid" : "dashed",
-        borderColor: name ? "black" : "gray",
-      }}
+      className="relative justify-center items-center"
+      activeOpacity={0.7}
       onPress={handleTemplatePress}
     >
-      <SessionIcon />
-      <Text style={styles.name}>{name || "new template"}</Text>
+      <ImageBackground
+        style={styles.fuck}
+        className="bg-white width-50 h-50 rounded-[35px] my-5 overflow-hidden shadow-lg shadow-black/40 "
+        source={{
+          uri: "https://legacy.reactjs.org/logo-og.png",
+        }}
+        resizeMode="cover"
+      />
+      <Text className="3s font-psemibold color-secondary-100 ">
+        {template.name || "new template"}
+      </Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    borderStyle: "dashed",
-    borderWidth: 2,
-    padding: 16,
-    margin: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    width: Dimensions.get("window").width * 0.35,
-    height: Dimensions.get("window").width * 0.35,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  name: {
-    fontSize: 14,
-    fontWeight: "bold",
-    marginTop: 10,
-  },
-  image: {
-    width: Dimensions.get("window").width * 0.15,
-    height: Dimensions.get("window").width * 0.15,
-  },
+  fuck: { width: 150, height: 200 },
 });

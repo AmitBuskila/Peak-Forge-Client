@@ -27,6 +27,9 @@ export const Navigation = () => {
             return <IonIcons name={iconName} size={size} color={color} />;
           },
           headerShown: false,
+          tabBarStyle: { backgroundColor: "primary" },
+          tabBarActiveTintColor: "#5f2aa1",
+          tabBarInactiveTintColor: "gray",
         })}
       >
         <Tab.Screen name={"Other"} component={OtherScreen} />

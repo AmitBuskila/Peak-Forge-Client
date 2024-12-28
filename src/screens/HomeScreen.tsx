@@ -5,43 +5,53 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
-  SafeAreaView,
+  FlatList,
 } from "react-native";
 import { SessionTemplate } from "../components/SessionTemplate";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Template } from "../../types/template";
+import AnimatedFlatList from "../components/AnimatedFlatList";
+
+const templates: Template[] = [
+  {
+    id: 1,
+    name: "Push x Abs",
+    uri: "https://www.vecteezy.com/vector-art/17459613-hand-holding-dumbbell-barbell-gym-bodybuilding-or-sport-design-vector-illustration",
+  },
+  {
+    id: 2,
+    name: "Pull x Legs",
+    uri: "https://www.vecteezy.com/vector-art/17459613-hand-holding-dumbbell-barbell-gym-bodybuilding-or-sport-design-vector-illustration",
+  },
+  {
+    id: 3,
+    name: "Pull x Legs",
+    uri: "https://www.vecteezy.com/vector-art/17459613-hand-holding-dumbbell-barbell-gym-bodybuilding-or-sport-design-vector-illustration",
+  },
+  {
+    id: 4,
+    name: "Pull x Legs",
+    uri: "https://www.vecteezy.com/vector-art/17459613-hand-holding-dumbbell-barbell-gym-bodybuilding-or-sport-design-vector-illustration",
+  },
+];
 
 export const HomeScreen: FC<{ navigation: any }> = ({ navigation }) => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <Text style={styles.title}>My Templates</Text>
-        <ScrollView style={styles.scrollView} horizontal={true}>
-          <SessionTemplate name="Push x Abs" />
-          <SessionTemplate name="Pull x Legs" />
-          <SessionTemplate />
-        </ScrollView>
-      </View>
+    <SafeAreaView>
+      <ScrollView className="bg-primary h-full ">
+        <View className="mt-3 px-4">
+          <Text className="text-3xl font-pblack color-secondary-200">
+            My Templates
+          </Text>
+        </View>
+        <View className="justify-center items-center ">
+          <AnimatedFlatList
+            data={templates}
+            renderItem={({ item }) => <SessionTemplate template={item} />}
+            horizontal={true}
+          />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    marginLeft: 15,
-  },
-
-  title: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginVertical: 8,
-  },
-  scrollView: {
-    width: "95%",
-    height: Dimensions.get("window").height * 0.2,
-    overflow: "hidden",
-    borderRadius: 8,
-    backgroundColor: "gray",
-  },
-});

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "peak-forgs",
-    "slug": "peak-forgs",
+    "name": "peak-forge",
+    "slug": "peak-forge",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,7 +22,8 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
     }
   }
 }
