@@ -7,7 +7,7 @@ import {
   Dimensions,
   FlatList,
 } from "react-native";
-import { SessionTemplate } from "../components/SessionTemplate";
+import { WorkoutTemplate } from "../components/WorkoutTemplate";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Template } from "../../types/template";
 import AnimatedFlatList from "../components/AnimatedFlatList";
@@ -16,22 +16,27 @@ const templates: Template[] = [
   {
     id: 1,
     name: "Push x Abs",
-    uri: "https://www.vecteezy.com/vector-art/17459613-hand-holding-dumbbell-barbell-gym-bodybuilding-or-sport-design-vector-illustration",
+    uri: "https://legacy.reactjs.org/logo-og.png",
   },
   {
     id: 2,
     name: "Pull x Legs",
-    uri: "https://www.vecteezy.com/vector-art/17459613-hand-holding-dumbbell-barbell-gym-bodybuilding-or-sport-design-vector-illustration",
+    uri: "https://legacy.reactjs.org/logo-og.png",
   },
   {
     id: 3,
     name: "Pull x Legs",
-    uri: "https://www.vecteezy.com/vector-art/17459613-hand-holding-dumbbell-barbell-gym-bodybuilding-or-sport-design-vector-illustration",
+    uri: "https://legacy.reactjs.org/logo-og.png",
   },
   {
     id: 4,
     name: "Pull x Legs",
-    uri: "https://www.vecteezy.com/vector-art/17459613-hand-holding-dumbbell-barbell-gym-bodybuilding-or-sport-design-vector-illustration",
+    uri: "https://legacy.reactjs.org/logo-og.png",
+  },
+  {
+    id: 0,
+    name: "",
+    uri: "https://w7.pngwing.com/pngs/626/231/png-transparent-addition-add-sign-s-purple-violet-rectangle.png",
   },
 ];
 
@@ -47,7 +52,7 @@ export const HomeScreen: FC<{ navigation: any }> = ({ navigation }) => {
         <View className="justify-center items-center ">
           <AnimatedFlatList
             data={templates}
-            renderItem={({ item }) => <SessionTemplate template={item} />}
+            renderItem={({ item }) => <WorkoutTemplate template={item} />}
             horizontal={true}
           />
         </View>

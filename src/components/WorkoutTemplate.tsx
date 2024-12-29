@@ -12,7 +12,7 @@ import {
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Template } from "../../types/template";
 
-export const SessionTemplate: FC<{ template: Template }> = ({
+export const WorkoutTemplate: FC<{ template: Template }> = ({
   template,
 }: {
   template: Template;
@@ -33,7 +33,7 @@ export const SessionTemplate: FC<{ template: Template }> = ({
         style={styles.fuck}
         className="bg-white width-50 h-50 rounded-[35px] my-5 overflow-hidden shadow-lg shadow-black/40 "
         source={{
-          uri: "https://legacy.reactjs.org/logo-og.png",
+          uri: template.uri,
         }}
         resizeMode="cover"
       />

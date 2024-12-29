@@ -12,7 +12,14 @@ export const HomeStack = () => {
         component={HomeScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="Template" component={TemplateModal} />
+      <Stack.Screen
+        name="Template"
+        component={TemplateModal}
+        options={{
+          headerStyle: { backgroundColor: "#161622" },
+          headerTintColor: "#CDCDE0",
+        }}
+      />
     </Stack.Navigator>
   );
 };
