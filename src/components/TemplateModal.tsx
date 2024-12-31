@@ -14,6 +14,7 @@ import {
 import { FormField } from "./FormField";
 import { CustomImagePicker } from "./CustomImagePicker";
 import { CustomButton } from "./CustomButton";
+import { WorkoutCarousel } from "./Workouts/WorkoutCarousel";
 
 export interface FormValues {
   Image: string;
@@ -42,7 +43,7 @@ export const TemplateModal: FC<{}> = () => {
           control={control}
           styles="w-full h-14"
         />
-        <View className="my-11 flex flex-row items-center">
+        <View className="my-2 flex flex-row items-center">
           <FormField
             title="Description"
             control={control}
@@ -55,6 +56,7 @@ export const TemplateModal: FC<{}> = () => {
             uri={getValues("Image")}
           />
         </View>
+        <WorkoutCarousel />
         <CustomButton title="Create Template" handlePress={() => {}} />
       </View>
     </ScrollView>
