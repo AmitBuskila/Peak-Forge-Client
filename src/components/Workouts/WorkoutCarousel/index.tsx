@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Dimensions, I18nManager, StyleSheet, Text } from "react-native";
+import { Dimensions, I18nManager, Image, StyleSheet, Text } from "react-native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import {
   GestureHandlerRootView,
   Pressable,
 } from "react-native-gesture-handler";
+
+const width = Dimensions.get("window").width;
 
 export const WorkoutCarousel = () => {
   const [data, setData] = useState([
@@ -33,7 +35,12 @@ export const WorkoutCarousel = () => {
       ]}
       onLongPress={drag}
     >
-      <Text className="text-base text-gray-700">{item.label}</Text>
+      <Image
+        className="h-full w-full rounded-lg"
+        source={{
+          uri: "https://static.strengthlevel.com/images/exercises/bench-press/bench-press-400.avif",
+        }}
+      />
     </Pressable>
   );
 
@@ -42,20 +49,21 @@ export const WorkoutCarousel = () => {
       <DraggableFlatList
         className="mt-3"
         data={data}
-        onEndReached={() =>
-          setData([...data, { key: (data.length++).toString(), label: "haha" }])
-        }
         onEndReachedThreshold={0.001}
+        onDragEnd={({ data }) => setData(data)}
         keyExtractor={(item) => item.key}
         renderItem={renderItem}
         horizontal
-        ListFooterComponent={() => {
-          return (
-            <Pressable style={[styles.item, { backgroundColor: "white" }]}>
-              <Text className="text-base text-gray-700">{"new"}</Text>
-            </Pressable>
-          );
-        }}
+        snapToInterval={width * 0.82}
+        decelerationRate={"fast"}
+        showsHorizontalScrollIndicator={false}
+        // ListFooterComponent={() => {
+        //   return (
+        //     <Pressable className="bg-white rounded-lg">
+        //       <Text className="text-base text-gray-700">{"new"}</Text>
+        //     </Pressable>
+        //   );
+        // }}
       />
     </GestureHandlerRootView>
   );
@@ -63,10 +71,13 @@ export const WorkoutCarousel = () => {
 
 const styles = StyleSheet.create({
   item: {
-    padding: Dimensions.get("window").width * 0.25,
-    marginHorizontal: 10,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#ccc",
+    width: width * 0.7,
+    marginLeft: width * 0.12,
+    height: 250,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#purple",
   },
 });
