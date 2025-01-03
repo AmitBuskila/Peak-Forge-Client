@@ -3,3 +3,11 @@ export interface Template {
   name: string;
   uri: string;
 }
+
+export interface Set {
+  index: number;
+  previous?: string;
+  weight: number;
+  repTarget: number;
+  actualReps?: number;
+}

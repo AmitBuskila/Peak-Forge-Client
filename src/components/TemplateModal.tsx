@@ -14,8 +14,8 @@ import {
 import { FormField } from "./FormField";
 import { CustomImagePicker } from "./CustomImagePicker";
 import { CustomButton } from "./CustomButton";
-import { WorkoutCarousel } from "./Workouts/WorkoutCarousel";
-import { SetList } from "./Workouts/WorkoutCarousel/SetList";
+import { WorkoutCarousel } from "./Workouts/WorkoutCarousel/WorkoutCarousel";
+import { SetList } from "./Workouts/SetList/SetList";
 
 export interface FormValues {
   Image: string;
@@ -58,7 +58,7 @@ export const TemplateModal: FC<{}> = () => {
           />
         </View>
         <WorkoutCarousel />
-        <SetList />
+        <SetList isWorkout={true} />
         <CustomButton title="Create Template" handlePress={() => {}} />
         {/* <View className="my-100 py-100 h-100" /> */}
       </View>

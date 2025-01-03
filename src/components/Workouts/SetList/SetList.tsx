@@ -1,9 +1,21 @@
-import React, { useState } from "react";
+import { FC, useState, Fragment } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { SetHeader } from "./SetHeader";
+import { SetItem } from "./SetItem";
 
-export const SetList = () => {
+const templateHeaders: string[] = ["Set", "Weight", "Reps"];
+const workoutHeaders: string[] = [
+  "Set",
+  "Previous",
+  "Weight",
+  "Rep Target",
+  "Actual Reps",
+];
+
+export const SetList: FC<{ isWorkout: boolean }> = ({ isWorkout }) => {
+  const headers: string[] = isWorkout ? workoutHeaders : templateHeaders;
   const [data, setData] = useState(
     Array.from({ length: 5 }, (_, index) => ({
       key: `${index}`,
@@ -11,18 +23,12 @@ export const SetList = () => {
     }))
   );
 
-  const deleteRow = (rowKey) => {
+  const deleteRow = (rowKey: string) => {
     const newData = data.filter((item) => item.key !== rowKey);
     setData(newData);
   };
 
-  const renderItem = ({ item }) => (
-    <View className="flex flex-row justify-center items-center bg-gray-100 h-16 border-b border-secondary-200">
-      <Text className="font-xl">{item.text}</Text>
-    </View>
-  );
-
-  const renderHiddenItem = (data) => (
+  const renderHiddenItem = (data: any) => (
     <View className="flex flex-row justify-end items-center bg-red-500 h-full">
       <TouchableOpacity
         className="flex justify-center items-center h-full w-[15%]"
@@ -34,10 +40,11 @@ export const SetList = () => {
   );
 
   return (
-    <View className="my-3">
+    <View className="mb-3">
       <SwipeListView
+        ListHeaderComponent={SetHeader}
         data={data}
-        renderItem={renderItem}
+        renderItem={SetItem}
         disableRightSwipe
         renderHiddenItem={renderHiddenItem}
         rightOpenValue={-60}

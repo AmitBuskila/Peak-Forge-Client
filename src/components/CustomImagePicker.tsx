@@ -17,8 +17,7 @@ export const CustomImagePicker: FC<{
     if (status !== "granted") {
       Alert.alert(
         "Permission Denied",
-        `Sorry, we need camera 
-                 roll permission to upload images.`
+        `Sorry, we need camera roll permission to upload images.`
       );
     } else {
       const result = await ImagePicker.launchImageLibraryAsync({
