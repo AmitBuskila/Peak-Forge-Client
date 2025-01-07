@@ -9,6 +9,7 @@ import { CustomImagePicker } from "./CustomImagePicker";
 import { FormField } from "./FormField";
 import { SetList } from "./Workouts/SetList/SetList";
 import { WorkoutCarousel } from "./Workouts/WorkoutCarousel/WorkoutCarousel";
+import { FieldErrors } from "react-hook-form";
 
 export const TemplateModal: FC<{}> = () => {
   const {
@@ -19,10 +20,12 @@ export const TemplateModal: FC<{}> = () => {
     formState: { errors },
   } = useWorkoutFormContext();
 
-  console.log(errors);
-
   const onSubmit = (data: FormValues) => {
     console.log(data);
+  };
+
+  const onError = (errors: FieldErrors<FormValues>) => {
+    console.log("Error occurred", errors);
   };
 
   return (
@@ -50,7 +53,7 @@ export const TemplateModal: FC<{}> = () => {
         <SetList isWorkout={true} />
         <CustomButton
           title="Create Template"
-          handlePress={handleSubmit(onSubmit)}
+          handlePress={handleSubmit(onSubmit, onError)}
         />
       </View>
     </ScrollView>

@@ -1,10 +1,9 @@
-import { FC, useState, Fragment } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { FC, useState } from "react";
+import { TouchableOpacity, View } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { SetHeader } from "./SetHeader";
 import { SetItem } from "./SetItem";
-import { ScrollView } from "react-native-gesture-handler";
 
 const templateHeaders: string[] = ["Set", "Weight", "Rep Range"];
 const workoutHeaders: string[] = [

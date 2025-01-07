@@ -27,13 +27,13 @@ export const SetItem = ({ item, index }: { item: Set; index: number }) => {
         className="items-center flex-row"
       >
         <NumericInput
-          fieldType="repRange"
+          fieldType="repRange.minReps"
           setIndex={index}
           exerciseIndex={index}
         />
         <Text>-</Text>
         <NumericInput
-          fieldType="repRange"
+          fieldType="repRange.maxReps"
           setIndex={index}
           exerciseIndex={index}
         />
