@@ -4,14 +4,15 @@ import { SwipeListView } from "react-native-swipe-list-view";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { SetHeader } from "./SetHeader";
 import { SetItem } from "./SetItem";
+import { ScrollView } from "react-native-gesture-handler";
 
-const templateHeaders: string[] = ["Set", "Weight", "Reps"];
+const templateHeaders: string[] = ["Set", "Weight", "Rep Range"];
 const workoutHeaders: string[] = [
   "Set",
   "Previous",
   "Weight",
-  "Rep Target",
-  "Actual Reps",
+  "Rep Range",
+  "Done",
 ];
 
 export const SetList: FC<{ isWorkout: boolean }> = ({ isWorkout }) => {
@@ -40,15 +41,14 @@ export const SetList: FC<{ isWorkout: boolean }> = ({ isWorkout }) => {
   );
 
   return (
-    <View className="mb-3">
-      <SwipeListView
-        ListHeaderComponent={SetHeader}
-        data={data}
-        renderItem={SetItem}
-        disableRightSwipe
-        renderHiddenItem={renderHiddenItem}
-        rightOpenValue={-60}
-      />
-    </View>
+    <SwipeListView
+      ListHeaderComponent={SetHeader}
+      data={data}
+      renderItem={SetItem}
+      disableRightSwipe
+      renderHiddenItem={renderHiddenItem}
+      rightOpenValue={-60}
+      scrollEnabled={false}
+    />
   );
 };

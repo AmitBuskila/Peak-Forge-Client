@@ -2,10 +2,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { FC } from "react";
 import { Text, TouchableOpacity } from "react-native";
 
-export const CustomButton: FC<{ title: string; handlePress: () => void }> = ({
-  title,
-  handlePress,
-}) => {
+export const CustomButton: FC<{
+  title: string;
+  handlePress: (data: any) => void;
+}> = ({ title, handlePress }) => {
   return (
     <LinearGradient
       colors={["#48138b", "#7448ac"]}

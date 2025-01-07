@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
 import { Text, TextInput, View } from "react-native";
-import { FormValues } from "./TemplateModal";
+import { FormValues } from "../contexts/WorkoutForm.context";
 
 export const FormField: FC<{
   control: Control<FormValues>;
@@ -22,7 +22,7 @@ export const FormField: FC<{
            focus:border-secondary items-center text-gray-100 ${styles} `}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
-            value={value}
+            value={value?.toString()}
             textAlignVertical="top"
             multiline={multiline}
           />

@@ -1,5 +1,5 @@
-import { FC, Fragment } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { FC } from "react";
+import { Text, View } from "react-native";
 
 export const SetHeader: FC<{ isWorkout: boolean }> = ({ isWorkout }) => {
   return (
@@ -13,11 +13,11 @@ export const SetHeader: FC<{ isWorkout: boolean }> = ({ isWorkout }) => {
       <View style={{ flex: 2 }} className="items-center">
         <Text className="text-l font-bold text-gray-100">Kg</Text>
       </View>
-      <View style={{ flex: 2.8 }} className="items-center">
-        <Text className="text-l font-bold text-gray-100">Rep Target</Text>
-      </View>
       <View style={{ flex: 3 }} className="items-center">
-        <Text className="text-l font-bold text-gray-100">Actual Reps</Text>
+        <Text className="text-l font-bold text-gray-100">Rep Range</Text>
+      </View>
+      <View style={{ flex: 2.5 }} className="items-center">
+        <Text className="text-l font-bold text-gray-100">Done</Text>
       </View>
     </View>
   );

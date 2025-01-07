@@ -1,37 +1,26 @@
 import React, { FC } from "react";
-import { Controller, SubmitErrorHandler, useForm } from "react-hook-form";
+import { ScrollView, View } from "react-native";
 import {
-  Button,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  Image,
-} from "react-native";
-import { FormField } from "./FormField";
-import { CustomImagePicker } from "./CustomImagePicker";
+  FormValues,
+  useWorkoutFormContext,
+} from "../contexts/WorkoutForm.context";
 import { CustomButton } from "./CustomButton";
-import { WorkoutCarousel } from "./Workouts/WorkoutCarousel/WorkoutCarousel";
+import { CustomImagePicker } from "./CustomImagePicker";
+import { FormField } from "./FormField";
 import { SetList } from "./Workouts/SetList/SetList";
-
-export interface FormValues {
-  Image: string;
-  WorkoutName: string;
-  Description: string;
-}
+import { WorkoutCarousel } from "./Workouts/WorkoutCarousel/WorkoutCarousel";
 
 export const TemplateModal: FC<{}> = () => {
   const {
-    setValue,
-    handleSubmit,
     control,
-    reset,
+    setValue,
     getValues,
+    handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useWorkoutFormContext();
+
+  console.log(errors);
+
   const onSubmit = (data: FormValues) => {
     console.log(data);
   };
@@ -54,13 +43,15 @@ export const TemplateModal: FC<{}> = () => {
           <CustomImagePicker
             styles="w-[24vw] h-28 mx-4 mt-5"
             setValue={setValue}
-            uri={getValues("Image")}
+            uri={getValues("image")}
           />
         </View>
         <WorkoutCarousel />
         <SetList isWorkout={true} />
-        <CustomButton title="Create Template" handlePress={() => {}} />
-        {/* <View className="my-100 py-100 h-100" /> */}
+        <CustomButton
+          title="Create Template"
+          handlePress={handleSubmit(onSubmit)}
+        />
       </View>
     </ScrollView>
   );

@@ -1,6 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import { WorkoutFormWrapper } from "../../contexts/WorkoutForm.context";
 import { HomeScreen } from "../../screens/HomeScreen";
-import { TemplateModal } from "../../components/TemplateModal";
 
 const Stack = createStackNavigator();
 
@@ -14,11 +14,11 @@ export const HomeStack = () => {
       />
       <Stack.Screen
         name="Template"
-        component={TemplateModal}
         options={{
           headerStyle: { backgroundColor: "#161622" },
           headerTintColor: "#CDCDE0",
         }}
+        component={WorkoutFormWrapper}
       />
     </Stack.Navigator>
   );
