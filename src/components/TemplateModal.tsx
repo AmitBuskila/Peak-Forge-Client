@@ -18,7 +18,7 @@ export const TemplateModal: FC<{}> = () => {
     getValues,
     handleSubmit,
     formState: { errors },
-  } = useWorkoutFormContext();
+  } = useWorkoutFormContext().form;
 
   const onSubmit = (data: FormValues) => {
     console.log(data);

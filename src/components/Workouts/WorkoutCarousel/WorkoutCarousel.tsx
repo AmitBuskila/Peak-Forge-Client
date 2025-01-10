@@ -1,26 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
+import { useWatch } from "react-hook-form";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { screenWidth } from "../../../../constants";
-import { WorkoutImage } from "./WorkoutImage";
-import {
-  Exercise,
-  useWorkoutFormContext,
-} from "../../../contexts/WorkoutForm.context";
-import { Text, Pressable } from "react-native";
-import IonIcons from "react-native-vector-icons/Ionicons";
-import { useWatch } from "react-hook-form";
+import { useWorkoutFormContext } from "../../../contexts/WorkoutForm.context";
 import { EmptyElement } from "../../EmptyElement";
+import { WorkoutImage } from "./WorkoutImage";
 
 export const WorkoutCarousel = () => {
   const {
     control,
-    watch,
     setValue,
-    getValues,
-    handleSubmit,
     formState: { errors },
-  } = useWorkoutFormContext();
+  } = useWorkoutFormContext().form;
+
+  const [selectedExercise, setSelectedExercise] =
+    useWorkoutFormContext().selectedExercise;
 
   const exercisesState = useWatch({
     control,
@@ -49,6 +44,16 @@ export const WorkoutCarousel = () => {
         onDragEnd={({ data }) => {
           setValue("exercises", data);
         }}
+        onViewableItemsChanged={({ viewableItems }) => {
+          if (exercisesState.length) {
+            // console.log(viewableItems);
+            setSelectedExercise(
+              viewableItems[viewableItems.length - 1]?.item ??
+                exercisesState[exercisesState.length - 1]
+            );
+          }
+        }}
+        viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
         keyExtractor={(item) => item.key}
         renderItem={WorkoutImage}
         horizontal
@@ -58,8 +63,8 @@ export const WorkoutCarousel = () => {
         showsHorizontalScrollIndicator={false}
         ListFooterComponent={
           <EmptyElement
-            width="65"
-            height="248"
+            width={65}
+            height={248}
             handlePress={handleEmptyElementPress}
           />
         }

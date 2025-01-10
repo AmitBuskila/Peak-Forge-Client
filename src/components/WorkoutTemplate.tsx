@@ -1,15 +1,12 @@
-import { FC, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  Image,
-  GestureResponderEvent,
-  TouchableOpacity,
-  ImageBackground,
-} from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { FC } from "react";
+import {
+  GestureResponderEvent,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { Template } from "../../types/template";
 
 export const WorkoutTemplate: FC<{ template: Template }> = ({

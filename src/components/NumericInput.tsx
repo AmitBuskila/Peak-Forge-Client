@@ -8,7 +8,7 @@ export const NumericInput: FC<{
   exerciseIndex: number;
   setIndex: number;
 }> = ({ fieldType: fieldType, exerciseIndex, setIndex }) => {
-  const { control } = useWorkoutFormContext();
+  const { control } = useWorkoutFormContext().form;
 
   return (
     <View>

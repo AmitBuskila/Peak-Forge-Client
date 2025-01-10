@@ -1,12 +1,19 @@
-import React, { createContext, useContext, useMemo } from "react";
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { TemplateModal } from "../components/TemplateModal";
 
 export interface Set {
-  index: number;
+  key: string;
   previous?: string;
-  weight: number;
-  repRange: {
+  weight?: number;
+  repRange?: {
     minReps: number;
     maxReps: number;
   };
@@ -26,7 +33,13 @@ export interface FormValues {
   exercises: Exercise[];
 }
 
-const Context = createContext<{ form: UseFormReturn<FormValues> } | null>(null);
+const Context = createContext<{
+  form: UseFormReturn<FormValues>;
+  selectedExercise: [
+    Exercise | null,
+    Dispatch<SetStateAction<Exercise | null>>,
+  ];
+} | null>(null);
 
 const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
   const form = useForm<FormValues>({
@@ -37,12 +50,19 @@ const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
       exercises: [],
     },
   });
+  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
+    null
+  );
 
   const contextValue = useMemo(
     () => ({
       form,
+      selectedExercise: [selectedExercise, setSelectedExercise] as [
+        Exercise | null,
+        Dispatch<SetStateAction<Exercise | null>>,
+      ],
     }),
-    [form]
+    [form, selectedExercise]
   );
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;
@@ -53,7 +73,7 @@ const useWorkoutFormContext = () => {
   if (!context) {
     throw new Error("context must be used within a provider");
   }
-  return context.form;
+  return context;
 };
 
 export const WorkoutFormWrapper = () => {
