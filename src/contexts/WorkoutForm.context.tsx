@@ -14,7 +14,9 @@ export interface Set {
 }
 
 export interface Exercise {
-  index: number;
+  key: string;
+  label: string;
+  imageUri: string;
   sets: Set[];
 }
 export interface FormValues {
@@ -27,7 +29,14 @@ export interface FormValues {
 const Context = createContext<{ form: UseFormReturn<FormValues> } | null>(null);
 
 const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
-  const form = useForm<FormValues>();
+  const form = useForm<FormValues>({
+    defaultValues: {
+      workoutName: "",
+      description: "",
+      image: "",
+      exercises: [],
+    },
+  });
 
   const contextValue = useMemo(
     () => ({

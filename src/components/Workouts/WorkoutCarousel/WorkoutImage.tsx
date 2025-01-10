@@ -2,9 +2,10 @@ import { FC, useState } from "react";
 import { Image, StyleSheet } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
 import { screenWidth } from "../../../../constants";
+import { Exercise } from "../../../contexts/WorkoutForm.context";
 
 export const WorkoutImage: FC<{
-  item: { key: string; label: string };
+  item: Exercise;
   drag: () => void;
   isActive: boolean;
 }> = ({ item, drag, isActive }) => {
@@ -28,7 +29,7 @@ export const WorkoutImage: FC<{
       <Image
         className="h-full w-full rounded-lg"
         source={{
-          uri: "https://static.strengthlevel.com/images/exercises/bench-press/bench-press-400.avif",
+          uri: item.imageUri,
         }}
       />
     </Pressable>
@@ -38,12 +39,11 @@ export const WorkoutImage: FC<{
 const styles = StyleSheet.create({
   item: {
     width: screenWidth * 0.7,
-    marginLeft: screenWidth * 0.12,
+    marginLeft: screenWidth * 0.11,
     height: 250,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: "#purple",
   },
 });

@@ -1,11 +1,7 @@
 import React, { FC } from "react";
 import { Controller } from "react-hook-form";
 import { TextInput, View } from "react-native";
-import {
-  FormValues,
-  Set,
-  useWorkoutFormContext,
-} from "../contexts/WorkoutForm.context";
+import { Set, useWorkoutFormContext } from "../contexts/WorkoutForm.context";
 
 export const NumericInput: FC<{
   fieldType: keyof Set;
