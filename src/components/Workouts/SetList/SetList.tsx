@@ -1,12 +1,9 @@
-import { FC, useEffect, useState } from "react";
-import { useWatch } from "react-hook-form";
+import { FC, useState } from "react";
+import { useFieldArray } from "react-hook-form";
 import { TouchableOpacity, View } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import {
-  Set,
-  useWorkoutFormContext,
-} from "../../../contexts/WorkoutForm.context";
+import { useWorkoutFormContext } from "../../../contexts/WorkoutForm.context";
 import { EmptyElement } from "../../EmptyElement";
 import { SetHeader } from "./SetHeader";
 import { SetItem } from "./SetItem";
@@ -33,17 +30,10 @@ export const SetList: FC<{ isWorkout: boolean }> = ({ isWorkout }) => {
   const [selectedExercise, setSelectedExercise] =
     useWorkoutFormContext().selectedExercise;
 
-  const [shit, setShit] = useState(0);
-
-  useEffect(() => {
-    setShit(shit + 1);
-  }, [selectedExercise]);
-
-  const setsState: Set[] =
-    useWatch({
-      control,
-      name: `exercises.${+selectedExercise?.key!}.sets`,
-    }) || [];
+  const { fields, append } = useFieldArray({
+    control,
+    name: `exercises.${Number(selectedExercise?.key) ?? 0}.sets`,
+  });
 
   const headers: string[] = isWorkout ? workoutHeaders : templateHeaders;
   const [data, setData] = useState(
@@ -71,23 +61,18 @@ export const SetList: FC<{ isWorkout: boolean }> = ({ isWorkout }) => {
 
   const handleEmptyElementPress = () => {
     if (selectedExercise) {
-      setValue(`exercises.${+selectedExercise.key}.sets`, [
-        ...setsState,
-        {
-          key: (setsState.length + 1).toString(),
-        },
-      ]);
+      append({ key: (fields.length + 1).toString() });
     }
   };
 
   return (
     <SwipeListView
       ListHeaderComponent={SetHeader}
-      data={setsState}
+      data={fields}
       ListFooterComponent={
         <EmptyElement
           width={70}
-          height={70}
+          height={57}
           handlePress={handleEmptyElementPress}
         />
       }

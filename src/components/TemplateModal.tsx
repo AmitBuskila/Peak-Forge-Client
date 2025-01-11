@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { FieldErrors, useWatch } from "react-hook-form";
 import { ScrollView, View } from "react-native";
 import {
   FormValues,
@@ -9,7 +10,6 @@ import { CustomImagePicker } from "./CustomImagePicker";
 import { FormField } from "./FormField";
 import { SetList } from "./Workouts/SetList/SetList";
 import { WorkoutCarousel } from "./Workouts/WorkoutCarousel/WorkoutCarousel";
-import { FieldErrors } from "react-hook-form";
 
 export const TemplateModal: FC<{}> = () => {
   const {
@@ -19,6 +19,8 @@ export const TemplateModal: FC<{}> = () => {
     handleSubmit,
     formState: { errors },
   } = useWorkoutFormContext().form;
+
+  const exercises = useWatch({ control, name: "exercises" });
 
   const onSubmit = (data: FormValues) => {
     console.log(data);
@@ -50,7 +52,7 @@ export const TemplateModal: FC<{}> = () => {
           />
         </View>
         <WorkoutCarousel />
-        <SetList isWorkout={true} />
+        {!!exercises.length && <SetList isWorkout={true} />}
         <CustomButton
           title="Create Template"
           handlePress={handleSubmit(onSubmit, onError)}

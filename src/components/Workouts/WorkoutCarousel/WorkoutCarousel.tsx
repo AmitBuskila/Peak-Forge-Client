@@ -1,5 +1,5 @@
 import React from "react";
-import { useWatch } from "react-hook-form";
+import { useFieldArray } from "react-hook-form";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { screenWidth } from "../../../../constants";
@@ -17,39 +17,35 @@ export const WorkoutCarousel = () => {
   const [selectedExercise, setSelectedExercise] =
     useWorkoutFormContext().selectedExercise;
 
-  const exercisesState = useWatch({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "exercises",
   });
 
   const handleEmptyElementPress = () => {
-    setValue("exercises", [
-      ...exercisesState,
-      {
-        key: (exercisesState.length + 1).toString(),
-        label: "bench",
-        imageUri:
-          "https://static.strengthlevel.com/images/exercises/bench-press/bench-press-400.avif",
-        sets: [],
-      },
-    ]);
+    append({
+      key: (fields.length + 1).toString(),
+      label: "bench",
+      imageUri:
+        "https://static.strengthlevel.com/images/exercises/bench-press/bench-press-400.avif",
+      sets: [],
+    });
   };
 
   return (
     <GestureHandlerRootView>
       <DraggableFlatList
         className="mt-3"
-        data={exercisesState}
+        data={fields}
         onEndReachedThreshold={0.001}
         onDragEnd={({ data }) => {
           setValue("exercises", data);
         }}
         onViewableItemsChanged={({ viewableItems }) => {
-          if (exercisesState.length) {
-            // console.log(viewableItems);
+          if (fields.length) {
             setSelectedExercise(
               viewableItems[viewableItems.length - 1]?.item ??
-                exercisesState[exercisesState.length - 1]
+                fields[fields.length - 1]
             );
           }
         }}
