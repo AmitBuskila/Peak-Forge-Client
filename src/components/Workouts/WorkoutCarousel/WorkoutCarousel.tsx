@@ -1,10 +1,14 @@
 import React from "react";
 import { useFieldArray } from "react-hook-form";
-import DraggableFlatList from "react-native-draggable-flatlist";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { StyleSheet, View } from "react-native";
+import Carousel from "react-native-reanimated-carousel";
 import { screenWidth } from "../../../../constants";
-import { useWorkoutFormContext } from "../../../contexts/WorkoutForm.context";
+import {
+  Exercise,
+  useWorkoutFormContext,
+} from "../../../contexts/WorkoutForm.context";
 import { EmptyElement } from "../../EmptyElement";
+import { SetList } from "../SetList/SetList";
 import { WorkoutImage } from "./WorkoutImage";
 
 export const WorkoutCarousel = () => {
@@ -14,13 +18,18 @@ export const WorkoutCarousel = () => {
     formState: { errors },
   } = useWorkoutFormContext().form;
 
-  const [selectedExercise, setSelectedExercise] =
-    useWorkoutFormContext().selectedExercise;
+  const [currExerciseIndex, setCurrExerciseIndex] =
+    useWorkoutFormContext().currExerciseIndex;
 
-  const { fields, append, remove } = useFieldArray({
+  const { append, fields, remove } = useFieldArray({
     control,
     name: "exercises",
   });
+
+  const data: Exercise[] = [
+    ...fields,
+    { key: "0", imageUri: "", label: "", sets: [] },
+  ];
 
   const handleEmptyElementPress = () => {
     append({
@@ -33,38 +42,63 @@ export const WorkoutCarousel = () => {
   };
 
   return (
-    <GestureHandlerRootView>
-      <DraggableFlatList
-        className="mt-3"
-        data={fields}
-        onEndReachedThreshold={0.001}
-        onDragEnd={({ data }) => {
-          setValue("exercises", data);
-        }}
-        onViewableItemsChanged={({ viewableItems }) => {
-          if (fields.length) {
-            setSelectedExercise(
-              viewableItems[viewableItems.length - 1]?.item ??
-                fields[fields.length - 1]
-            );
-          }
-        }}
-        viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
-        keyExtractor={(item) => item.key}
-        renderItem={WorkoutImage}
-        horizontal
-        snapToInterval={screenWidth * 0.82}
-        decelerationRate={"fast"}
-        animationConfig={{ duration: 500 }} //todo improve animation
-        showsHorizontalScrollIndicator={false}
-        ListFooterComponent={
-          <EmptyElement
-            width={65}
-            height={248}
-            handlePress={handleEmptyElementPress}
-          />
+    <Carousel
+      width={screenWidth}
+      style={{ minHeight: 500 }}
+      panGestureHandlerProps={{
+        activeOffsetX: [-10, 10],
+      }}
+      data={data}
+      loop={false}
+      scrollAnimationDuration={1000}
+      onSnapToItem={(index) => setCurrExerciseIndex(index)}
+      renderItem={({ index, item }) => {
+        if (item.key === "0") {
+          return (
+            <EmptyElement
+              width={65}
+              height={248}
+              handlePress={handleEmptyElementPress}
+            />
+          );
+        } else {
+          return (
+            <View style={{ pointerEvents: "box-none" }}>
+              <WorkoutImage index={index} item={item} />
+              <SetList isWorkout={true} index={index} />
+            </View>
+          );
         }
-      />
-    </GestureHandlerRootView>
+      }}
+      withAnimation={{ type: "timing", config: { duration: 600 } }}
+    />
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  text: {
+    fontSize: 20,
+    marginBottom: 20,
+    color: "#764ABC",
+  },
+  card: {
+    backgroundColor: "#764ABC",
+    borderRadius: 10,
+    padding: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    width: screenWidth - 40,
+    marginHorizontal: 20,
+    height: 200,
+  },
+  title: {
+    fontSize: 24,
+    color: "white",
+  },
+});

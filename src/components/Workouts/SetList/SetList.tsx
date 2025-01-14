@@ -17,7 +17,10 @@ const workoutHeaders: string[] = [
   "Done",
 ];
 
-export const SetList: FC<{ isWorkout: boolean }> = ({ isWorkout }) => {
+export const SetList: FC<{ isWorkout: boolean; index: number }> = ({
+  isWorkout,
+  index,
+}) => {
   const {
     control,
     watch,
@@ -27,32 +30,20 @@ export const SetList: FC<{ isWorkout: boolean }> = ({ isWorkout }) => {
     formState: { errors },
   } = useWorkoutFormContext().form;
 
-  const [selectedExercise, setSelectedExercise] =
-    useWorkoutFormContext().selectedExercise;
-
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
-    name: `exercises.${Number(selectedExercise?.key) ?? 0}.sets`,
+    name: `exercises.${index}.sets`,
   });
 
   const headers: string[] = isWorkout ? workoutHeaders : templateHeaders;
-  const [data, setData] = useState(
-    Array.from({ length: 5 }, (_, index) => ({
-      key: `${index}`,
-      text: `Set ${index + 1}`,
-    }))
-  );
-
-  const deleteRow = (rowKey: string) => {
-    const newData = data.filter((item) => item.key !== rowKey);
-    setData(newData);
-  };
 
   const renderHiddenItem = (data: any) => (
     <View className="flex flex-row justify-end items-center bg-red-500 h-full">
       <TouchableOpacity
         className="flex justify-center items-center h-full w-[15%]"
-        onPress={() => deleteRow(data.item.key)}
+        onPress={() => {
+          remove(data.index);
+        }}
       >
         <Icon name="trash-can-outline" size={30} color="#fff" />
       </TouchableOpacity>
@@ -60,9 +51,8 @@ export const SetList: FC<{ isWorkout: boolean }> = ({ isWorkout }) => {
   );
 
   const handleEmptyElementPress = () => {
-    if (selectedExercise) {
-      append({ key: (fields.length + 1).toString() });
-    }
+    const newSet = { key: (fields.length + 1).toString() };
+    append(newSet);
   };
 
   return (

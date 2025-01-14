@@ -7,7 +7,6 @@ import React, {
   useState,
 } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
-import { TemplateModal } from "../components/TemplateModal";
 
 export interface Set {
   key: string;
@@ -35,10 +34,7 @@ export interface FormValues {
 
 const Context = createContext<{
   form: UseFormReturn<FormValues>;
-  selectedExercise: [
-    Exercise | null,
-    Dispatch<SetStateAction<Exercise | null>>,
-  ];
+  currExerciseIndex: [number, Dispatch<SetStateAction<number>>];
 } | null>(null);
 
 const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
@@ -50,19 +46,17 @@ const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
       exercises: [],
     },
   });
-  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
-    null
-  );
+  const [currExerciseIndex, setCurrExerciseIndex] = useState<number>(0);
 
   const contextValue = useMemo(
     () => ({
       form,
-      selectedExercise: [selectedExercise, setSelectedExercise] as [
-        Exercise | null,
-        Dispatch<SetStateAction<Exercise | null>>,
+      currExerciseIndex: [currExerciseIndex, setCurrExerciseIndex] as [
+        number,
+        Dispatch<SetStateAction<number>>,
       ],
     }),
-    [form, selectedExercise]
+    [form, currExerciseIndex]
   );
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;
@@ -74,14 +68,6 @@ const useWorkoutFormContext = () => {
     throw new Error("context must be used within a provider");
   }
   return context;
-};
-
-export const WorkoutFormWrapper = () => {
-  return (
-    <WorkoutFormProvider>
-      <TemplateModal />
-    </WorkoutFormProvider>
-  );
 };
 
 export { useWorkoutFormContext, WorkoutFormProvider };

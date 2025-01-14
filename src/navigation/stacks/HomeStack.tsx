@@ -1,6 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { WorkoutFormWrapper } from "../../contexts/WorkoutForm.context";
 import { HomeScreen } from "../../screens/HomeScreen";
+import { WorkoutFormWrapper } from "../../contexts/Wrapper";
 
 const Stack = createStackNavigator();
 

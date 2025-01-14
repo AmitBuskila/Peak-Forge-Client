@@ -4,11 +4,10 @@ import { Pressable } from "react-native-gesture-handler";
 import { screenWidth } from "../../../../constants";
 import { Exercise } from "../../../contexts/WorkoutForm.context";
 
-export const WorkoutImage: FC<{
-  item: Exercise;
-  drag: () => void;
-  isActive: boolean;
-}> = ({ item, drag, isActive }) => {
+export const WorkoutImage: FC<{ item: Exercise; index: number }> = ({
+  item,
+  index,
+}) => {
   const [isPressing, setIsPressing] = useState<boolean>(false);
 
   return (
@@ -16,12 +15,10 @@ export const WorkoutImage: FC<{
       style={({ pressed }) => [
         styles.item,
         {
-          backgroundColor: isActive ? "lightblue" : "white",
           opacity: pressed ? 0.7 : 1,
         },
       ]}
       onLongPress={() => {
-        drag();
         setIsPressing(true);
       }}
       onPressOut={() => setIsPressing(false)}

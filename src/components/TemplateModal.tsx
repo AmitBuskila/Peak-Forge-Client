@@ -8,7 +8,6 @@ import {
 import { CustomButton } from "./CustomButton";
 import { CustomImagePicker } from "./CustomImagePicker";
 import { FormField } from "./FormField";
-import { SetList } from "./Workouts/SetList/SetList";
 import { WorkoutCarousel } from "./Workouts/WorkoutCarousel/WorkoutCarousel";
 
 export const TemplateModal: FC<{}> = () => {
@@ -52,7 +51,6 @@ export const TemplateModal: FC<{}> = () => {
           />
         </View>
         <WorkoutCarousel />
-        {!!exercises.length && <SetList isWorkout={true} />}
         <CustomButton
           title="Create Template"
           handlePress={handleSubmit(onSubmit, onError)}
