@@ -12,7 +12,7 @@ export const SetItem = ({ item, index }: { item: Set; index: number }) => {
         <Text className="px-1 text-l font-bold">{itemIndex}</Text>
       </View>
       <View id="previous" style={{ flex: 2.5 }} className="items-center">
-        <Text className="px-1 text-l font-bold">{item.previous || "---"}</Text>
+        <Text className="px-1 text-l font-bold">{item?.previous || "---"}</Text>
       </View>
       <View id="weight" style={{ flex: 2 }} className="items-center">
         <NumericInput

@@ -8,6 +8,7 @@ import {
 import { CustomButton } from "./CustomButton";
 import { CustomImagePicker } from "./CustomImagePicker";
 import { FormField } from "./FormField";
+import { SetList } from "./Workouts/SetList/SetList";
 import { WorkoutCarousel } from "./Workouts/WorkoutCarousel/WorkoutCarousel";
 
 export const TemplateModal: FC<{}> = () => {
@@ -18,6 +19,8 @@ export const TemplateModal: FC<{}> = () => {
     handleSubmit,
     formState: { errors },
   } = useWorkoutFormContext().form;
+
+  const [index] = useWorkoutFormContext().currExerciseIndex;
 
   const exercises = useWatch({ control, name: "exercises" });
 
@@ -51,6 +54,8 @@ export const TemplateModal: FC<{}> = () => {
           />
         </View>
         <WorkoutCarousel />
+        {exercises[index] && <SetList isWorkout={true} index={index} />}
+
         <CustomButton
           title="Create Template"
           handlePress={handleSubmit(onSubmit, onError)}

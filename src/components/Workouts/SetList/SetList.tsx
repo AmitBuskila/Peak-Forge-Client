@@ -1,9 +1,11 @@
-import { FC, useState } from "react";
-import { useFieldArray } from "react-hook-form";
+import { FC, useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { useWorkoutFormContext } from "../../../contexts/WorkoutForm.context";
+import {
+  Set,
+  useWorkoutFormContext,
+} from "../../../contexts/WorkoutForm.context";
 import { EmptyElement } from "../../EmptyElement";
 import { SetHeader } from "./SetHeader";
 import { SetItem } from "./SetItem";
@@ -17,23 +19,28 @@ const workoutHeaders: string[] = [
   "Done",
 ];
 
-export const SetList: FC<{ isWorkout: boolean; index: number }> = ({
-  isWorkout,
-  index,
-}) => {
-  const {
-    control,
-    watch,
-    setValue,
-    getValues,
-    handleSubmit,
-    formState: { errors },
-  } = useWorkoutFormContext().form;
+export const SetList: FC<{
+  isWorkout: boolean;
+  index: number;
+}> = ({ isWorkout, index }) => {
+  const { setValue, getValues } = useWorkoutFormContext().form;
+  const [fields, setFields] = useState<Set[]>([]);
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: `exercises.${index}.sets`,
-  });
+  const append = (set: Set) => {
+    const newSets: Set[] = [...fields, set];
+    setFields(newSets);
+    setValue(`exercises.${index}.sets`, newSets);
+  };
+
+  const remove = (indexToRemove: number) => {
+    const newSets = fields.filter((field, index) => index !== indexToRemove);
+    setFields(newSets);
+    setValue(`exercises.${index}.sets`, newSets);
+  };
+
+  useEffect(() => {
+    setFields((getValues(`exercises.${index}.sets`) ?? []) as Set[]);
+  }, [index]);
 
   const headers: string[] = isWorkout ? workoutHeaders : templateHeaders;
 
@@ -51,7 +58,7 @@ export const SetList: FC<{ isWorkout: boolean; index: number }> = ({
   );
 
   const handleEmptyElementPress = () => {
-    const newSet = { key: (fields.length + 1).toString() };
+    const newSet: Set = { key: (fields.length + 1).toString() };
     append(newSet);
   };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFieldArray } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
@@ -8,7 +8,6 @@ import {
   useWorkoutFormContext,
 } from "../../../contexts/WorkoutForm.context";
 import { EmptyElement } from "../../EmptyElement";
-import { SetList } from "../SetList/SetList";
 import { WorkoutImage } from "./WorkoutImage";
 
 export const WorkoutCarousel = () => {
@@ -44,7 +43,7 @@ export const WorkoutCarousel = () => {
   return (
     <Carousel
       width={screenWidth}
-      style={{ minHeight: 500 }}
+      style={{ minHeight: 250 }}
       panGestureHandlerProps={{
         activeOffsetX: [-10, 10],
       }}
@@ -53,7 +52,7 @@ export const WorkoutCarousel = () => {
       scrollAnimationDuration={1000}
       onSnapToItem={(index) => setCurrExerciseIndex(index)}
       renderItem={({ index, item }) => {
-        if (item.key === "0") {
+        if (item?.key === "0") {
           return (
             <EmptyElement
               width={65}
@@ -62,12 +61,7 @@ export const WorkoutCarousel = () => {
             />
           );
         } else {
-          return (
-            <View style={{ pointerEvents: "box-none" }}>
-              <WorkoutImage index={index} item={item} />
-              <SetList isWorkout={true} index={index} />
-            </View>
-          );
+          return <WorkoutImage index={index} item={item} />;
         }
       }}
       withAnimation={{ type: "timing", config: { duration: 600 } }}
