@@ -1,0 +1,11 @@
+import { Set } from "../../../contexts/WorkoutForm.context";
+
+export const getFlexResolver = (
+  isWorkout: boolean
+): Partial<Record<keyof Set, number>> => ({
+  key: isWorkout ? 0.7 : 0.5,
+  previous: 2,
+  weight: isWorkout ? 1 : 2,
+  maxReps: isWorkout ? 3.5 : 2,
+  done: 1.2,
+});

@@ -12,15 +12,12 @@ export const NumericInput: FC<{
   exerciseIndex: number;
   setIndex: number;
 }> = ({ fieldType: fieldType, exerciseIndex, setIndex }) => {
-  const { control, getValues } = useWorkoutFormContext().form;
+  const { control } = useWorkoutFormContext().form;
 
   const exercisesState: Exercise[] = useWatch({
     control,
     name: `exercises`,
   });
-
-  console.log(getValues());
-  console.log(`exercises.${exerciseIndex}.sets.${setIndex}.${fieldType}`);
 
   return (
     <View>

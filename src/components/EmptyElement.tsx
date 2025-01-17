@@ -1,22 +1,28 @@
 import React, { FC, useState } from "react";
-import { Pressable } from "react-native";
+import { DimensionValue, Pressable } from "react-native";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { screenWidth } from "../../constants";
 
 export const EmptyElement: FC<{
   width: number;
   height: number;
+  marginLeft: DimensionValue;
   handlePress: () => void;
-}> = ({ width, height, handlePress }) => {
+}> = ({ width, height, handlePress, marginLeft }) => {
   const [isPressing, setIsPressing] = useState<boolean>(false);
 
   return (
     <Pressable
-      className={`rounded-lg mt-0.3 ml-[11vw] items-center justify-center 
+      className={`rounded-lg items-center justify-center 
                     border border-dashed border-secondary-200 
                     ${isPressing ? "bg-black-200 opacity-0.7" : "bg-black-100"}`}
       onPress={handlePress}
-      style={{ height, width: screenWidth * (width / 100) }}
+      style={{
+        height,
+        width: screenWidth * (width / 100),
+        marginLeft: marginLeft,
+        marginTop: 5,
+      }}
 
       // onPressOut={() => setIsPressing(false)}
       // onPressIn={() => setIsPressing(true)}

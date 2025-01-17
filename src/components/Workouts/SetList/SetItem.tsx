@@ -1,28 +1,49 @@
 import { Text, View } from "react-native";
 import { NumericInput } from "../../NumericInput";
 import { Set } from "../../../contexts/WorkoutForm.context";
+import { getFlexResolver } from "./utils";
 
 //   todo use wheel picker
 export const SetItem = ({
   item,
   setIndex,
   exerciseIndex,
+  isWorkout,
 }: {
   item: Set;
   setIndex: number;
   exerciseIndex: number;
+  isWorkout: boolean;
 }) => {
+  const flexResolver = getFlexResolver(isWorkout);
+
   const itemIndex: number = setIndex + 1;
 
   return (
-    <View className="flex-row items-center bg-gray-100 h-16 border-b border-secondary-200">
-      <View id="set" style={{ flex: 1.5 }} className="items-center">
+    <View className="flex-row items-center bg-gray-100 h-16 border-b border-secondary-200 rounded-lg">
+      <View
+        id="set"
+        style={{ flex: flexResolver["key"] }}
+        className="items-center"
+      >
         <Text className="px-1 text-l font-bold">{itemIndex}</Text>
       </View>
-      <View id="previous" style={{ flex: 2.5 }} className="items-center">
-        <Text className="px-1 text-l font-bold">{item?.previous || "---"}</Text>
-      </View>
-      <View id="weight" style={{ flex: 2 }} className="items-center">
+      {isWorkout && (
+        <View
+          id="previous"
+          style={{ flex: flexResolver["previous"] }}
+          className="items-center"
+        >
+          <Text className="px-1 text-l font-bold">
+            {item?.previous || "---"}
+          </Text>
+        </View>
+      )}
+      <View
+        id="weight"
+        style={{ flex: flexResolver["weight"] }}
+        className="items-center"
+      >
         <NumericInput
           fieldType="weight"
           setIndex={setIndex}
@@ -31,8 +52,8 @@ export const SetItem = ({
       </View>
       <View
         id="rep-range"
-        style={{ flex: 3 }}
-        className="items-center flex-row"
+        style={{ flex: flexResolver["maxReps"] }}
+        className="flex-row justify-center"
       >
         <NumericInput
           fieldType="minReps"
@@ -46,13 +67,19 @@ export const SetItem = ({
           exerciseIndex={exerciseIndex}
         />
       </View>
-      <View id="done" style={{ flex: 2.5 }} className="items-center">
-        <NumericInput
-          fieldType="done"
-          setIndex={setIndex}
-          exerciseIndex={exerciseIndex}
-        />
-      </View>
+      {isWorkout && (
+        <View
+          id="done"
+          style={{ flex: flexResolver["done"] }}
+          className="items-center"
+        >
+          <NumericInput
+            fieldType="done"
+            setIndex={setIndex}
+            exerciseIndex={exerciseIndex}
+          />
+        </View>
+      )}
     </View>
   );
 };

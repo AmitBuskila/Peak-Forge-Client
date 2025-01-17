@@ -47,12 +47,12 @@ export const SetList: FC<{
 
   const headers: string[] = isWorkout ? workoutHeaders : templateHeaders;
 
-  const renderHiddenItem = (data: any) => (
-    <View className="flex flex-row justify-end items-center bg-red-500 h-full">
+  const renderHiddenItem = ({ index }: { index: number }) => (
+    <View className="flex flex-row justify-end items-center bg-red-500 h-full rounded-lg">
       <TouchableOpacity
         className="flex justify-center items-center h-full w-[15%]"
         onPress={() => {
-          remove(data.index);
+          remove(index);
         }}
       >
         <Icon name="trash-can-outline" size={30} color="#fff" />
@@ -67,19 +67,25 @@ export const SetList: FC<{
 
   return (
     <SwipeListView
-      ListHeaderComponent={SetHeader}
+      ListHeaderComponent={<SetHeader isWorkout={isWorkout} />}
       data={fields}
       keyExtractor={(item) => item.key}
       useAnimatedList={true}
       ListFooterComponent={
         <EmptyElement
-          width={70}
+          width={15}
           height={57}
+          marginLeft={"38%"}
           handlePress={handleEmptyElementPress}
         />
       }
       renderItem={({ item, index }) => (
-        <SetItem item={item} setIndex={index} exerciseIndex={exerciseIndex} />
+        <SetItem
+          item={item}
+          setIndex={index}
+          exerciseIndex={exerciseIndex}
+          isWorkout={isWorkout}
+        />
       )}
       disableRightSwipe
       renderHiddenItem={renderHiddenItem}

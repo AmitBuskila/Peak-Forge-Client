@@ -30,7 +30,7 @@ export const useSetListAnimation = ({
   };
 
   useEffect(() => {
-    if (exercises[exerciseIndex]?.sets) toggleFlip();
+    if (exercises[exerciseIndex]?.sets || exerciseIndex) toggleFlip();
   }, [exerciseIndex]);
 
   return animatedStyle;

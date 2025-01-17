@@ -31,14 +31,14 @@ export const WorkoutCarousel = () => {
       label: "bench",
       imageUri:
         "https://static.strengthlevel.com/images/exercises/bench-press/bench-press-400.avif",
-      sets: [],
+      sets: [{ key: "1" }],
     });
   };
 
   return (
     <Carousel
       width={screenWidth}
-      style={{ minHeight: 250 }}
+      style={{ minHeight: 265 }}
       panGestureHandlerProps={{
         activeOffsetX: [-10, 10],
       }}
@@ -52,6 +52,7 @@ export const WorkoutCarousel = () => {
             <EmptyElement
               width={65}
               height={248}
+              marginLeft={"15%"}
               handlePress={handleEmptyElementPress}
             />
           );

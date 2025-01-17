@@ -37,7 +37,11 @@ export const TemplateModal: FC<{}> = () => {
   const animatedStyle = useSetListAnimation({ exerciseIndex, exercises });
 
   return (
-    <KeyboardAvoidingView behavior={"position"}>
+    <KeyboardAvoidingView
+      behavior={"height"}
+      keyboardVerticalOffset={100}
+      enabled
+    >
       <ScrollView className="bg-primary h-full">
         <View className="w-full justify-center h-full px-4 my-4">
           <FormField
@@ -58,12 +62,20 @@ export const TemplateModal: FC<{}> = () => {
               uri={getValues("image")}
             />
           </View>
-          <WorkoutCarousel />
-          {!!exercises[exerciseIndex]?.sets && (
-            <Animated.View style={animatedStyle}>
-              <SetList isWorkout={true} exerciseIndex={exerciseIndex} />
-            </Animated.View>
-          )}
+          <View
+            style={{
+              marginVertical: 12,
+              display: "flex",
+              margin: "auto",
+            }}
+          >
+            <WorkoutCarousel />
+            {!!exercises[exerciseIndex]?.sets && (
+              <Animated.View style={animatedStyle}>
+                <SetList isWorkout={false} exerciseIndex={exerciseIndex} />
+              </Animated.View>
+            )}
+          </View>
 
           <CustomButton
             title="Create Template"
