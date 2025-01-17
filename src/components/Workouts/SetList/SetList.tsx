@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -21,26 +21,29 @@ const workoutHeaders: string[] = [
 
 export const SetList: FC<{
   isWorkout: boolean;
-  index: number;
-}> = ({ isWorkout, index }) => {
+  exerciseIndex: number;
+}> = ({ isWorkout, exerciseIndex }) => {
   const { setValue, getValues } = useWorkoutFormContext().form;
-  const [fields, setFields] = useState<Set[]>([]);
+  const [fields, setFields] = useState<Set[]>(
+    getValues(`exercises.${exerciseIndex}.sets`)
+  );
 
   const append = (set: Set) => {
     const newSets: Set[] = [...fields, set];
     setFields(newSets);
-    setValue(`exercises.${index}.sets`, newSets);
+    setValue(`exercises.${exerciseIndex}.sets`, newSets);
   };
 
   const remove = (indexToRemove: number) => {
     const newSets = fields.filter((field, index) => index !== indexToRemove);
     setFields(newSets);
-    setValue(`exercises.${index}.sets`, newSets);
+    setValue(`exercises.${exerciseIndex}.sets`, newSets);
   };
 
   useEffect(() => {
-    setFields((getValues(`exercises.${index}.sets`) ?? []) as Set[]);
-  }, [index]);
+    const currentSets = getValues(`exercises.${exerciseIndex}.sets`);
+    setFields(currentSets);
+  }, [exerciseIndex]);
 
   const headers: string[] = isWorkout ? workoutHeaders : templateHeaders;
 
@@ -58,7 +61,7 @@ export const SetList: FC<{
   );
 
   const handleEmptyElementPress = () => {
-    const newSet: Set = { key: (fields.length + 1).toString() };
+    const newSet: Set = { key: ((fields?.length ?? 0) + 1).toString() };
     append(newSet);
   };
 
@@ -66,6 +69,8 @@ export const SetList: FC<{
     <SwipeListView
       ListHeaderComponent={SetHeader}
       data={fields}
+      keyExtractor={(item) => item.key}
+      useAnimatedList={true}
       ListFooterComponent={
         <EmptyElement
           width={70}
@@ -73,7 +78,9 @@ export const SetList: FC<{
           handlePress={handleEmptyElementPress}
         />
       }
-      renderItem={SetItem}
+      renderItem={({ item, index }) => (
+        <SetItem item={item} setIndex={index} exerciseIndex={exerciseIndex} />
+      )}
       disableRightSwipe
       renderHiddenItem={renderHiddenItem}
       rightOpenValue={-60}

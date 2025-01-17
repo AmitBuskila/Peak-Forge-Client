@@ -1,10 +1,18 @@
 import { Text, View } from "react-native";
-import { Set } from "../../../../types/template";
 import { NumericInput } from "../../NumericInput";
+import { Set } from "../../../contexts/WorkoutForm.context";
 
 //   todo use wheel picker
-export const SetItem = ({ item, index }: { item: Set; index: number }) => {
-  const itemIndex: number = index + 1;
+export const SetItem = ({
+  item,
+  setIndex,
+  exerciseIndex,
+}: {
+  item: Set;
+  setIndex: number;
+  exerciseIndex: number;
+}) => {
+  const itemIndex: number = setIndex + 1;
 
   return (
     <View className="flex-row items-center bg-gray-100 h-16 border-b border-secondary-200">
@@ -17,8 +25,8 @@ export const SetItem = ({ item, index }: { item: Set; index: number }) => {
       <View id="weight" style={{ flex: 2 }} className="items-center">
         <NumericInput
           fieldType="weight"
-          setIndex={index}
-          exerciseIndex={index}
+          setIndex={setIndex}
+          exerciseIndex={exerciseIndex}
         />
       </View>
       <View
@@ -27,19 +35,23 @@ export const SetItem = ({ item, index }: { item: Set; index: number }) => {
         className="items-center flex-row"
       >
         <NumericInput
-          fieldType="repRange.minReps"
-          setIndex={index}
-          exerciseIndex={index}
+          fieldType="minReps"
+          setIndex={setIndex}
+          exerciseIndex={exerciseIndex}
         />
         <Text>-</Text>
         <NumericInput
-          fieldType="repRange.maxReps"
-          setIndex={index}
-          exerciseIndex={index}
+          fieldType="maxReps"
+          setIndex={setIndex}
+          exerciseIndex={exerciseIndex}
         />
       </View>
       <View id="done" style={{ flex: 2.5 }} className="items-center">
-        <NumericInput fieldType="done" setIndex={index} exerciseIndex={index} />
+        <NumericInput
+          fieldType="done"
+          setIndex={setIndex}
+          exerciseIndex={exerciseIndex}
+        />
       </View>
     </View>
   );

@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { useFieldArray } from "react-hook-form";
-import { StyleSheet, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import { screenWidth } from "../../../../constants";
 import {
@@ -11,11 +10,7 @@ import { EmptyElement } from "../../EmptyElement";
 import { WorkoutImage } from "./WorkoutImage";
 
 export const WorkoutCarousel = () => {
-  const {
-    control,
-    setValue,
-    formState: { errors },
-  } = useWorkoutFormContext().form;
+  const { control } = useWorkoutFormContext().form;
 
   const [currExerciseIndex, setCurrExerciseIndex] =
     useWorkoutFormContext().currExerciseIndex;
@@ -32,7 +27,7 @@ export const WorkoutCarousel = () => {
 
   const handleEmptyElementPress = () => {
     append({
-      key: (fields.length + 1).toString(),
+      key: ((fields?.length ?? 0) + 1).toString(),
       label: "bench",
       imageUri:
         "https://static.strengthlevel.com/images/exercises/bench-press/bench-press-400.avif",
@@ -68,31 +63,3 @@ export const WorkoutCarousel = () => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 20,
-  },
-  text: {
-    fontSize: 20,
-    marginBottom: 20,
-    color: "#764ABC",
-  },
-  card: {
-    backgroundColor: "#764ABC",
-    borderRadius: 10,
-    padding: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    width: screenWidth - 40,
-    marginHorizontal: 20,
-    height: 200,
-  },
-  title: {
-    fontSize: 24,
-    color: "white",
-  },
-});

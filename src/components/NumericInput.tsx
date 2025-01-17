@@ -1,33 +1,51 @@
 import React, { FC } from "react";
-import { Controller } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 import { TextInput, View } from "react-native";
-import { Set, useWorkoutFormContext } from "../contexts/WorkoutForm.context";
+import {
+  Exercise,
+  Set,
+  useWorkoutFormContext,
+} from "../contexts/WorkoutForm.context";
 
 export const NumericInput: FC<{
   fieldType: keyof Set;
   exerciseIndex: number;
   setIndex: number;
 }> = ({ fieldType: fieldType, exerciseIndex, setIndex }) => {
-  const { control } = useWorkoutFormContext().form;
+  const { control, getValues } = useWorkoutFormContext().form;
+
+  const exercisesState: Exercise[] = useWatch({
+    control,
+    name: `exercises`,
+  });
+
+  console.log(getValues());
+  console.log(`exercises.${exerciseIndex}.sets.${setIndex}.${fieldType}`);
 
   return (
     <View>
-      <Controller
-        name={`exercises.${exerciseIndex}.sets.${setIndex}.${fieldType}`}
-        control={control}
-        rules={{ required: true }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            value={value?.toString()}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            maxLength={3}
-            keyboardType="number-pad"
-            className={`border-2 border-${fieldType === "done" ? "secondary" : "black"}-200  bg-primary rounded-xl
+      {exercisesState[exerciseIndex].sets[setIndex] && (
+        <Controller
+          name={`exercises.${exerciseIndex}.sets.${setIndex}.${fieldType}`}
+          control={control}
+          rules={{ required: true }}
+          render={({ field: { onChange, onBlur } }) => (
+            <TextInput
+              value={
+                exercisesState[exerciseIndex].sets[setIndex][
+                  fieldType
+                ]?.toString() || ""
+              }
+              onChangeText={onChange}
+              onBlur={onBlur}
+              maxLength={3}
+              keyboardType="number-pad"
+              className={`border-2 border-${fieldType === "done" ? "secondary" : "black"}-200  bg-primary rounded-xl
            focus:border-secondary items-center text-center text-gray-100 w-12`}
-          />
-        )}
-      />
+            />
+          )}
+        />
+      )}
     </View>
   );
 };

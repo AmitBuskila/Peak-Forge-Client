@@ -12,10 +12,8 @@ export interface Set {
   key: string;
   previous?: string;
   weight?: number;
-  repRange?: {
-    minReps: number;
-    maxReps: number;
-  };
+  minReps?: number;
+  maxReps?: number;
   done?: number;
 }
 
