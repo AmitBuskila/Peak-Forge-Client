@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { NumericInput } from "../../NumericInput";
+import { NumericInput } from "../../GenericComponents/NumericInput";
 import { Set } from "../../../contexts/WorkoutForm.context";
 import { getFlexResolver } from "./utils";
 

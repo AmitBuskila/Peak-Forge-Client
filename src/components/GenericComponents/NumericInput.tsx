@@ -5,7 +5,7 @@ import {
   Exercise,
   Set,
   useWorkoutFormContext,
-} from "../contexts/WorkoutForm.context";
+} from "../../contexts/WorkoutForm.context";
 
 export const NumericInput: FC<{
   fieldType: keyof Set;

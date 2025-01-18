@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { DimensionValue, Pressable } from "react-native";
 import IonIcons from "react-native-vector-icons/Ionicons";
-import { screenWidth } from "../../constants";
+import { screenWidth } from "../../../constants";
 
 export const EmptyElement: FC<{
   width: number;

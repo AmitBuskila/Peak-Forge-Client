@@ -5,13 +5,14 @@ import Animated from "react-native-reanimated";
 import {
   FormValues,
   useWorkoutFormContext,
-} from "../contexts/WorkoutForm.context";
-import { useSetListAnimation } from "../hooks/setAnimation.hook";
-import { CustomButton } from "./CustomButton";
-import { CustomImagePicker } from "./CustomImagePicker";
-import { FormField } from "./FormField";
-import { SetList } from "./Workouts/SetList/SetList";
-import { WorkoutCarousel } from "./Workouts/WorkoutCarousel/WorkoutCarousel";
+} from "../../contexts/WorkoutForm.context";
+import { useSetListAnimation } from "../../hooks/setAnimation.hook";
+import { CustomButton } from "../GenericComponents/CustomButton";
+import { CustomImagePicker } from "../GenericComponents/CustomImagePicker";
+import { FormField } from "../GenericComponents/FormField";
+import { SetList } from "./SetList/SetList";
+import { WorkoutCarousel } from "./WorkoutCarousel/WorkoutCarousel";
+import { useDispatch } from "react-redux";
 
 export const TemplateModal: FC<{}> = () => {
   const {
@@ -21,6 +22,7 @@ export const TemplateModal: FC<{}> = () => {
     handleSubmit,
     formState: { errors },
   } = useWorkoutFormContext().form;
+  const dispatch = useDispatch();
 
   const [exerciseIndex] = useWorkoutFormContext().currExerciseIndex;
 

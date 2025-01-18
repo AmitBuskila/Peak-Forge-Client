@@ -6,7 +6,7 @@ import {
   Exercise,
   useWorkoutFormContext,
 } from "../../../contexts/WorkoutForm.context";
-import { EmptyElement } from "../../EmptyElement";
+import { EmptyElement } from "../../GenericComponents/EmptyElement";
 import { WorkoutImage } from "./WorkoutImage";
 
 export const WorkoutCarousel = () => {

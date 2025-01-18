@@ -6,7 +6,7 @@ import {
   Set,
   useWorkoutFormContext,
 } from "../../../contexts/WorkoutForm.context";
-import { EmptyElement } from "../../EmptyElement";
+import { EmptyElement } from "../../GenericComponents/EmptyElement";
 import { SetHeader } from "./SetHeader";
 import { SetItem } from "./SetItem";
 

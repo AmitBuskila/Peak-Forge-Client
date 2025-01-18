@@ -1,4 +1,4 @@
-import { TemplateModal } from "../components/TemplateModal";
+import { TemplateModal } from "../components/Workouts/TemplateModal";
 import { WorkoutFormProvider } from "./WorkoutForm.context";
 
 //todo make provider as should

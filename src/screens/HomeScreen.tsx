@@ -7,10 +7,10 @@ import {
   Dimensions,
   FlatList,
 } from "react-native";
-import { WorkoutTemplate } from "../components/WorkoutTemplate";
+import { WorkoutTemplate } from "../components/Workouts/WorkoutTemplate";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Template } from "../../types/template";
-import AnimatedFlatList from "../components/AnimatedFlatList";
+import AnimatedFlatList from "../components/GenericComponents/AnimatedFlatList";
 
 const templates: Template[] = [
   {

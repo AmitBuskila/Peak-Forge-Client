@@ -7,7 +7,7 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { Template } from "../../types/template";
+import { Template } from "../../../types/template";
 
 export const WorkoutTemplate: FC<{ template: Template }> = ({
   template,

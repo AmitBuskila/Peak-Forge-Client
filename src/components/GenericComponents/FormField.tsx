@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
 import { Text, TextInput, View } from "react-native";
-import { FormValues } from "../contexts/WorkoutForm.context";
+import { FormValues } from "../../contexts/WorkoutForm.context";
 
 export const FormField: FC<{
   control: Control<FormValues>;
