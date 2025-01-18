@@ -5,6 +5,8 @@ import { Navigation } from "./src/navigation/Navigation";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
+import { Provider } from "react-redux";
+import { store } from "./src/store";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -36,9 +38,11 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView className={`bg-${barColor} h-full color-white`}>
-      <Navigation />
-      <StatusBar backgroundColor={barColor} style="light" />
-    </SafeAreaView>
+    <Provider store={store}>
+      <SafeAreaView className={`bg-${barColor} h-full color-white`}>
+        <Navigation />
+        <StatusBar backgroundColor={barColor} style="light" />
+      </SafeAreaView>
+    </Provider>
   );
 }
