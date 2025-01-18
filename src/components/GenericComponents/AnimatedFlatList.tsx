@@ -1,7 +1,8 @@
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React from "react";
-import { View, Text, ListRenderItemInfo } from "react-native";
-import { FlatList, FlatListProps } from "react-native";
+import { FlatList, FlatListProps, ListRenderItemInfo } from "react-native";
 import * as Animatable from "react-native-animatable";
+import { EmptyElement } from "./EmptyElement";
 
 interface AnimatedFlatListProps<T>
   extends Omit<FlatListProps<T>, "renderItem" | "data"> {
@@ -56,6 +57,7 @@ export const AnimatedFlatList = <T extends { id: number }>({
   );
 
   const [activeItem, setActiveItem] = React.useState(data[0]);
+  const navigation = useNavigation<NavigationProp<string>>();
 
   return (
     <FlatList
@@ -71,6 +73,13 @@ export const AnimatedFlatList = <T extends { id: number }>({
           setActiveItem(viewableItems[0].item);
         }
       }}
+      ListFooterComponent={
+        <EmptyElement
+          height={200}
+          width={35}
+          handlePress={() => navigation.navigate("Template")}
+        />
+      }
     />
   );
 };

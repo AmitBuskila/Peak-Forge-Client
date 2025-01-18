@@ -1,6 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { HomeScreen } from "../../screens/HomeScreen";
 import { WorkoutFormWrapper } from "../../contexts/Wrapper";
+import { ActiveWorkout } from "../../screens/ActiveWorkout";
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,7 @@ export const HomeStack = () => {
         }}
         component={WorkoutFormWrapper}
       />
+      <Stack.Screen name="ActiveWorkout" component={ActiveWorkout} />
     </Stack.Navigator>
   );
 };

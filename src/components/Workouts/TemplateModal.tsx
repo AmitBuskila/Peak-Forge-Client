@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { formatWorkoutTemplate } from "../../utils/formatActions";
 import { addWorkoutTemplate } from "../../store/slices/WorkoutSlice";
 import { Workout } from "../../../types/template";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 
 export const TemplateModal: FC<{}> = () => {
   const {
@@ -30,10 +31,12 @@ export const TemplateModal: FC<{}> = () => {
   const [exerciseIndex] = useWorkoutFormContext().currExerciseIndex;
 
   const exercises = useWatch({ control, name: "exercises" });
+  const navigation = useNavigation<NavigationProp<string>>();
 
   const onSubmit = (data: FormValues) => {
     const workout: Workout = formatWorkoutTemplate(data);
     dispatch(addWorkoutTemplate(workout));
+    navigation.navigate("HomeScreen");
   };
 
   const onError = (errors: FieldErrors<FormValues>) => {

@@ -6,7 +6,7 @@ import { screenWidth } from "../../../constants";
 export const EmptyElement: FC<{
   width: number;
   height: number;
-  marginLeft: DimensionValue;
+  marginLeft?: DimensionValue;
   handlePress: () => void;
 }> = ({ width, height, handlePress, marginLeft }) => {
   const [isPressing, setIsPressing] = useState<boolean>(false);

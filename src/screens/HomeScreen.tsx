@@ -1,46 +1,17 @@
 import { FC } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-  FlatList,
-} from "react-native";
-import { WorkoutTemplate } from "../components/Workouts/WorkoutTemplate";
+import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Workout } from "../../types/template";
+import { useSelector } from "react-redux";
 import AnimatedFlatList from "../components/GenericComponents/AnimatedFlatList";
-
-const templates: Workout[] = [
-  {
-    id: 1,
-    name: "Push x Abs",
-    uri: "https://legacy.reactjs.org/logo-og.png",
-  },
-  {
-    id: 2,
-    name: "Pull x Legs",
-    uri: "https://legacy.reactjs.org/logo-og.png",
-  },
-  {
-    id: 3,
-    name: "Pull x Legs",
-    uri: "https://legacy.reactjs.org/logo-og.png",
-  },
-  {
-    id: 4,
-    name: "Pull x Legs",
-    uri: "https://legacy.reactjs.org/logo-og.png",
-  },
-  {
-    id: 0,
-    name: "",
-    uri: "https://w7.pngwing.com/pngs/626/231/png-transparent-addition-add-sign-s-purple-violet-rectangle.png",
-  },
-];
+import { WorkoutTemplate } from "../components/Workouts/WorkoutTemplate";
+import { WorkoutsSliceState } from "../store/slices/WorkoutSlice";
 
 export const HomeScreen: FC<{ navigation: any }> = ({ navigation }) => {
+  const workouts = useSelector(
+    ({ workoutsSlice }: { workoutsSlice: WorkoutsSliceState }) =>
+      workoutsSlice.workouts
+  );
+
   return (
     <SafeAreaView>
       <ScrollView className="bg-primary h-full ">
@@ -51,7 +22,7 @@ export const HomeScreen: FC<{ navigation: any }> = ({ navigation }) => {
         </View>
         <View className="justify-center items-center ">
           <AnimatedFlatList
-            data={templates}
+            data={workouts}
             renderItem={({ item }) => <WorkoutTemplate template={item} />}
             horizontal={true}
           />

@@ -3,7 +3,6 @@ import { FC } from "react";
 import {
   GestureResponderEvent,
   ImageBackground,
-  StyleSheet,
   Text,
   TouchableOpacity,
 } from "react-native";
@@ -17,7 +16,7 @@ export const WorkoutTemplate: FC<{ template: Workout }> = ({
   const navigation = useNavigation<NavigationProp<string>>();
 
   const handleTemplatePress = (e: GestureResponderEvent) => {
-    navigation.navigate("Template");
+    navigation.navigate("ActiveWorkout");
   };
 
   return (
@@ -27,10 +26,10 @@ export const WorkoutTemplate: FC<{ template: Workout }> = ({
       onPress={handleTemplatePress}
     >
       <ImageBackground
-        style={styles.fuck}
+        style={{ width: 150, height: 200 }}
         className="bg-white width-50 h-50 rounded-[35px] my-5 overflow-hidden shadow-lg shadow-black/40 "
         source={{
-          uri: template.uri,
+          uri: template.templateImage,
         }}
         resizeMode="cover"
       />
@@ -40,7 +39,3 @@ export const WorkoutTemplate: FC<{ template: Workout }> = ({
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  fuck: { width: 150, height: 200 },
-});
