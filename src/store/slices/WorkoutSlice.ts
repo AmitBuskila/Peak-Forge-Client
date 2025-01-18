@@ -1,18 +1,19 @@
 import { template } from "@babel/core";
 import { createSlice, Slice } from "@reduxjs/toolkit";
+import { Workout } from "../../../types/template";
 
 export type WorkoutsSliceState = {
-  templates: any[];
-  activeWorkout: any;
+  workouts: Workout[];
+  activeWorkout: Workout | null;
 };
 
 const initialState: WorkoutsSliceState = {
-  templates: [],
-  activeWorkout: {},
+  workouts: [],
+  activeWorkout: null,
 };
 
 export type addTemplateAction = {
-  payload: any;
+  payload: Workout;
 };
 
 const workoutsSlice: Slice = createSlice({
@@ -20,7 +21,7 @@ const workoutsSlice: Slice = createSlice({
   initialState,
   reducers: {
     addWorkoutTemplate: (state: WorkoutsSliceState, { payload }) => {
-      state.templates = [...state.templates, payload];
+      state.workouts = [...state.workouts, payload];
     },
   },
 });

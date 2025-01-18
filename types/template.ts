@@ -1,13 +1,24 @@
-export interface Template {
+export interface Workout {
   id: number;
   name: string;
-  uri: string;
+  description?: string;
+  templateImage: string;
+  workoutImage?: string;
+  exercises: Exercise[];
 }
 
 export interface Set {
-  index: number;
+  id: number;
   previous?: string;
   weight: number;
-  repTarget: number;
-  actualReps?: number;
+  minReps: number;
+  maxReps: number;
+  done?: number;
+}
+
+export interface Exercise {
+  id: number;
+  label: string;
+  imageUri: string;
+  sets: Set[];
 }

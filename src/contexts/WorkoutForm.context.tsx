@@ -8,26 +8,26 @@ import React, {
 } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 
-export interface Set {
+export interface FormWorkoutSet {
   key: string;
   previous?: string;
-  weight?: number;
-  minReps?: number;
-  maxReps?: number;
+  weight: number;
+  minReps: number;
+  maxReps: number;
   done?: number;
 }
 
-export interface Exercise {
+export interface FormExercise {
   key: string;
   label: string;
   imageUri: string;
-  sets: Set[];
+  sets: FormWorkoutSet[];
 }
 export interface FormValues {
   image: string;
   workoutName: string;
   description: string;
-  exercises: Exercise[];
+  exercises: FormExercise[];
 }
 
 const Context = createContext<{

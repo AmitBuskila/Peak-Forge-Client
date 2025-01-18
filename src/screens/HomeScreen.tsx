@@ -9,10 +9,10 @@ import {
 } from "react-native";
 import { WorkoutTemplate } from "../components/Workouts/WorkoutTemplate";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Template } from "../../types/template";
+import { Workout } from "../../types/template";
 import AnimatedFlatList from "../components/GenericComponents/AnimatedFlatList";
 
-const templates: Template[] = [
+const templates: Workout[] = [
   {
     id: 1,
     name: "Push x Abs",

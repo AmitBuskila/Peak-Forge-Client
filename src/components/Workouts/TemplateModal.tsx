@@ -13,6 +13,9 @@ import { FormField } from "../GenericComponents/FormField";
 import { SetList } from "./SetList/SetList";
 import { WorkoutCarousel } from "./WorkoutCarousel/WorkoutCarousel";
 import { useDispatch } from "react-redux";
+import { formatWorkoutTemplate } from "../../utils/formatActions";
+import { addWorkoutTemplate } from "../../store/slices/WorkoutSlice";
+import { Workout } from "../../../types/template";
 
 export const TemplateModal: FC<{}> = () => {
   const {
@@ -29,7 +32,8 @@ export const TemplateModal: FC<{}> = () => {
   const exercises = useWatch({ control, name: "exercises" });
 
   const onSubmit = (data: FormValues) => {
-    console.log(data);
+    const workout: Workout = formatWorkoutTemplate(data);
+    dispatch(addWorkoutTemplate(workout));
   };
 
   const onError = (errors: FieldErrors<FormValues>) => {

@@ -1,0 +1,24 @@
+import { Exercise, Set, Workout } from "../../types/template";
+import { FormValues } from "../contexts/WorkoutForm.context";
+
+export const formatWorkoutTemplate = (data: FormValues): Workout => {
+  return {
+    id: new Date().getTime(),
+    name: data.workoutName,
+    description: data?.description || "",
+    templateImage: data?.image || "",
+    exercises: data.exercises.map((formExercise) => {
+      const { key, ...exercise } = formExercise;
+      const sets: Set[] = exercise.sets.map((formSet) => {
+        const { key, ...set } = formSet;
+        return { id: new Date().getTime(), ...set };
+      });
+      const newExercise: Exercise = {
+        id: new Date().getTime(),
+        ...exercise,
+        sets,
+      };
+      return newExercise;
+    }),
+  };
+};
