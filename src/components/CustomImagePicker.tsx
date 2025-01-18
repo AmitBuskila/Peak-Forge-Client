@@ -7,10 +7,9 @@ import { Alert, Image, TouchableOpacity, View } from "react-native";
 
 export const CustomImagePicker: FC<{
   styles: string;
-  setValue: SetFieldValue<FieldValues>;
+  setImageUri: SetFieldValue<FieldValues>;
   uri?: string;
-}> = ({ styles, setValue, uri }) => {
-  const [image, setImage] = useState<string | null>(null);
+}> = ({ styles, setImageUri, uri }) => {
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -28,8 +27,7 @@ export const CustomImagePicker: FC<{
       });
       if (!result.canceled) {
         const imageUri: string = result?.assets?.[0].uri;
-        setImage(imageUri);
-        setValue(imageUri);
+        setImageUri("image", imageUri);
       }
     }
   };
@@ -41,11 +39,8 @@ export const CustomImagePicker: FC<{
         rounded-2xl bg-black-100 ${styles}`}
     >
       <View className="items-center my-auto">
-        {image ? (
-          <Image
-            className="h-full w-full rounded-2xl "
-            source={{ uri: image }}
-          />
+        {uri ? (
+          <Image className="h-full w-full rounded-2xl " source={{ uri }} />
         ) : (
           <FontAwesomeIcon icon={faImage} color="#48138b" size={60} />
         )}

@@ -58,7 +58,7 @@ export const TemplateModal: FC<{}> = () => {
             />
             <CustomImagePicker
               styles="w-[24vw] h-28 mx-4 mt-5"
-              setValue={setValue}
+              setImageUri={setValue}
               uri={getValues("image")}
             />
           </View>

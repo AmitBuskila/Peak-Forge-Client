@@ -14,7 +14,11 @@ export const FormField: FC<{
       <Text className="text-base text-gray-100 font-pmedium">{title}</Text>
       <Controller
         control={control}
-        name={title.trim() as keyof FormValues}
+        name={
+          (title.charAt(0).toLocaleLowerCase() + title.slice(1))
+            .trim()
+            .replace(/\s+/g, "") as keyof FormValues
+        }
         rules={{ required: false }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
