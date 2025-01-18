@@ -2,19 +2,19 @@ import React, { FC } from "react";
 import { Controller, useWatch } from "react-hook-form";
 import { TextInput, View } from "react-native";
 import {
-  Exercise,
-  Set,
+  FormExercise,
+  FormWorkoutSet,
   useWorkoutFormContext,
 } from "../../contexts/WorkoutForm.context";
 
 export const NumericInput: FC<{
-  fieldType: keyof Set;
+  fieldType: keyof FormWorkoutSet;
   exerciseIndex: number;
   setIndex: number;
 }> = ({ fieldType: fieldType, exerciseIndex, setIndex }) => {
   const { control } = useWorkoutFormContext().form;
 
-  const exercisesState: Exercise[] = useWatch({
+  const exercisesState: FormExercise[] = useWatch({
     control,
     name: `exercises`,
   });

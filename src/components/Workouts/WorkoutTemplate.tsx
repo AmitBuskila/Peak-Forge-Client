@@ -7,12 +7,12 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { Template } from "../../../types/template";
+import { Workout } from "../../../types/template";
 
-export const WorkoutTemplate: FC<{ template: Template }> = ({
+export const WorkoutTemplate: FC<{ template: Workout }> = ({
   template,
 }: {
-  template: Template;
+  template: Workout;
 }) => {
   const navigation = useNavigation<NavigationProp<string>>();
 

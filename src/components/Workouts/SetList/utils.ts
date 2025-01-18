@@ -1,8 +1,8 @@
-import { Set } from "../../../contexts/WorkoutForm.context";
+import { FormWorkoutSet } from "../../../contexts/WorkoutForm.context";
 
 export const getFlexResolver = (
   isWorkout: boolean
-): Partial<Record<keyof Set, number>> => ({
+): Partial<Record<keyof FormWorkoutSet, number>> => ({
   key: isWorkout ? 0.7 : 0.5,
   previous: 2,
   weight: isWorkout ? 1 : 2,

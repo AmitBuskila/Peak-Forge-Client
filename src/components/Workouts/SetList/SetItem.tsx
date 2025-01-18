@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 import { NumericInput } from "../../GenericComponents/NumericInput";
-import { Set } from "../../../contexts/WorkoutForm.context";
+import { FormWorkoutSet } from "../../../contexts/WorkoutForm.context";
 import { getFlexResolver } from "./utils";
 
 //   todo use wheel picker
@@ -10,7 +10,7 @@ export const SetItem = ({
   exerciseIndex,
   isWorkout,
 }: {
-  item: Set;
+  item: FormWorkoutSet;
   setIndex: number;
   exerciseIndex: number;
   isWorkout: boolean;

@@ -3,7 +3,7 @@ import { useFieldArray } from "react-hook-form";
 import Carousel from "react-native-reanimated-carousel";
 import { screenWidth } from "../../../../constants";
 import {
-  Exercise,
+  FormExercise,
   useWorkoutFormContext,
 } from "../../../contexts/WorkoutForm.context";
 import { EmptyElement } from "../../GenericComponents/EmptyElement";
@@ -20,7 +20,7 @@ export const WorkoutCarousel = () => {
     name: "exercises",
   });
 
-  const data: Exercise[] = [
+  const data: FormExercise[] = [
     ...fields,
     { key: "0", imageUri: "", label: "", sets: [] },
   ];

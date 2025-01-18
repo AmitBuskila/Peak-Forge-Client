@@ -5,13 +5,13 @@ import {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { Exercise } from "../contexts/WorkoutForm.context";
+import { FormExercise } from "../contexts/WorkoutForm.context";
 
 export const useSetListAnimation = ({
   exercises,
   exerciseIndex,
 }: {
-  exercises: Exercise[];
+  exercises: FormExercise[];
   exerciseIndex: number;
 }) => {
   const [flipped, setFlipped] = useState(false);

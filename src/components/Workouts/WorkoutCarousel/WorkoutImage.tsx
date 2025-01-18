@@ -2,9 +2,9 @@ import { FC, useState } from "react";
 import { Image, StyleSheet } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
 import { screenWidth } from "../../../../constants";
-import { Exercise } from "../../../contexts/WorkoutForm.context";
+import { FormExercise } from "../../../contexts/WorkoutForm.context";
 
-export const WorkoutImage: FC<{ item: Exercise; index: number }> = ({
+export const WorkoutImage: FC<{ item: FormExercise; index: number }> = ({
   item,
   index,
 }) => {

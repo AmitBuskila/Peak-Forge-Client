@@ -3,7 +3,7 @@ import { TouchableOpacity, View } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {
-  Set,
+  FormWorkoutSet,
   useWorkoutFormContext,
 } from "../../../contexts/WorkoutForm.context";
 import { EmptyElement } from "../../GenericComponents/EmptyElement";
@@ -24,12 +24,12 @@ export const SetList: FC<{
   exerciseIndex: number;
 }> = ({ isWorkout, exerciseIndex }) => {
   const { setValue, getValues } = useWorkoutFormContext().form;
-  const [fields, setFields] = useState<Set[]>(
+  const [fields, setFields] = useState<FormWorkoutSet[]>(
     getValues(`exercises.${exerciseIndex}.sets`)
   );
 
-  const append = (set: Set) => {
-    const newSets: Set[] = [...fields, set];
+  const append = (set: FormWorkoutSet) => {
+    const newSets: FormWorkoutSet[] = [...fields, set];
     setFields(newSets);
     setValue(`exercises.${exerciseIndex}.sets`, newSets);
   };
@@ -61,7 +61,9 @@ export const SetList: FC<{
   );
 
   const handleEmptyElementPress = () => {
-    const newSet: Set = { key: ((fields?.length ?? 0) + 1).toString() };
+    const newSet: FormWorkoutSet = {
+      key: ((fields?.length ?? 0) + 1).toString(),
+    };
     append(newSet);
   };
 
