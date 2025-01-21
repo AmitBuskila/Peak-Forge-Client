@@ -10,6 +10,7 @@ import { Navigation } from "./src/navigation/Navigation";
 import { ActiveWorkout } from "./src/screens/ActiveWorkout";
 import { store } from "./src/store";
 import { AppProvider } from "./src/contexts/AppContext.context";
+import { WorkoutFormProvider } from "./src/contexts/WorkoutForm.context";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -46,7 +47,9 @@ export default function App() {
         <AppProvider>
           <GestureHandlerRootView>
             <Navigation />
-            <ActiveWorkout />
+            <WorkoutFormProvider>
+              <ActiveWorkout />
+            </WorkoutFormProvider>
           </GestureHandlerRootView>
         </AppProvider>
       </Provider>

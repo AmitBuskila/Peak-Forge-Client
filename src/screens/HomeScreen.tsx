@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import AnimatedFlatList from "../components/GenericComponents/AnimatedFlatList";
@@ -23,7 +23,7 @@ export const HomeScreen: FC<{ navigation: any }> = ({ navigation }) => {
         <View className="justify-center items-center ">
           <AnimatedFlatList
             data={workouts}
-            renderItem={({ item }) => <WorkoutTemplate template={item} />}
+            renderItem={({ item }) => <WorkoutTemplate workout={item} />}
             horizontal={true}
           />
         </View>

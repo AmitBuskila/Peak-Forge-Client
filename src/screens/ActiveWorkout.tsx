@@ -3,30 +3,33 @@ import {
   BottomSheetModalProvider,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { Text } from "react-native";
+import { Workout } from "../../types/template";
+import { CustomButton } from "../components/GenericComponents/CustomButton";
+import { WorkoutRoutine } from "../components/Workouts/WorkoutRoutine";
 import { useAppContext } from "../contexts/AppContext.context";
 
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
-  const snapPoints = ["25%", "50%", "75%", "100%"];
+  const [activeWorkout] = useAppContext().activeWorkout;
+  const snapPoints = ["3%", "8%", "95%", "100%"];
 
   return (
     <BottomSheetModalProvider>
       <BottomSheetModal
-        index={0}
         ref={modalRef}
         snapPoints={snapPoints}
-        style={{ marginBottom: 10 }}
-        enablePanDownToClose={true}
+        enablePanDownToClose={false}
+        enableContentPanningGesture={false}
+        backgroundStyle={{ backgroundColor: "#5f2aa1" }}
       >
-        <BottomSheetView
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text>Content inside the Bottom Sheet</Text>
+        <BottomSheetView>
+          <WorkoutRoutine workout={activeWorkout as Workout} />
+          <CustomButton
+            title="Finish Workout"
+            handlePress={() => {
+              modalRef.current?.close();
+            }}
+          />
         </BottomSheetView>
       </BottomSheetModal>
     </BottomSheetModalProvider>

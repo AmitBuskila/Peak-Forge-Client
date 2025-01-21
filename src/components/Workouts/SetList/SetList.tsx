@@ -61,10 +61,10 @@ export const SetList: FC<{
   );
 
   const handleEmptyElementPress = () => {
-    const newSet: FormWorkoutSet = {
+    const newSet: Partial<FormWorkoutSet> = {
       key: ((fields?.length ?? 0) + 1).toString(),
     };
-    append(newSet);
+    append(newSet as FormWorkoutSet);
   };
 
   return (

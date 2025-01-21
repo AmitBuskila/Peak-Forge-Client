@@ -1,22 +1,19 @@
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React, { FC } from "react";
 import { FieldErrors, useWatch } from "react-hook-form";
 import { KeyboardAvoidingView, ScrollView, View } from "react-native";
-import Animated from "react-native-reanimated";
+import { useDispatch } from "react-redux";
+import { Workout } from "../../../types/template";
 import {
   FormValues,
   useWorkoutFormContext,
 } from "../../contexts/WorkoutForm.context";
-import { useSetListAnimation } from "../../hooks/setAnimation.hook";
+import { addWorkoutTemplate } from "../../store/slices/WorkoutSlice";
+import { formatWorkoutTemplate } from "../../utils/formatActions";
 import { CustomButton } from "../GenericComponents/CustomButton";
 import { CustomImagePicker } from "../GenericComponents/CustomImagePicker";
 import { FormField } from "../GenericComponents/FormField";
-import { SetList } from "./SetList/SetList";
-import { WorkoutCarousel } from "./WorkoutCarousel/WorkoutCarousel";
-import { useDispatch } from "react-redux";
-import { formatWorkoutTemplate } from "../../utils/formatActions";
-import { addWorkoutTemplate } from "../../store/slices/WorkoutSlice";
-import { Workout } from "../../../types/template";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { WorkoutRoutine } from "./WorkoutRoutine";
 
 export const TemplateModal: FC<{}> = () => {
   const {
@@ -28,23 +25,18 @@ export const TemplateModal: FC<{}> = () => {
   } = useWorkoutFormContext().form;
   const dispatch = useDispatch();
 
-  const [exerciseIndex] = useWorkoutFormContext().currExerciseIndex;
-
-  const exercises = useWatch({ control, name: "exercises" });
   const navigation = useNavigation<NavigationProp<string>>();
   const image = useWatch({ control, name: "image" });
 
   const onSubmit = (data: FormValues) => {
     const workout: Workout = formatWorkoutTemplate(data);
     dispatch(addWorkoutTemplate(workout));
-    navigation.navigate("HomeScreen");
+    navigation.navigate("Home");
   };
 
   const onError = (errors: FieldErrors<FormValues>) => {
     console.log("Error occurred", errors);
   };
-
-  const animatedStyle = useSetListAnimation({ exerciseIndex, exercises });
 
   return (
     <KeyboardAvoidingView
@@ -72,19 +64,8 @@ export const TemplateModal: FC<{}> = () => {
               uri={image}
             />
           </View>
-          <View
-            style={{
-              marginVertical: 12,
-              display: "flex",
-              margin: "auto",
-            }}
-          >
-            <WorkoutCarousel />
-            {!!exercises[exerciseIndex]?.sets && (
-              <Animated.View style={animatedStyle}>
-                <SetList isWorkout={false} exerciseIndex={exerciseIndex} />
-              </Animated.View>
-            )}
+          <View className="my-6">
+            <WorkoutRoutine />
           </View>
 
           <CustomButton
