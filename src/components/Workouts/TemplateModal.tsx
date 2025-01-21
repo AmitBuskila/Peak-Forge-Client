@@ -32,6 +32,7 @@ export const TemplateModal: FC<{}> = () => {
 
   const exercises = useWatch({ control, name: "exercises" });
   const navigation = useNavigation<NavigationProp<string>>();
+  const image = useWatch({ control, name: "image" });
 
   const onSubmit = (data: FormValues) => {
     const workout: Workout = formatWorkoutTemplate(data);
@@ -68,7 +69,7 @@ export const TemplateModal: FC<{}> = () => {
             <CustomImagePicker
               styles="w-[24vw] h-28 mx-4 mt-5"
               setImageUri={setValue}
-              uri={getValues("image")}
+              uri={image}
             />
           </View>
           <View

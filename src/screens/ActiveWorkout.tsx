@@ -1,37 +1,34 @@
-import { useHeaderHeight } from "@react-navigation/elements";
-import { useState } from "react";
-import { SafeAreaView, View, Button, Text } from "react-native";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
+import { Text } from "react-native";
+import { useAppContext } from "../contexts/AppContext.context";
 
 export const ActiveWorkout = () => {
-  const [expanded, setExpanded] = useState(false);
-  const headerHeight = useHeaderHeight(); // to get the current height of the header
+  const modalRef = useAppContext().activeWorkoutModalRef;
+  const snapPoints = ["25%", "50%", "75%", "100%"];
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      {/* Header with Toggle Button */}
-      <View
-        style={{
-          height: headerHeight,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+    <BottomSheetModalProvider>
+      <BottomSheetModal
+        index={0}
+        ref={modalRef}
+        snapPoints={snapPoints}
+        style={{ marginBottom: 10 }}
+        enablePanDownToClose={true}
       >
-        <Button
-          title={expanded ? "Collapse" : "Expand"}
-          onPress={() => setExpanded((prev) => !prev)}
-        />
-      </View>
-
-      {/* Content Area */}
-      <View
-        style={{
-          flex: 1,
-          paddingTop: headerHeight,
-          backgroundColor: expanded ? "skyblue" : "white",
-        }}
-      >
-        <Text>{expanded ? "Full Screen Content" : "Collapsed Content"}</Text>
-      </View>
-    </SafeAreaView>
+        <BottomSheetView
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text>Content inside the Bottom Sheet</Text>
+        </BottomSheetView>
+      </BottomSheetModal>
+    </BottomSheetModalProvider>
   );
 };

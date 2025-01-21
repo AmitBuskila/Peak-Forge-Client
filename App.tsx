@@ -1,12 +1,15 @@
 import { useFonts } from "expo-font";
-import { SafeAreaView } from "react-native-safe-area-context";
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
+import { SafeAreaView } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Provider } from "react-redux";
 import "./global.css";
 import { Navigation } from "./src/navigation/Navigation";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import { Provider } from "react-redux";
+import { ActiveWorkout } from "./src/screens/ActiveWorkout";
 import { store } from "./src/store";
+import { AppProvider } from "./src/contexts/AppContext.context";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -38,11 +41,17 @@ export default function App() {
   }
 
   return (
-    <Provider store={store}>
-      <SafeAreaView className={`bg-${barColor} h-full color-white`}>
-        <Navigation />
-        <StatusBar backgroundColor={barColor} style="light" />
-      </SafeAreaView>
-    </Provider>
+    <SafeAreaView className={`bg-${barColor} h-full color-white`}>
+      <Provider store={store}>
+        <AppProvider>
+          <GestureHandlerRootView>
+            <Navigation />
+            <ActiveWorkout />
+          </GestureHandlerRootView>
+        </AppProvider>
+      </Provider>
+
+      <StatusBar backgroundColor={barColor} style="light" />
+    </SafeAreaView>
   );
 }

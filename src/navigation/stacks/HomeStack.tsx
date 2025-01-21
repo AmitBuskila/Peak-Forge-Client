@@ -21,7 +21,6 @@ export const HomeStack = () => {
         }}
         component={WorkoutFormWrapper}
       />
-      <Stack.Screen name="ActiveWorkout" component={ActiveWorkout} />
     </Stack.Navigator>
   );
 };

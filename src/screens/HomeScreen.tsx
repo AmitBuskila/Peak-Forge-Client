@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { ScrollView, Text, View } from "react-native";
+import React, { FC } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import AnimatedFlatList from "../components/GenericComponents/AnimatedFlatList";
@@ -14,7 +14,7 @@ export const HomeScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <SafeAreaView>
-      <ScrollView className="bg-primary h-full ">
+      <ScrollView className="bg-primary h-full">
         <View className="mt-3 px-4">
           <Text className="text-3xl font-pblack color-secondary-200">
             My Templates

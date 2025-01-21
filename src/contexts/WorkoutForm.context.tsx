@@ -1,9 +1,12 @@
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, {
   createContext,
   Dispatch,
+  RefObject,
   SetStateAction,
   useContext,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
@@ -33,6 +36,7 @@ export interface FormValues {
 const Context = createContext<{
   form: UseFormReturn<FormValues>;
   currExerciseIndex: [number, Dispatch<SetStateAction<number>>];
+  activeWorkoutModalRef: RefObject<BottomSheetModal>;
 } | null>(null);
 
 const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
@@ -45,6 +49,7 @@ const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
     },
   });
   const [currExerciseIndex, setCurrExerciseIndex] = useState<number>(0);
+  const activeWorkoutModalRef = useRef<BottomSheetModal>(null);
 
   const contextValue = useMemo(
     () => ({
@@ -53,8 +58,9 @@ const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
         number,
         Dispatch<SetStateAction<number>>,
       ],
+      activeWorkoutModalRef,
     }),
-    [form, currExerciseIndex]
+    [form, currExerciseIndex, activeWorkoutModalRef]
   );
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;

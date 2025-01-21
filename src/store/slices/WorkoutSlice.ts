@@ -1,15 +1,20 @@
-import { template } from "@babel/core";
 import { createSlice, Slice } from "@reduxjs/toolkit";
 import { Workout } from "../../../types/template";
 
 export type WorkoutsSliceState = {
   workouts: Workout[];
-  activeWorkout: Workout | null;
 };
 
 const initialState: WorkoutsSliceState = {
-  workouts: [],
-  activeWorkout: null,
+  workouts: [
+    {
+      id: 0,
+      name: "push",
+      templateImage:
+        "https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2016/09/Bodybuilder-Working-Out-His-Upper-Body-With-Cable-Crossover-Exercise.jpg?quality=86&strip=all",
+      exercises: [],
+    },
+  ],
 };
 
 export type addTemplateAction = {

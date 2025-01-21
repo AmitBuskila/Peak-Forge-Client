@@ -1,4 +1,3 @@
-import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { FC } from "react";
 import {
   GestureResponderEvent,
@@ -7,16 +6,20 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Workout } from "../../../types/template";
+import { useAppContext } from "../../contexts/AppContext.context";
 
 export const WorkoutTemplate: FC<{ template: Workout }> = ({
   template,
 }: {
   template: Workout;
 }) => {
-  const navigation = useNavigation<NavigationProp<string>>();
+  const modalRef = useAppContext().activeWorkoutModalRef;
 
   const handleTemplatePress = (e: GestureResponderEvent) => {
-    navigation.navigate("ActiveWorkout");
+    modalRef.current?.present();
+    setTimeout(() => {
+      modalRef.current?.snapToIndex(3);
+    }, 100);
   };
 
   return (
