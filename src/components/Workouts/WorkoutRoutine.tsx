@@ -16,7 +16,7 @@ export const WorkoutRoutine: FC<{ workout?: Workout }> = ({ workout }) => {
   return (
     <View>
       <WorkoutCarousel />
-      <View style={{ marginTop: !!workout ? 300 : 0 }}>
+      <View>
         {!!exercises[exerciseIndex]?.sets && (
           <Animatable.View style={animatedStyle}>
             <SetList isWorkout={!!workout} exerciseIndex={exerciseIndex} />
