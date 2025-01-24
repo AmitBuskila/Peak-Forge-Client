@@ -8,11 +8,12 @@ import { Workout } from "../../types/template";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
 import { WorkoutRoutine } from "../components/Workouts/WorkoutRoutine";
 import { useAppContext } from "../contexts/AppContext.context";
+import { CustomHandle } from "../components/WorkoutModal/CustomHandle";
 
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
   const [activeWorkout] = useAppContext().activeWorkout;
-  const snapPoints = ["25%", "50%", "80%", "100%"];
+  const snapPoints = ["8%", "80%", "100%"];
 
   return (
     <BottomSheetModalProvider>
@@ -21,8 +22,9 @@ export const ActiveWorkout = () => {
         snapPoints={snapPoints}
         enablePanDownToClose={false}
         enableContentPanningGesture={false}
-        backgroundStyle={{ backgroundColor: "#5f2aa1" }}
-        containerStyle={{ marginBottom: getStatusBarHeight() }}
+        backgroundStyle={{ backgroundColor: "#232533" }}
+        bottomInset={getStatusBarHeight() + 2}
+        handleComponent={CustomHandle}
       >
         <BottomSheetScrollView>
           <WorkoutRoutine workout={activeWorkout as Workout} />

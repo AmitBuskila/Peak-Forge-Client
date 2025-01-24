@@ -7,7 +7,7 @@ export type WorkoutsSliceState = {
 
 const workout: Workout = {
   id: 0,
-  name: "push",
+  name: "push X pull ",
   templateImage:
     "https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2016/09/Bodybuilder-Working-Out-His-Upper-Body-With-Cable-Crossover-Exercise.jpg?quality=86&strip=all",
   exercises: [

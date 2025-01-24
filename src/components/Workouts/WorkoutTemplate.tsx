@@ -20,7 +20,7 @@ export const WorkoutTemplate: FC<{ workout: Workout }> = ({
     setActiveWorkout(workout);
     modalRef.current?.present();
     setTimeout(() => {
-      modalRef.current?.snapToIndex(3);
+      modalRef.current?.snapToIndex(2);
     }, 300);
   };
 
