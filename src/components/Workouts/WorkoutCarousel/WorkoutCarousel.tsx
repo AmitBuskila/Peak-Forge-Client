@@ -1,15 +1,17 @@
-import React from "react";
+import React, { FC } from "react";
 import { useFieldArray } from "react-hook-form";
 import Carousel from "react-native-reanimated-carousel";
 import { screenWidth } from "../../../../constants";
+import { Workout } from "../../../../types/template";
 import {
   FormExercise,
+  FormWorkoutSet,
   useWorkoutFormContext,
 } from "../../../contexts/WorkoutForm.context";
 import { EmptyElement } from "../../GenericComponents/EmptyElement";
 import { WorkoutImage } from "./WorkoutImage";
 
-export const WorkoutCarousel = () => {
+export const WorkoutCarousel: FC<{ workout?: Workout }> = ({ workout }) => {
   const { control } = useWorkoutFormContext().form;
 
   const [currExerciseIndex, setCurrExerciseIndex] =
@@ -31,7 +33,7 @@ export const WorkoutCarousel = () => {
       label: "bench",
       imageUri:
         "https://static.strengthlevel.com/images/exercises/bench-press/bench-press-400.avif",
-      sets: [{ key: "1" }],
+      sets: [{ key: "1" } as FormWorkoutSet],
     });
   };
 

@@ -22,3 +22,19 @@ export const formatWorkoutTemplate = (data: FormValues): Workout => {
     }),
   };
 };
+
+export const formatWorkoutToFormValues = (workout: Workout): FormValues => {
+  return {
+    workoutName: workout.name,
+    description: workout.description || "",
+    image: workout.templateImage || "",
+    exercises: workout.exercises.map((exercise) => ({
+      ...exercise,
+      key: exercise.id.toString(),
+      sets: exercise.sets.map((set) => ({
+        ...set,
+        key: set.id.toString(),
+      })),
+    })),
+  };
+};
