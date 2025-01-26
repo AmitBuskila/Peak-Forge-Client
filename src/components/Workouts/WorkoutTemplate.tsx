@@ -19,9 +19,6 @@ export const WorkoutTemplate: FC<{ workout: Workout }> = ({
   const handleTemplatePress = (e: GestureResponderEvent) => {
     setActiveWorkout(workout);
     modalRef.current?.present();
-    setTimeout(() => {
-      modalRef.current?.snapToIndex(2);
-    }, 300);
   };
 
   return (

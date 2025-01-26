@@ -28,6 +28,7 @@ export interface FormExercise {
 }
 export interface FormValues {
   image: string;
+  totalTime: number;
   workoutName: string;
   description: string;
   exercises: FormExercise[];
@@ -42,6 +43,7 @@ const Context = createContext<{
 const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
   const form = useForm<FormValues>({
     defaultValues: {
+      totalTime: 0,
       workoutName: "",
       description: "",
       image: "",

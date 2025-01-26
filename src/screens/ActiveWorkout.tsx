@@ -19,6 +19,7 @@ export const ActiveWorkout = () => {
     <BottomSheetModalProvider>
       <BottomSheetModal
         ref={modalRef}
+        index={1}
         snapPoints={snapPoints}
         enablePanDownToClose={false}
         enableContentPanningGesture={false}

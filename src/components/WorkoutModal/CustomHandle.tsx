@@ -1,23 +1,26 @@
 import { View, StyleSheet, Text, Button } from "react-native";
 import { useAppContext } from "../../contexts/AppContext.context";
 import { useEffect, useState } from "react";
+import { useWatch } from "react-hook-form";
+import { useWorkoutFormContext } from "../../contexts/WorkoutForm.context";
 
 export const CustomHandle = () => {
   const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
+  const { control, setValue } = useWorkoutFormContext().form;
   const modalRef = useAppContext().activeWorkoutModalRef;
-  const [timer, setTimer] = useState<number>(0);
+  const totalTime = useWatch({ control, name: "totalTime" });
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimer((prev) => prev + 1);
+      setValue("totalTime", totalTime + 1);
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [totalTime]);
 
-  const formatTimer = (time: number): string => {
-    const hours: number = Math.floor(time / 3600);
-    const minutes: number = Math.floor(time / 60);
-    let seconds: number = time % 60;
+  const formatTimer = (): string => {
+    const hours: number = Math.floor(totalTime / 3600);
+    const minutes: number = Math.floor(totalTime / 60);
+    let seconds: number = totalTime % 60;
     return `${hours > 0 ? hours + ":" : ""}${minutes < 10 ? "0" + minutes : minutes}:${(seconds < 10 ? "0" : "") + seconds}`;
   };
 
@@ -32,6 +35,7 @@ export const CustomHandle = () => {
             onPress={() => {
               modalRef.current?.dismiss();
               setActiveWorkout(null);
+              setValue("totalTime", 0);
             }}
           />
         </View>
@@ -46,7 +50,7 @@ export const CustomHandle = () => {
             style={[styles.text, { marginRight: 10 }]}
             className="font-pblack color-secondary-100"
           >
-            {formatTimer(timer)}
+            {formatTimer()}
           </Text>
         </View>
       </View>
