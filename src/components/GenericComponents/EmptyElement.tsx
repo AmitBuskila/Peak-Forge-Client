@@ -1,14 +1,13 @@
 import React, { FC, useState } from "react";
-import { DimensionValue, Pressable } from "react-native";
+import { Pressable } from "react-native";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { screenWidth } from "../../../constants";
 
 export const EmptyElement: FC<{
   width: number;
   height: number;
-  marginLeft?: DimensionValue;
   handlePress: () => void;
-}> = ({ width, height, handlePress, marginLeft }) => {
+}> = ({ width, height, handlePress }) => {
   const [isPressing, setIsPressing] = useState<boolean>(false);
 
   return (
@@ -20,7 +19,7 @@ export const EmptyElement: FC<{
       style={{
         height,
         width: screenWidth * (width / 100),
-        marginLeft: marginLeft,
+        marginHorizontal: "auto",
         marginTop: 5,
       }}
 

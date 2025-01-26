@@ -36,7 +36,7 @@ export const WorkoutImage: FC<{ item: FormExercise; index: number }> = ({
 const styles = StyleSheet.create({
   item: {
     width: screenWidth * 0.7,
-    marginLeft: screenWidth * 0.11,
+    marginHorizontal: "auto",
     height: 250,
     justifyContent: "center",
     alignItems: "center",

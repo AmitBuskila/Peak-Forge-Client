@@ -8,10 +8,13 @@ export const FormField: FC<{
   title: string;
   styles?: string;
   multiline?: boolean;
-}> = ({ control, title, styles = "", multiline = false }) => {
+  isHeader?: boolean;
+}> = ({ control, title, styles = "", multiline = false, isHeader = true }) => {
   return (
     <View>
-      <Text className="text-base text-gray-100 font-pmedium">{title}</Text>
+      {isHeader && (
+        <Text className="text-base text-gray-100 font-pmedium">{title}</Text>
+      )}
       <Controller
         control={control}
         name={
@@ -29,6 +32,8 @@ export const FormField: FC<{
             value={value?.toString()}
             textAlignVertical="top"
             multiline={multiline}
+            placeholder={isHeader ? "" : title + "..."}
+            placeholderTextColor={"#777"}
           />
         )}
       />
