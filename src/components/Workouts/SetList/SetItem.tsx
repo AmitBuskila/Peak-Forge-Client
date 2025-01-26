@@ -20,7 +20,7 @@ export const SetItem = ({
   const itemIndex: number = setIndex + 1;
 
   return (
-    <View className="flex-row items-center bg-gray-100 h-16 border-b border-secondary-200 rounded-lg">
+    <View className="flex-row items-center bg-gray-100 h-20 border-b border-secondary-200 rounded-lg">
       <View
         id="set"
         style={{ flex: flexResolver["key"] }}
@@ -53,7 +53,7 @@ export const SetItem = ({
       <View
         id="rep-range"
         style={{ flex: flexResolver["maxReps"] }}
-        className="flex-row justify-center"
+        className="flex-row justify-center items-center"
       >
         <NumericInput
           fieldType="minReps"

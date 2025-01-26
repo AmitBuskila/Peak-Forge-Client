@@ -35,7 +35,7 @@ export const TemplateModal: FC<{}> = () => {
   };
 
   const onError = (errors: FieldErrors<FormValues>) => {
-    console.log("Error occurred", errors);
+    console.log("Error occurred", getValues().exercises);
   };
 
   return (
@@ -48,12 +48,14 @@ export const TemplateModal: FC<{}> = () => {
         <View className="w-full justify-center h-full px-4 my-4">
           <FormField
             title="Workout Name"
+            controlName="workoutName"
             control={control}
             styles="w-full h-14"
           />
           <View className="my-2 flex flex-row items-center">
             <FormField
               title="Description"
+              controlName="description"
               control={control}
               styles="w-[66vw] h-28"
               multiline={true}

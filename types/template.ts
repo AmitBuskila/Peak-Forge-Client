@@ -21,4 +21,6 @@ export interface Exercise {
   label: string;
   imageUri: string;
   sets: Set[];
+  timer?: string;
+  notes?: string;
 }

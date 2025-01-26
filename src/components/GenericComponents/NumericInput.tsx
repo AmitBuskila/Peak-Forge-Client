@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Controller, useWatch } from "react-hook-form";
+import { Controller, Path, useWatch } from "react-hook-form";
 import { TextInput, View } from "react-native";
 import {
   FormExercise,
@@ -8,7 +8,7 @@ import {
 } from "../../contexts/WorkoutForm.context";
 
 export const NumericInput: FC<{
-  fieldType: keyof FormWorkoutSet;
+  fieldType: Path<FormWorkoutSet>;
   exerciseIndex: number;
   setIndex: number;
 }> = ({ fieldType: fieldType, exerciseIndex, setIndex }) => {
@@ -38,7 +38,7 @@ export const NumericInput: FC<{
               maxLength={3}
               keyboardType="number-pad"
               className={`border-2 border-${fieldType === "done" ? "secondary" : "black"}-200  bg-primary rounded-xl
-           focus:border-secondary items-center text-center text-gray-100 w-12`}
+           focus:border-secondary items-center text-center text-gray-100 w-16 py-1.5`}
             />
           )}
         />

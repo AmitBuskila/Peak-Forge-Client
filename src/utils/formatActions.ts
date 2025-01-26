@@ -23,7 +23,9 @@ export const formatWorkoutTemplate = (data: FormValues): Workout => {
   };
 };
 
-export const formatWorkoutToFormValues = (workout: Workout): FormValues => {
+export const formatWorkoutToFormValues = (
+  workout: Workout
+): Omit<FormValues, "totalTime"> => {
   return {
     workoutName: workout.name,
     description: workout.description || "",

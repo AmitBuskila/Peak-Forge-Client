@@ -24,6 +24,8 @@ export interface FormExercise {
   key: string;
   label: string;
   imageUri: string;
+  timer?: string;
+  notes?: string;
   sets: FormWorkoutSet[];
 }
 export interface FormValues {

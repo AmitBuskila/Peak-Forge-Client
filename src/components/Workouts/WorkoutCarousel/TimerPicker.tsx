@@ -1,13 +1,25 @@
-import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
-import { View, TouchableOpacity, Text } from "react-native";
-import { TimerPickerModal } from "react-native-timer-picker";
 import { Audio } from "expo-av";
-import * as Haptics from "expo-haptics"; // for haptic feedback
+import * as Haptics from "expo-haptics";
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useEffect, useState } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
+import { TimerPickerModal } from "react-native-timer-picker";
+import { useWorkoutFormContext } from "../../../contexts/WorkoutForm.context";
 
 export const TimerPicker = () => {
   const [showPicker, setShowPicker] = useState<boolean>(false);
-  const [alarmString, setAlarmString] = useState<string | null>(null);
+  const { setValue, getValues } = useWorkoutFormContext().form;
+  const [currExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
+  const currentExerciseTimer: string | null =
+    getValues(`exercises.${currExerciseIndex}.timer`) || null;
+
+  const [alarmString, setAlarmString] = useState<string | null>(
+    currentExerciseTimer
+  );
+
+  useEffect(() => {
+    setAlarmString(currentExerciseTimer);
+  }, [currExerciseIndex]);
 
   const formatTime = ({
     hours,
@@ -23,10 +35,10 @@ export const TimerPicker = () => {
     if (hours) {
       timeParts.push(hours.toString().padStart(2, "0"));
     }
-    if (minutes) {
+    if (minutes !== undefined) {
       timeParts.push(minutes.toString().padStart(2, "0"));
     }
-    if (seconds) {
+    if (seconds !== undefined) {
       timeParts.push(seconds.toString().padStart(2, "0"));
     }
 
@@ -55,7 +67,7 @@ export const TimerPicker = () => {
                   color: "#C2C2C2",
                 }}
               >
-                Set Timer ⏳
+                {(alarmString || "Set Timer") + "⏳"}
               </Text>
             </View>
           </TouchableOpacity>
@@ -65,10 +77,15 @@ export const TimerPicker = () => {
         visible={showPicker}
         setIsVisible={setShowPicker}
         onConfirm={(pickedDuration) => {
-          setAlarmString(formatTime(pickedDuration));
+          const formattedTime: string = formatTime(pickedDuration);
+          setValue(
+            `exercises.${currExerciseIndex}.timer`,
+            formatTime(pickedDuration)
+          );
+          setAlarmString(formattedTime);
           setShowPicker(false);
         }}
-        modalTitle="Set Alarm"
+        modalTitle="Set Timer"
         onCancel={() => setShowPicker(false)}
         closeOnOverlayPress
         Audio={Audio}

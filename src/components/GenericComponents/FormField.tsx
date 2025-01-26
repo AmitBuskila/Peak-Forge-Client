@@ -1,15 +1,25 @@
 import React, { FC } from "react";
-import { Control, Controller } from "react-hook-form";
+import { Control, Controller, Path } from "react-hook-form";
 import { Text, TextInput, View } from "react-native";
 import { FormValues } from "../../contexts/WorkoutForm.context";
 
 export const FormField: FC<{
   control: Control<FormValues>;
+  controlName: Path<FormValues>;
   title: string;
+  controlledValue?: string;
   styles?: string;
   multiline?: boolean;
   isHeader?: boolean;
-}> = ({ control, title, styles = "", multiline = false, isHeader = true }) => {
+}> = ({
+  control,
+  controlName,
+  title,
+  controlledValue,
+  styles = "",
+  multiline = false,
+  isHeader = true,
+}) => {
   return (
     <View>
       {isHeader && (
@@ -17,19 +27,15 @@ export const FormField: FC<{
       )}
       <Controller
         control={control}
-        name={
-          (title.charAt(0).toLocaleLowerCase() + title.slice(1))
-            .trim()
-            .replace(/\s+/g, "") as keyof FormValues
-        }
+        name={controlName}
         rules={{ required: false }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             className={`border-2 border-black-200 px-4 bg-black-100 rounded-2xl
            focus:border-secondary items-center text-gray-100 ${styles} `}
             onBlur={onBlur}
-            onChangeText={(value) => onChange(value)}
-            value={value?.toString()}
+            onChangeText={onChange}
+            value={controlledValue || value?.toString()}
             textAlignVertical="top"
             multiline={multiline}
             placeholder={isHeader ? "" : title + "..."}

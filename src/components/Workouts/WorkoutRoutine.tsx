@@ -8,6 +8,8 @@ import { useSetListAnimation } from "../../hooks/setAnimation.hook";
 import { formatWorkoutToFormValues } from "../../utils/formatActions";
 import { SetList } from "./SetList/SetList";
 import { WorkoutCarousel } from "./WorkoutCarousel/WorkoutCarousel";
+import { FormField } from "../GenericComponents/FormField";
+import { TimerPicker } from "./WorkoutCarousel/TimerPicker";
 
 export const WorkoutRoutine: FC<{ workout?: Workout }> = ({ workout }) => {
   const [exerciseIndex] = useWorkoutFormContext().currExerciseIndex;
@@ -25,13 +27,25 @@ export const WorkoutRoutine: FC<{ workout?: Workout }> = ({ workout }) => {
   return (
     <View>
       <WorkoutCarousel />
-      <View>
-        {!!exercises[exerciseIndex]?.sets && (
+      {!!exercises[exerciseIndex]?.sets && (
+        <View>
           <Animatable.View style={animatedStyle}>
+            <View className="w-[95vw] mx-auto flex-row justify-between">
+              <TimerPicker />
+              <FormField
+                control={control}
+                controlName={`exercises.${exerciseIndex}.notes`}
+                controlledValue={exercises[exerciseIndex]?.notes}
+                title="notes"
+                isHeader={false}
+                styles="w-[45vw] h-12"
+                multiline
+              />
+            </View>
             <SetList isWorkout={!!workout} exerciseIndex={exerciseIndex} />
           </Animatable.View>
-        )}
-      </View>
+        </View>
+      )}
     </View>
   );
 };

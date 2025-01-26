@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { useFieldArray } from "react-hook-form";
+import { View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import { screenWidth } from "../../../../constants";
 import { Workout } from "../../../../types/template";
@@ -10,15 +11,11 @@ import {
 } from "../../../contexts/WorkoutForm.context";
 import { EmptyElement } from "../../GenericComponents/EmptyElement";
 import { WorkoutImage } from "./WorkoutImage";
-import { View } from "react-native";
-import { TimerPicker } from "./TimerPicker";
-import { FormField } from "../../GenericComponents/FormField";
 
 export const WorkoutCarousel: FC<{ workout?: Workout }> = ({ workout }) => {
   const { control } = useWorkoutFormContext().form;
 
-  const [currExerciseIndex, setCurrExerciseIndex] =
-    useWorkoutFormContext().currExerciseIndex;
+  const [_, setCurrExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
 
   const { append, fields, remove } = useFieldArray({
     control,
@@ -37,6 +34,7 @@ export const WorkoutCarousel: FC<{ workout?: Workout }> = ({ workout }) => {
       imageUri:
         "https://static.strengthlevel.com/images/exercises/bench-press/bench-press-400.avif",
       sets: [{ key: "1" } as FormWorkoutSet],
+      notes: "",
     });
   };
 
@@ -67,16 +65,6 @@ export const WorkoutCarousel: FC<{ workout?: Workout }> = ({ workout }) => {
         }}
         withAnimation={{ type: "timing", config: { duration: 600 } }}
       />
-      <View className="w-[95vw] mx-auto flex-row justify-between">
-        <TimerPicker />
-        <FormField
-          control={control}
-          title="notes"
-          isHeader={false}
-          styles="w-[45vw] h-12"
-          multiline
-        />
-      </View>
     </View>
   );
 };

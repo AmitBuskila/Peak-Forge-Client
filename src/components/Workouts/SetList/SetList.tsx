@@ -75,9 +75,8 @@ export const SetList: FC<{
       useAnimatedList={true}
       ListFooterComponent={
         <EmptyElement
-          width={15}
+          width={93}
           height={57}
-          marginLeft={"38%"}
           handlePress={handleEmptyElementPress}
         />
       }
