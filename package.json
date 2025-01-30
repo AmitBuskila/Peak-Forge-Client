@@ -38,6 +38,7 @@
     "react-hook-form": "^7.54.2",
     "react-native": "0.76.5",
     "react-native-animatable": "^1.4.0",
+    "react-native-countdown-circle-timer": "^3.2.1",
     "react-native-draggable-flatlist": "^4.0.1",
     "react-native-gesture-handler": "^2.22.0",
     "react-native-reanimated": "^3.16.6",

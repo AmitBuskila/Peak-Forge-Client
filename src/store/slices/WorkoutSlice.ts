@@ -7,6 +7,80 @@ export type WorkoutsSliceState = {
 
 const workout: Workout = {
   id: 0,
+  name: "push",
+  templateImage:
+    "https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2016/09/Bodybuilder-Working-Out-His-Upper-Body-With-Cable-Crossover-Exercise.jpg?quality=86&strip=all",
+  exercises: [
+    {
+      id: 1,
+      label: "Flat Dumbbell Press",
+      imageUri:
+        "https://static.strengthlevel.com/images/exercises/bench-press/bench-press-400.avif",
+      notes: "Maintain a controlled tempo and avoid locking elbows.",
+      timer: "00:45",
+      sets: [
+        { id: 1, weight: 20, minReps: 8, maxReps: 12 },
+        { id: 2, weight: 22.5, minReps: 8, maxReps: 12 },
+        { id: 3, weight: 25, minReps: 8, maxReps: 12 },
+      ],
+    },
+    {
+      id: 2,
+      label: "Incline Dumbbell Press",
+      imageUri:
+        "https://static.strengthlevel.com/images/exercises/bench-press/bench-press-400.avif",
+      notes: "Ensure the bench is at a 30-degree angle for best results.",
+      timer: "00:40",
+      sets: [
+        { id: 1, weight: 17.5, minReps: 8, maxReps: 12 },
+        { id: 2, weight: 20, minReps: 8, maxReps: 12 },
+        { id: 3, weight: 22.5, minReps: 8, maxReps: 12 },
+      ],
+    },
+    {
+      id: 3,
+      label: "Overhead Shoulder Press",
+      imageUri:
+        "https://static.strengthlevel.com/images/exercises/bench-press/bench-press-400.avif",
+      notes: "Keep your back straight and core engaged throughout the set.",
+      timer: "00:50",
+      sets: [
+        { id: 1, weight: 15, minReps: 8, maxReps: 12 },
+        { id: 2, weight: 17.5, minReps: 8, maxReps: 12 },
+        { id: 3, weight: 20, minReps: 8, maxReps: 12 },
+      ],
+    },
+    {
+      id: 4,
+      label: "Cable Crossover",
+      imageUri:
+        "https://static.strengthlevel.com/images/exercises/bench-press/bench-press-400.avif",
+      notes: "Squeeze your chest at the end of the movement.",
+      timer: "01:00",
+      sets: [
+        { id: 1, weight: 10, minReps: 12, maxReps: 15 },
+        { id: 2, weight: 12.5, minReps: 12, maxReps: 15 },
+        { id: 3, weight: 15, minReps: 12, maxReps: 15 },
+      ],
+    },
+    {
+      id: 5,
+      label: "Tricep Pushdown",
+      imageUri:
+        "https://static.strengthlevel.com/images/exercises/bench-press/bench-press-400.avif",
+      notes: "Keep your elbows tucked in and avoid flaring them out.",
+      timer: "00:30",
+      sets: [
+        { id: 1, weight: 20, minReps: 12, maxReps: 15 },
+        { id: 2, weight: 25, minReps: 12, maxReps: 15 },
+        { id: 3, weight: 30, minReps: 12, maxReps: 15 },
+      ],
+    },
+  ],
+};
+
+const workout1: Workout = {
+  id: 0,
   name: "push X pull ",
   templateImage:
     "https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2016/09/Bodybuilder-Working-Out-His-Upper-Body-With-Cable-Crossover-Exercise.jpg?quality=86&strip=all",

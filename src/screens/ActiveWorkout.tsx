@@ -9,6 +9,7 @@ import { CustomButton } from "../components/GenericComponents/CustomButton";
 import { WorkoutRoutine } from "../components/Workouts/WorkoutRoutine";
 import { useAppContext } from "../contexts/AppContext.context";
 import { CustomHandle } from "../components/WorkoutModal/CustomHandle";
+import { Countdown } from "../components/Workouts/Countdown";
 
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
@@ -17,6 +18,7 @@ export const ActiveWorkout = () => {
 
   return (
     <BottomSheetModalProvider>
+      {activeWorkout && <Countdown />}
       <BottomSheetModal
         ref={modalRef}
         index={1}
