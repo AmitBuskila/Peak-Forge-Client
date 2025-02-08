@@ -80,7 +80,7 @@ const workout: Workout = {
 };
 
 const workout1: Workout = {
-  id: 0,
+  id: -1,
   name: "push X pull ",
   templateImage:
     "https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2016/09/Bodybuilder-Working-Out-His-Upper-Body-With-Cable-Crossover-Exercise.jpg?quality=86&strip=all",
@@ -144,7 +144,7 @@ const workout1: Workout = {
 };
 
 const initialState: WorkoutsSliceState = {
-  workouts: [workout],
+  workouts: [workout, workout1],
 };
 
 export type addTemplateAction = {

@@ -6,7 +6,9 @@ import { useWorkoutFormContext } from "../../contexts/WorkoutForm.context";
 
 export const CustomHandle = () => {
   const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
-  const { control, setValue } = useWorkoutFormContext().form;
+  const { control, setValue, reset } = useWorkoutFormContext().form;
+  const [_, setCurrentExerciseIndex] =
+    useWorkoutFormContext().currExerciseIndex;
   const modalRef = useAppContext().activeWorkoutModalRef;
   const totalTime = useWatch({ control, name: "totalTime" });
 
@@ -35,7 +37,8 @@ export const CustomHandle = () => {
             onPress={() => {
               modalRef.current?.dismiss();
               setActiveWorkout(null);
-              setValue("totalTime", 0);
+              setCurrentExerciseIndex(0);
+              reset();
             }}
           />
         </View>

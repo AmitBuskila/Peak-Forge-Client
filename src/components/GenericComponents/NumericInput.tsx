@@ -1,3 +1,4 @@
+import * as Haptics from "expo-haptics";
 import React, { FC } from "react";
 import { Controller, Path, useWatch } from "react-hook-form";
 import { TextInput, View } from "react-native";
@@ -28,13 +29,19 @@ export const NumericInput: FC<{
           rules={{ required: true }}
           render={({ field: { onChange, onBlur } }) => (
             <TextInput
+              ref={null} // ref
               value={
                 exercisesState[exerciseIndex].sets[setIndex][
                   fieldType
                 ]?.toString() || ""
               }
               onChangeText={onChange}
-              onBlur={onBlur}
+              onBlur={() => {
+                onBlur();
+                if (fieldType === "done") {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+                }
+              }}
               maxLength={3}
               keyboardType="number-pad"
               className={`border-2 border-${fieldType === "done" ? "secondary" : "black"}-200  bg-primary rounded-xl
