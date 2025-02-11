@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -8,7 +8,10 @@ import Animateable, {
   withSpring,
 } from "react-native-reanimated";
 
-export const Countdown: FC = () => {
+export const Countdown: FC<{ duration: number; key: number }> = ({
+  duration,
+  key,
+}) => {
   const translateX = useSharedValue(100);
   const translateY = useSharedValue(100);
 
@@ -56,12 +59,12 @@ export const Countdown: FC = () => {
       >
         <CountdownCircleTimer
           size={140}
+          key={key}
           isPlaying
-          duration={7}
+          duration={duration}
           colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
           colorsTime={[7, 5, 2, 0]}
           trailColor="#d9d9d9"
-          onComplete={() => ({ shouldRepeat: true, delay: 3 })}
           isSmoothColorTransition
         >
           {({ remainingTime, color }) => {
