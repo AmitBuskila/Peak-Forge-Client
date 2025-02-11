@@ -1,6 +1,6 @@
 import * as Haptics from "expo-haptics";
 import React, { FC } from "react";
-import { Controller, Path, useWatch } from "react-hook-form";
+import { Path, useWatch } from "react-hook-form";
 import { TextInput, View } from "react-native";
 import {
   FormExercise,
@@ -13,7 +13,7 @@ export const NumericInput: FC<{
   exerciseIndex: number;
   setIndex: number;
 }> = ({ fieldType: fieldType, exerciseIndex, setIndex }) => {
-  const { control } = useWorkoutFormContext().form;
+  const { control, setValue } = useWorkoutFormContext().form;
 
   const exercisesState: FormExercise[] = useWatch({
     control,
@@ -23,31 +23,28 @@ export const NumericInput: FC<{
   return (
     <View>
       {exercisesState[exerciseIndex].sets[setIndex] && (
-        <Controller
-          name={`exercises.${exerciseIndex}.sets.${setIndex}.${fieldType}`}
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange, onBlur } }) => (
-            <TextInput
-              ref={null} // ref
-              value={
-                exercisesState[exerciseIndex].sets[setIndex][
-                  fieldType
-                ]?.toString() || ""
-              }
-              onChangeText={onChange}
-              onBlur={() => {
-                onBlur();
-                if (fieldType === "done") {
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-                }
-              }}
-              maxLength={3}
-              keyboardType="number-pad"
-              className={`border-2 border-${fieldType === "done" ? "secondary" : "black"}-200  bg-primary rounded-xl
+        <TextInput
+          // ref={null} todo
+          value={
+            exercisesState[exerciseIndex].sets[setIndex][
+              fieldType
+            ]?.toString() || ""
+          }
+          onChangeText={(value) => {
+            setValue(
+              `exercises.${exerciseIndex}.sets.${setIndex}.${fieldType}`,
+              value
+            );
+          }}
+          onBlur={() => {
+            if (fieldType === "done") {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+            }
+          }}
+          maxLength={3}
+          keyboardType="number-pad"
+          className={`border-2 border-${fieldType === "done" ? "secondary" : "black"}-200  bg-primary rounded-xl
            focus:border-secondary items-center text-center text-gray-100 w-16 py-1.5`}
-            />
-          )}
         />
       )}
     </View>
