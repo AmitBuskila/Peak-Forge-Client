@@ -22,10 +22,8 @@ export const EmptyElement: FC<{
         marginHorizontal: "auto",
         marginTop: 5,
       }}
-
-      // onPressOut={() => setIsPressing(false)}
-      // onPressIn={() => setIsPressing(true)}
-      //todo handle press work well
+      onPressOut={() => setIsPressing(false)}
+      onPressIn={() => setIsPressing(true)}
     >
       <IonIcons name={"add"} size={height * 0.5} color={"#48138b"} />
     </Pressable>

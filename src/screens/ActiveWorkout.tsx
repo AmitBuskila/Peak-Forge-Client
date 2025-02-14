@@ -43,7 +43,7 @@ export const ActiveWorkout = () => {
   return (
     <BottomSheetModalProvider>
       {!!activeWorkout && !!duration && (
-        <Countdown duration={duration} key={timerKey} />
+        <Countdown duration={duration} timerKey={timerKey} />
       )}
       <BottomSheetModal
         ref={modalRef}

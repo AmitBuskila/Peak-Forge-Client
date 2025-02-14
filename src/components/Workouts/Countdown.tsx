@@ -8,9 +8,9 @@ import Animateable, {
   withSpring,
 } from "react-native-reanimated";
 
-export const Countdown: FC<{ duration: number; key: number }> = ({
+export const Countdown: FC<{ duration: number; timerKey: number }> = ({
   duration,
-  key,
+  timerKey,
 }) => {
   const translateX = useSharedValue(100);
   const translateY = useSharedValue(100);
@@ -59,7 +59,7 @@ export const Countdown: FC<{ duration: number; key: number }> = ({
       >
         <CountdownCircleTimer
           size={140}
-          key={key}
+          key={timerKey}
           isPlaying
           duration={duration}
           colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
