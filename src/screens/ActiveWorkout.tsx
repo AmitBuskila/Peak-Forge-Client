@@ -19,6 +19,7 @@ import {
 } from "../contexts/WorkoutForm.context";
 import { getRestTime } from "../hooks/getRestTime.hook";
 
+//todo fix not in navigation
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
   const [activeWorkout] = useAppContext().activeWorkout;

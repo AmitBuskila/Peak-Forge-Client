@@ -16,13 +16,8 @@ import { FormField } from "../GenericComponents/FormField";
 import { WorkoutRoutine } from "./WorkoutRoutine";
 
 export const TemplateModal: FC<{}> = () => {
-  const {
-    control,
-    setValue,
-    getValues,
-    handleSubmit,
-    formState: { errors },
-  } = useWorkoutFormContext().form;
+  const { control, setValue, getValues, handleSubmit } =
+    useWorkoutFormContext().form;
   const dispatch = useDispatch();
 
   const navigation = useNavigation<NavigationProp<string>>();
@@ -34,8 +29,8 @@ export const TemplateModal: FC<{}> = () => {
     navigation.navigate("Home");
   };
 
-  const onError = (errors: FieldErrors<FormValues>) => {
-    console.log("Error occurred", getValues().exercises);
+  const onError = () => {
+    console.log("Error occurred", getValues());
   };
 
   return (

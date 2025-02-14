@@ -77,7 +77,7 @@ export const AnimatedFlatList = <T extends { id: number }>({
         <EmptyElement
           height={200}
           width={35}
-          handlePress={() => navigation.navigate("Template")}
+          handlePress={() => navigation.navigate("Create Template")}
         />
       }
     />

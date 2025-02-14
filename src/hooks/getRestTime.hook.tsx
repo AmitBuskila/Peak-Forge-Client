@@ -1,4 +1,4 @@
-import { FormExercise, FormValues } from "../contexts/WorkoutForm.context";
+import { FormExercise } from "../contexts/WorkoutForm.context";
 
 export const timeStringToSeconds = (time: string): number => {
   const parts = time.split(":").map(Number);

@@ -1,12 +1,12 @@
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React, { FC } from "react";
-import { useFieldArray } from "react-hook-form";
+import { useFieldArray, useWatch } from "react-hook-form";
 import { View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import { screenWidth } from "../../../../constants";
 import { Workout } from "../../../../types/template";
 import {
   FormExercise,
-  FormWorkoutSet,
   useWorkoutFormContext,
 } from "../../../contexts/WorkoutForm.context";
 import { EmptyElement } from "../../GenericComponents/EmptyElement";
@@ -14,13 +14,9 @@ import { WorkoutImage } from "./WorkoutImage";
 
 export const WorkoutCarousel: FC<{ workout?: Workout }> = ({ workout }) => {
   const { control } = useWorkoutFormContext().form;
-
+  const navigation = useNavigation<NavigationProp<string>>();
   const [_, setCurrExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
-
-  const { append, fields, remove } = useFieldArray({
-    control,
-    name: "exercises",
-  });
+  const fields = useWatch({ control, name: "exercises" });
 
   const data: FormExercise[] = [
     ...fields,
@@ -28,14 +24,7 @@ export const WorkoutCarousel: FC<{ workout?: Workout }> = ({ workout }) => {
   ];
 
   const handleEmptyElementPress = () => {
-    append({
-      key: ((fields?.length ?? 0) + 1).toString(),
-      label: "bench",
-      imageUri:
-        "https://static.strengthlevel.com/images/exercises/bench-press/bench-press-400.avif",
-      sets: [{ key: "1" } as FormWorkoutSet],
-      notes: "",
-    });
+    navigation.navigate("Exercises");
   };
 
   return (

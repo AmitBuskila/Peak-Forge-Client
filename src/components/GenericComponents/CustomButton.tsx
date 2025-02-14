@@ -15,7 +15,7 @@ export const CustomButton: FC<{
     >
       <TouchableOpacity
         onPress={handlePress}
-        className="min-h-[62px] justify-center "
+        className={"min-h-[62px] justify-center"}
       >
         <Text className="text-center text-primary font-psemibold text-lg">
           {title}
