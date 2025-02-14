@@ -46,9 +46,8 @@ export default function App() {
       <Provider store={store}>
         <AppProvider>
           <GestureHandlerRootView>
-            <Navigation />
             <WorkoutFormProvider>
-              <ActiveWorkout />
+              <Navigation />
             </WorkoutFormProvider>
           </GestureHandlerRootView>
         </AppProvider>

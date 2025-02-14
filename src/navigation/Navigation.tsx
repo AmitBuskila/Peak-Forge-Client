@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import IonIcons from "react-native-vector-icons/Ionicons";
+import { ActiveWorkout } from "../screens/ActiveWorkout";
 import { AddSessionScreen } from "../screens/AddSession";
 import { OtherScreen } from "../screens/OtherScreen";
 import { HomeStack } from "./stacks/HomeStack";
@@ -36,6 +37,7 @@ export const Navigation = () => {
         <Tab.Screen name={"Home"} component={HomeStack} />
         <Tab.Screen name={"AddSession"} component={AddSessionScreen} />
       </Tab.Navigator>
+      <ActiveWorkout />
     </NavigationContainer>
   );
 };

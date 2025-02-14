@@ -11,12 +11,14 @@ import {
 } from "../../../contexts/WorkoutForm.context";
 import { EmptyElement } from "../../GenericComponents/EmptyElement";
 import { WorkoutImage } from "./WorkoutImage";
+import { useAppContext } from "../../../contexts/AppContext.context";
 
 export const WorkoutCarousel: FC<{ workout?: Workout }> = ({ workout }) => {
   const { control } = useWorkoutFormContext().form;
   const navigation = useNavigation<NavigationProp<string>>();
   const [_, setCurrExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
   const fields = useWatch({ control, name: "exercises" });
+  const modalRef = useAppContext().activeWorkoutModalRef;
 
   const data: FormExercise[] = [
     ...fields,
@@ -25,6 +27,7 @@ export const WorkoutCarousel: FC<{ workout?: Workout }> = ({ workout }) => {
 
   const handleEmptyElementPress = () => {
     navigation.navigate("Exercises");
+    modalRef.current?.snapToIndex(0);
   };
 
   return (

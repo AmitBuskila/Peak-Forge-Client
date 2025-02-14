@@ -10,6 +10,7 @@ import {
   FormWorkoutSet,
   useWorkoutFormContext,
 } from "../contexts/WorkoutForm.context";
+import { useAppContext } from "../contexts/AppContext.context";
 
 export const SearchExercisesScreen: FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -22,6 +23,9 @@ export const SearchExercisesScreen: FC = () => {
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
     null
   );
+  const modalRef = useAppContext().activeWorkoutModalRef;
+  const [activeWorkout] = useAppContext().activeWorkout;
+
   const exercises = [
     { label: "Bench press" },
     { label: "Squats" },
@@ -39,6 +43,7 @@ export const SearchExercisesScreen: FC = () => {
         sets: [{ key: "1" } as FormWorkoutSet],
       });
       navigation.goBack();
+      modalRef.current?.snapToIndex(3);
     }
   };
 
@@ -75,8 +80,12 @@ export const SearchExercisesScreen: FC = () => {
           />
         )}
       />
-      <View className="mb-3">
-        <CustomButton title="Confirm" handlePress={handleConfirm} />
+      <View className={!!activeWorkout ? "mb-20" : "mb-2"}>
+        <CustomButton
+          title="Confirm"
+          handlePress={handleConfirm}
+          disabled={!selectedExercise}
+        />
       </View>
     </View>
   );
