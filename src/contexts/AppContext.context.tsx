@@ -10,7 +10,6 @@ import React, {
   useState,
 } from "react";
 import { Workout } from "../../types/template";
-import { useHandleLogin } from "../hooks/login.hook";
 
 const Context = createContext<{
   activeWorkout: [Workout | null, Dispatch<SetStateAction<Workout | null>>];
@@ -20,7 +19,6 @@ const Context = createContext<{
 const AppProvider = ({ children }: { children: JSX.Element }) => {
   const [activeWorkout, setActiveWorkout] = useState<Workout | null>(null);
   const activeWorkoutModalRef = useRef<BottomSheetModal>(null);
-  useHandleLogin();
 
   const contextValue = useMemo(
     () => ({
@@ -44,4 +42,4 @@ const useAppContext = () => {
   return context;
 };
 
-export { useAppContext, AppProvider };
+export { AppProvider, useAppContext };

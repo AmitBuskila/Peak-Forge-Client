@@ -8,9 +8,7 @@ import { WorkoutsSliceState } from "../store/slices/WorkoutSlice";
 import { useGetTemplatesQuery } from "../store/apis/serverApi";
 
 export const HomeScreen: FC<{ navigation: any }> = ({ navigation }) => {
-  const { data, error } = useGetTemplatesQuery(1);
-  // console.log(error);
-  // console.log(data);
+  const { data } = useGetTemplatesQuery(1);
 
   const workouts = useSelector(
     ({ workoutsSlice }: { workoutsSlice: WorkoutsSliceState }) =>

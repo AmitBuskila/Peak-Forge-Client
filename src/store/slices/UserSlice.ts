@@ -23,7 +23,7 @@ const userSlice: Slice = createSlice({
       serverApi.endpoints.login.matchFulfilled,
       (state: UserSliceState, action: { payload: { token: string } }) => {
         state.token = action.payload.token;
-        SecureStore.setItemAsync("token", action.payload.token);
+        SecureStore.setItemAsync("USER_TOKEN", action.payload.token);
       }
     );
   },

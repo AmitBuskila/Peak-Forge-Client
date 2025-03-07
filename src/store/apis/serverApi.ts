@@ -6,8 +6,6 @@ const dynamicBaseQuery = async (args: any, api: any, extraOptions: any) => {
     baseUrl: "http://192.168.1.100:8080",
     prepareHeaders: (headers, { getState }: { getState: any }) => {
       const token = getState().userSlice.token;
-      console.log("jeyyy", token);
-
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }

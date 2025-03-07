@@ -1,18 +1,22 @@
+import * as SecureStore from "expo-secure-store";
 import { FC } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View } from "react-native";
+import { useDispatch } from "react-redux";
+import { CustomButton } from "../components/GenericComponents/CustomButton";
+import { loginToken } from "../store/slices/UserSlice";
 
 export const OtherScreen: FC<{ navigation: any }> = ({ navigation }) => {
+  const dispatch = useDispatch();
+
   return (
-    <View style={styles.container}>
-      <Text onPress={() => navigation.navigate("Other")}>Other</Text>
+    <View className="bg-primary h-full">
+      <CustomButton
+        title="Sign out"
+        handlePress={() => {
+          dispatch(loginToken({ token: null }));
+          SecureStore.deleteItemAsync("USER_TOKEN");
+        }}
+      />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
