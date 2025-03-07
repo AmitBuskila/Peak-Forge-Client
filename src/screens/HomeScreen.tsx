@@ -5,8 +5,13 @@ import { useSelector } from "react-redux";
 import AnimatedFlatList from "../components/GenericComponents/AnimatedFlatList";
 import { WorkoutTemplate } from "../components/Workouts/WorkoutTemplate";
 import { WorkoutsSliceState } from "../store/slices/WorkoutSlice";
+import { useGetTemplatesQuery } from "../store/apis/serverApi";
 
 export const HomeScreen: FC<{ navigation: any }> = ({ navigation }) => {
+  const { data, error } = useGetTemplatesQuery(1);
+  // console.log(error);
+  // console.log(data);
+
   const workouts = useSelector(
     ({ workoutsSlice }: { workoutsSlice: WorkoutsSliceState }) =>
       workoutsSlice.workouts

@@ -6,10 +6,10 @@ import { SafeAreaView } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider } from "react-redux";
 import "./global.css";
+import "./ReactotronConfig";
 import { AppProvider } from "./src/contexts/AppContext.context";
 import { WorkoutFormProvider } from "./src/contexts/WorkoutForm.context";
 import { Navigation } from "./src/navigation/Navigation";
-import { ActiveWorkout } from "./src/screens/ActiveWorkout";
 import { store } from "./src/store";
 
 SplashScreen.preventAutoHideAsync();
