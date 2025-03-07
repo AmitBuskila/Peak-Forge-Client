@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Template } from "../../entities/template.entity";
+import { SignUpFormValues } from "../../screens/SignUpScreen";
 
 const dynamicBaseQuery = async (args: any, api: any, extraOptions: any) => {
   const baseQuery = fetchBaseQuery({
@@ -29,10 +30,18 @@ export const serverApi = createApi({
         body: credentials,
       }),
     }),
+    register: build.mutation<void, SignUpFormValues>({
+      query: (userData) => ({
+        url: `users/register`,
+        method: "POST",
+        body: userData,
+      }),
+    }),
     getTemplates: build.query<Template[], number>({
       query: (userId) => `templates/getTemplates/${userId}`,
     }),
   }),
 });
 
-export const { useGetTemplatesQuery, useLoginMutation } = serverApi;
+export const { useGetTemplatesQuery, useLoginMutation, useRegisterMutation } =
+  serverApi;

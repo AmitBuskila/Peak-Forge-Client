@@ -2,10 +2,11 @@ import React, { FC } from "react";
 import { Control, Controller, Path } from "react-hook-form";
 import { Text, TextInput, View } from "react-native";
 import { FormValues } from "../../contexts/WorkoutForm.context";
+import { SignUpFormValues } from "../../screens/SignUpScreen";
 
 export const FormField: FC<{
-  control: Control<FormValues>;
-  controlName: Path<FormValues>;
+  control: Control<any>;
+  controlName: Path<FormValues & SignUpFormValues>;
   title: string;
   controlledValue?: string;
   styles?: string;

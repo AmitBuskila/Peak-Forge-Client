@@ -1,6 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { LoginScreen } from "../../screens/LoginScreen";
-import { RegisterScreen } from "../../screens/RegisterScreen";
+import { SignUpScreen } from "../../screens/SignUpScreen";
 
 const Stack = createStackNavigator();
 
@@ -13,12 +13,12 @@ export const SigningStack = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Register"
+        name="Sign Up"
         options={{
           headerStyle: { backgroundColor: "#161622" },
           headerTintColor: "#CDCDE0",
         }}
-        component={RegisterScreen}
+        component={SignUpScreen}
       />
     </Stack.Navigator>
   );
