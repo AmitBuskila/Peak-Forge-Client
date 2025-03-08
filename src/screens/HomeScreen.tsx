@@ -4,11 +4,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import AnimatedFlatList from "../components/GenericComponents/AnimatedFlatList";
 import { WorkoutTemplate } from "../components/Workouts/WorkoutTemplate";
+import { useFetchUserData } from "../hooks/fetchUserData.hook";
+import { UserSliceState } from "../store/slices/UserSlice";
 import { WorkoutsSliceState } from "../store/slices/WorkoutSlice";
-import { useGetTemplatesQuery } from "../store/apis/serverApi";
 
 export const HomeScreen: FC<{ navigation: any }> = ({ navigation }) => {
-  const { data } = useGetTemplatesQuery(1);
+  const userSlice = useSelector(
+    ({ userSlice }: { userSlice: UserSliceState }) => userSlice
+  );
+  useFetchUserData(userSlice.token!);
 
   const workouts = useSelector(
     ({ workoutsSlice }: { workoutsSlice: WorkoutsSliceState }) =>

@@ -5,8 +5,8 @@ import { ActiveWorkout } from "../screens/ActiveWorkout";
 import { AddSessionScreen } from "../screens/AddSession";
 import { OtherScreen } from "../screens/OtherScreen";
 import { HomeStack } from "./stacks/HomeStack";
-import { useSelector } from "react-redux";
-import { UserSliceState } from "../store/slices/UserSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { loginToken, UserSliceState } from "../store/slices/UserSlice";
 import { SigningStack } from "./stacks/SigningStack";
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
@@ -23,18 +23,18 @@ export const Navigation = () => {
   const userSlice = useSelector(
     ({ userSlice }: { userSlice: UserSliceState }) => userSlice
   );
-  const [token, setToken] = useState<string | null>(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
       const token = await SecureStore.getItemAsync("USER_TOKEN");
-      setToken(token);
+      dispatch(loginToken({ token }));
     })();
   }, [userSlice]);
 
   return (
     <NavigationContainer>
-      {token ? (
+      {userSlice.token ? (
         <Tab.Navigator
           initialRouteName={"Home"}
           screenOptions={({ route }: { route: { name: string } }) => ({
