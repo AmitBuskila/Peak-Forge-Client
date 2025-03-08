@@ -3,6 +3,7 @@ import { Template } from "../../entities/template.entity";
 import { SignUpFormValues } from "../../screens/SignUpScreen";
 import { User } from "../../entities/user.entity";
 import { Exercise } from "../../entities/exercise.entity";
+import { FormValues } from "../../contexts/WorkoutForm.context";
 
 const dynamicBaseQuery = async (args: any, api: any, extraOptions: any) => {
   const baseQuery = fetchBaseQuery({
@@ -39,6 +40,13 @@ export const serverApi = createApi({
         body: userData,
       }),
     }),
+    addTemplate: build.mutation<Template, FormValues>({
+      query: (template) => ({
+        url: `templates/addTemplate`,
+        method: "POST",
+        body: template,
+      }),
+    }),
     getUserData: build.query<User, number>({
       query: (userId) => `users/getData/${userId}`,
     }),
@@ -57,4 +65,5 @@ export const {
   useRegisterMutation,
   useLazyGetUserDataQuery,
   useGetExercisesQuery,
+  useAddTemplateMutation,
 } = serverApi;

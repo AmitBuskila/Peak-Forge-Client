@@ -2,6 +2,7 @@ import { createSlice, Slice } from "@reduxjs/toolkit";
 import { serverApi } from "../apis/serverApi";
 import * as SecureStore from "expo-secure-store";
 import { User } from "../../entities/user.entity";
+import { Template } from "../../entities/template.entity";
 
 export type UserSliceState = {
   token: string | null;
@@ -28,13 +29,21 @@ const userSlice: Slice = createSlice({
         state.token = action.payload.token;
         SecureStore.setItemAsync("USER_TOKEN", action.payload.token);
       }
-    ),
-      builder.addMatcher(
-        serverApi.endpoints.getUserData.matchFulfilled,
-        (state: UserSliceState, action: { payload: User }) => {
-          state.user = action.payload;
+    );
+    builder.addMatcher(
+      serverApi.endpoints.getUserData.matchFulfilled,
+      (state: UserSliceState, action: { payload: User }) => {
+        state.user = action.payload;
+      }
+    );
+    builder.addMatcher(
+      serverApi.endpoints.addTemplate.matchFulfilled,
+      (state: UserSliceState, action: { payload: Template }) => {
+        if (state.user && state.user.templates) {
+          state.user.templates = [...state.user.templates, action.payload];
         }
-      );
+      }
+    );
   },
 });
 

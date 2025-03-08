@@ -1,32 +1,33 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React, { FC } from "react";
-import { FieldErrors, useWatch } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import { KeyboardAvoidingView, ScrollView, View } from "react-native";
-import { useDispatch } from "react-redux";
-import { Workout } from "../../../types/template";
+import { useSelector } from "react-redux";
 import {
   FormValues,
   useWorkoutFormContext,
 } from "../../contexts/WorkoutForm.context";
-import { addWorkoutTemplate } from "../../store/slices/WorkoutSlice";
-import { formatWorkoutTemplate } from "../../utils/formatActions";
+import { useAddTemplateMutation } from "../../store/apis/serverApi";
+import { UserSliceState } from "../../store/slices/UserSlice";
+import { formatTemplateToServer } from "../../utils/formatActions";
 import { CustomButton } from "../GenericComponents/CustomButton";
 import { CustomImagePicker } from "../GenericComponents/CustomImagePicker";
 import { FormField } from "../GenericComponents/FormField";
 import { WorkoutRoutine } from "./WorkoutRoutine";
 
 export const TemplateModal: FC<{}> = () => {
+  const user = useSelector(
+    ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
+  );
   const { control, setValue, getValues, handleSubmit } =
     useWorkoutFormContext().form;
-  const dispatch = useDispatch();
-
+  const [addTemplate] = useAddTemplateMutation();
   const navigation = useNavigation<NavigationProp<string>>();
   const image = useWatch({ control, name: "image" });
 
   const onSubmit = (data: FormValues) => {
-    const workout: Workout = formatWorkoutTemplate(data);
-    dispatch(addWorkoutTemplate(workout));
-    navigation.navigate("Home");
+    addTemplate(formatTemplateToServer(data, user?.id!));
+    // navigation.navigate("Home");
   };
 
   const onError = () => {

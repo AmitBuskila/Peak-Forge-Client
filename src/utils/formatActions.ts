@@ -1,6 +1,30 @@
 import { Exercise, Set, Workout } from "../../types/template";
 import { FormValues } from "../contexts/WorkoutForm.context";
 
+export const formatTemplateToServer = (
+  data: FormValues,
+  userId: number
+): any => {
+  return {
+    name: data.workoutName,
+    description: data.description,
+    image: data.image,
+    userId,
+    workoutExercises: data.exercises.map((formExercise, index) => ({
+      exercise: { id: formExercise.key },
+      index,
+      restTime: formExercise.timer,
+      notes: formExercise.notes,
+      sets: formExercise.sets.map((formSet) => ({
+        minReps: formSet.minReps,
+        maxReps: formSet.maxReps,
+        weight: formSet.weight,
+        repsDone: formSet.done,
+      })),
+    })),
+  };
+};
+
 export const formatWorkoutTemplate = (data: FormValues): Workout => {
   return {
     id: new Date().getTime(),
