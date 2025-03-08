@@ -3,14 +3,15 @@ import { FC, useState } from "react";
 import { useFieldArray } from "react-hook-form";
 import { FlatList, View } from "react-native";
 import { SearchBar } from "react-native-elements";
-import { Exercise } from "../../types/template";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
 import { ExerciseItem } from "../components/Workouts/ExerciseItem";
+import { useAppContext } from "../contexts/AppContext.context";
 import {
   FormWorkoutSet,
   useWorkoutFormContext,
 } from "../contexts/WorkoutForm.context";
-import { useAppContext } from "../contexts/AppContext.context";
+import { Exercise as ExerciseEntity } from "../entities/exercise.entity";
+import { useGetExercisesQuery } from "../store/apis/serverApi";
 
 export const SearchExercisesScreen: FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -20,26 +21,18 @@ export const SearchExercisesScreen: FC = () => {
     control,
     name: "exercises",
   });
-  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
-    null
-  );
+  const [selectedExercise, setSelectedExercise] =
+    useState<ExerciseEntity | null>(null);
   const modalRef = useAppContext().activeWorkoutModalRef;
   const [activeWorkout] = useAppContext().activeWorkout;
-
-  const exercises = [
-    { label: "Bench press" },
-    { label: "Squats" },
-    { label: "Bicep curls" },
-    { label: "Cable rows" },
-  ];
+  const { data: exercises } = useGetExercisesQuery();
 
   const handleConfirm = () => {
     if (selectedExercise) {
       append({
-        key: ((fields?.length ?? 0) + 1).toString(),
-        label: selectedExercise.label,
-        imageUri:
-          "https://static.strengthlevel.com/images/exercises/bench-press/bench-press-400.avif",
+        key: selectedExercise.id.toString(),
+        label: selectedExercise.name,
+        imageUri: selectedExercise.image,
         sets: [{ key: "1" } as FormWorkoutSet],
       });
       navigation.goBack();
@@ -65,21 +58,25 @@ export const SearchExercisesScreen: FC = () => {
         onChangeText={setSearchValue}
         value={searchValue}
       />
-      <FlatList
-        data={exercises.filter((exercise) =>
-          exercise.label
-            .toLocaleLowerCase()
-            .includes(searchValue.toLocaleLowerCase())
-        )}
-        keyExtractor={(item) => item.label}
-        renderItem={({ item }) => (
-          <ExerciseItem
-            exercise={item as any}
-            onPress={setSelectedExercise}
-            selected={selectedExercise?.label || null}
-          />
-        )}
-      />
+      {exercises ? (
+        <FlatList
+          data={exercises.filter((exercise) =>
+            exercise.name
+              .toLocaleLowerCase()
+              .includes(searchValue.toLocaleLowerCase())
+          )}
+          keyExtractor={(item) => item.name}
+          renderItem={({ item }) => (
+            <ExerciseItem
+              exercise={item}
+              onPress={setSelectedExercise}
+              selected={selectedExercise?.name || null}
+            />
+          )}
+        />
+      ) : (
+        <View />
+      )}
       <View className={!!activeWorkout ? "mb-20" : "mb-2"}>
         <CustomButton
           title="Confirm"
