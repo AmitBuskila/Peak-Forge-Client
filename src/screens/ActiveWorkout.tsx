@@ -3,11 +3,10 @@ import {
   BottomSheetModalProvider,
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useWatch } from "react-hook-form";
 import { KeyboardAvoidingView } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
-import { Workout } from "../../types/template";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
 import { CustomHandle } from "../components/WorkoutModal/CustomHandle";
 import { Countdown } from "../components/Workouts/Countdown";
@@ -17,9 +16,9 @@ import {
   FormExercise,
   useWorkoutFormContext,
 } from "../contexts/WorkoutForm.context";
+import { Template } from "../entities/template.entity";
 import { getRestTime } from "../hooks/getRestTime.hook";
 
-//todo fix not in navigation
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
   const [activeWorkout] = useAppContext().activeWorkout;
@@ -60,11 +59,11 @@ export const ActiveWorkout = () => {
           <KeyboardAvoidingView
             behavior={"position"}
             keyboardVerticalOffset={
-              (activeWorkout?.exercises[curr]?.sets.length || 1) * 50
+              (activeWorkout?.workoutExercises[curr]?.sets.length || 1) * 50
             }
             enabled
           >
-            <WorkoutRoutine workout={activeWorkout as Workout} />
+            <WorkoutRoutine workout={activeWorkout as Template} />
             <CustomButton
               title="Finish Workout"
               handlePress={() => {

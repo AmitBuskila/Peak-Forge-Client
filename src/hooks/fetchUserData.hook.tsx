@@ -5,17 +5,15 @@ import { useLazyGetUserDataQuery } from "../store/apis/serverApi";
 import { UserSliceState } from "../store/slices/UserSlice";
 
 export const useFetchUserData = () => {
-  const userSlice = useSelector(
-    ({ userSlice }: { userSlice: UserSliceState }) => userSlice
+  const token = useSelector(
+    ({ userSlice }: { userSlice: UserSliceState }) => userSlice.token
   );
-  const { decodedToken, isExpired } = useJwt(userSlice.token!);
+  const { decodedToken, isExpired } = useJwt(token!);
   const [getUserData] = useLazyGetUserDataQuery();
-  const id: number | undefined = (decodedToken as { id: number })?.id;
 
-  //todo fix bug not working on first load
   useEffect(() => {
-    if (id) {
-      getUserData(id);
+    if (decodedToken) {
+      getUserData((decodedToken as { id: number }).id);
     }
-  }, [userSlice.token]);
+  }, [decodedToken]);
 };

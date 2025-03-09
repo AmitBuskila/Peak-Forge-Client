@@ -5,14 +5,12 @@ import { useSelector } from "react-redux";
 import AnimatedFlatList from "../components/GenericComponents/AnimatedFlatList";
 import { WorkoutTemplate } from "../components/Workouts/WorkoutTemplate";
 import { useFetchUserData } from "../hooks/fetchUserData.hook";
-import { WorkoutsSliceState } from "../store/slices/WorkoutSlice";
+import { UserSliceState } from "../store/slices/UserSlice";
 
 export const HomeScreen: FC<{ navigation: any }> = ({ navigation }) => {
   useFetchUserData();
-
-  const workouts = useSelector(
-    ({ workoutsSlice }: { workoutsSlice: WorkoutsSliceState }) =>
-      workoutsSlice.workouts
+  const templates = useSelector(
+    ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user?.templates
   );
 
   return (
@@ -24,11 +22,13 @@ export const HomeScreen: FC<{ navigation: any }> = ({ navigation }) => {
           </Text>
         </View>
         <View className="justify-center items-center ">
-          <AnimatedFlatList
-            data={workouts}
-            renderItem={({ item }) => <WorkoutTemplate workout={item} />}
-            horizontal={true}
-          />
+          {templates && (
+            <AnimatedFlatList
+              data={templates}
+              renderItem={({ item }) => <WorkoutTemplate workout={item} />}
+              horizontal={true}
+            />
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>

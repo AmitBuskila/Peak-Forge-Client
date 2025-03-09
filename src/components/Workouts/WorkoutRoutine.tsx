@@ -10,8 +10,9 @@ import { SetList } from "./SetList/SetList";
 import { WorkoutCarousel } from "./WorkoutCarousel/WorkoutCarousel";
 import { FormField } from "../GenericComponents/FormField";
 import { TimerPicker } from "./WorkoutCarousel/TimerPicker";
+import { Template } from "../../entities/template.entity";
 
-export const WorkoutRoutine: FC<{ workout?: Workout }> = ({ workout }) => {
+export const WorkoutRoutine: FC<{ workout?: Template }> = ({ workout }) => {
   const [exerciseIndex] = useWorkoutFormContext().currExerciseIndex;
   const { control, setValue } = useWorkoutFormContext().form;
   const exercises = useWatch({ control, name: "exercises" });

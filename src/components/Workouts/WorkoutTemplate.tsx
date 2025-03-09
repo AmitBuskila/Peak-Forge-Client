@@ -5,14 +5,10 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { Workout } from "../../../types/template";
 import { useAppContext } from "../../contexts/AppContext.context";
+import { Template } from "../../entities/template.entity";
 
-export const WorkoutTemplate: FC<{ workout: Workout }> = ({
-  workout,
-}: {
-  workout: Workout;
-}) => {
+export const WorkoutTemplate: FC<{ workout: Template }> = ({ workout }) => {
   const modalRef = useAppContext().activeWorkoutModalRef;
   const [_, setActiveWorkout] = useAppContext().activeWorkout;
 
@@ -31,7 +27,7 @@ export const WorkoutTemplate: FC<{ workout: Workout }> = ({
         style={{ width: 150, height: 200 }}
         className="bg-white width-50 h-50 rounded-[35px] my-5 overflow-hidden shadow-lg shadow-black/40 "
         source={{
-          uri: workout.templateImage,
+          uri: workout.image,
         }}
         resizeMode="cover"
       />

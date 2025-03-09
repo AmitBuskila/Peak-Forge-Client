@@ -1,5 +1,6 @@
 import { Exercise, Set, Workout } from "../../types/template";
 import { FormValues } from "../contexts/WorkoutForm.context";
+import { Template } from "../entities/template.entity";
 
 //todo create return type
 export const formatTemplateToServer = (
@@ -47,17 +48,22 @@ export const formatWorkoutTemplate = (data: FormValues): Workout => {
 };
 
 export const formatWorkoutToFormValues = (
-  workout: Workout
+  workout: Template
 ): Omit<FormValues, "totalTime"> => {
   return {
     workoutName: workout.name,
     description: workout.description || "",
-    image: workout.templateImage || "",
-    exercises: workout.exercises.map((exercise) => ({
-      ...exercise,
+    image: workout.image || "",
+    exercises: workout.workoutExercises.map((exercise) => ({
+      imageUri: exercise.exercise?.image || "",
+      label: exercise.exercise?.name || "",
+      notes: exercise.notes,
+      timer: exercise.restTime,
       key: exercise.id.toString(),
       sets: exercise.sets.map((set) => ({
-        ...set,
+        weight: set.weight,
+        minReps: set.minReps,
+        maxReps: set.maxReps,
         key: set.id.toString(),
       })),
     })),

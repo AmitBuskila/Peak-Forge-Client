@@ -9,23 +9,23 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Workout } from "../../types/template";
+import { Template } from "../entities/template.entity";
 
 const Context = createContext<{
-  activeWorkout: [Workout | null, Dispatch<SetStateAction<Workout | null>>];
+  activeWorkout: [Template | null, Dispatch<SetStateAction<Template | null>>];
   activeWorkoutModalRef: RefObject<BottomSheetModal>;
 } | null>(null);
 
 const AppProvider = ({ children }: { children: JSX.Element }) => {
-  const [activeWorkout, setActiveWorkout] = useState<Workout | null>(null);
+  const [activeWorkout, setActiveWorkout] = useState<Template | null>(null);
   const activeWorkoutModalRef = useRef<BottomSheetModal>(null);
 
   const contextValue = useMemo(
     () => ({
       activeWorkoutModalRef,
       activeWorkout: [activeWorkout, setActiveWorkout] as [
-        Workout | null,
-        Dispatch<SetStateAction<Workout | null>>,
+        Template | null,
+        Dispatch<SetStateAction<Template | null>>,
       ],
     }),
     [activeWorkout, activeWorkoutModalRef]
