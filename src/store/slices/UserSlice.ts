@@ -36,14 +36,6 @@ const userSlice: Slice = createSlice({
         state.user = action.payload;
       }
     );
-    builder.addMatcher(
-      serverApi.endpoints.addTemplate.matchFulfilled,
-      (state: UserSliceState, action: { payload: Template }) => {
-        if (state.user && state.user.templates) {
-          state.user.templates = [...state.user.templates, action.payload];
-        }
-      }
-    );
   },
 });
 

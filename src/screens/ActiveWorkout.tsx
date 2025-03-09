@@ -14,20 +14,29 @@ import { WorkoutRoutine } from "../components/Workouts/WorkoutRoutine";
 import { useAppContext } from "../contexts/AppContext.context";
 import {
   FormExercise,
+  FormValues,
   useWorkoutFormContext,
 } from "../contexts/WorkoutForm.context";
 import { Template } from "../entities/template.entity";
 import { getRestTime } from "../hooks/getRestTime.hook";
+import { useAddWorkoutMutation } from "../store/apis/serverApi";
+import { formatWorkoutToServer } from "../utils/formatActions";
+import { useSelector } from "react-redux";
+import { UserSliceState } from "../store/slices/UserSlice";
 
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
+  const [addWorkout] = useAddWorkoutMutation();
   const [activeWorkout] = useAppContext().activeWorkout;
   const [curr] = useWorkoutFormContext().currExerciseIndex;
-  const { control } = useWorkoutFormContext().form;
+  const { control, handleSubmit } = useWorkoutFormContext().form;
   const snapPoints: string[] = ["8%", "80%", "100%"];
   const exercises: FormExercise[] = useWatch({ control, name: "exercises" });
   const [duration, setDuration] = useState<number>(0);
   const [timerKey, setTimerKey] = useState<number>(0);
+  const user = useSelector(
+    ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
+  );
 
   const doneStates: (number | undefined)[][] = exercises?.map((exercise) =>
     exercise?.sets?.map((set) => set.done)
@@ -38,6 +47,11 @@ export const ActiveWorkout = () => {
     setDuration(restTime);
     setTimerKey((prev) => prev + 1);
   }, [JSON.stringify(doneStates)]);
+
+  const handleFinishWorkout = (data: FormValues) => {
+    addWorkout(formatWorkoutToServer(data, user?.id!, activeWorkout?.id!));
+    modalRef.current?.close();
+  };
 
   // todo make modal height scrollable with keyboard
   return (
@@ -66,9 +80,7 @@ export const ActiveWorkout = () => {
             <WorkoutRoutine workout={activeWorkout as Template} />
             <CustomButton
               title="Finish Workout"
-              handlePress={() => {
-                modalRef.current?.close();
-              }}
+              handlePress={handleSubmit(handleFinishWorkout)}
             />
           </KeyboardAvoidingView>
         </BottomSheetScrollView>
