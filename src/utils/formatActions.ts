@@ -1,6 +1,7 @@
 import { Exercise, Set, Workout } from "../../types/template";
 import { FormValues } from "../contexts/WorkoutForm.context";
 
+//todo create return type
 export const formatTemplateToServer = (
   data: FormValues,
   userId: number
@@ -10,16 +11,14 @@ export const formatTemplateToServer = (
     description: data.description,
     image: data.image,
     userId,
-    workoutExercises: data.exercises.map((formExercise, index) => ({
+    workoutExercises: data.exercises.map((formExercise) => ({
       exercise: { id: formExercise.key },
-      index,
       restTime: formExercise.timer,
       notes: formExercise.notes,
       sets: formExercise.sets.map((formSet) => ({
-        minReps: formSet.minReps,
-        maxReps: formSet.maxReps,
-        weight: formSet.weight,
-        repsDone: formSet.done,
+        minReps: +formSet.minReps,
+        maxReps: +formSet.maxReps,
+        weight: +formSet.weight,
       })),
     })),
   };

@@ -27,7 +27,7 @@ export const TemplateModal: FC<{}> = () => {
 
   const onSubmit = (data: FormValues) => {
     addTemplate(formatTemplateToServer(data, user?.id!));
-    // navigation.navigate("Home");
+    navigation.navigate("Home");
   };
 
   const onError = () => {
