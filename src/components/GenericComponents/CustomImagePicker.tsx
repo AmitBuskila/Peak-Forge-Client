@@ -1,7 +1,8 @@
 import { faImage } from "@fortawesome/free-solid-svg-icons/faImage";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { FieldValues, SetFieldValue } from "react-hook-form";
 import { Alert, Image, TouchableOpacity, View } from "react-native";
 
@@ -26,8 +27,14 @@ export const CustomImagePicker: FC<{
         quality: 1,
       });
       if (!result.canceled) {
-        const imageUri: string = result?.assets?.[0].uri;
-        setImageUri("image", imageUri);
+        const localUri: string = result?.assets?.[0].uri;
+        const fileName: string = localUri.split("/").pop() || "";
+        const newPathUrl: string = `${FileSystem.documentDirectory}${fileName}`;
+        await FileSystem.copyAsync({
+          from: localUri,
+          to: newPathUrl,
+        });
+        setImageUri("image", newPathUrl);
       }
     }
   };
