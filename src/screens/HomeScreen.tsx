@@ -7,10 +7,10 @@ import { WorkoutTemplate } from "../components/Workouts/WorkoutTemplate";
 import { useFetchUserData } from "../hooks/fetchUserData.hook";
 import { UserSliceState } from "../store/slices/UserSlice";
 
-export const HomeScreen: FC<{ navigation: any }> = ({ navigation }) => {
+export const HomeScreen: FC = () => {
   useFetchUserData();
-  const templates = useSelector(
-    ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user?.templates
+  const user = useSelector(
+    ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
   );
 
   return (
@@ -22,9 +22,9 @@ export const HomeScreen: FC<{ navigation: any }> = ({ navigation }) => {
           </Text>
         </View>
         <View className="justify-center items-center ">
-          {templates && (
+          {user?.templates && (
             <AnimatedFlatList
-              data={templates}
+              data={user.templates}
               renderItem={({ item }) => <WorkoutTemplate workout={item} />}
               horizontal={true}
             />

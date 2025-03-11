@@ -1,8 +1,8 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
-import { serverApi } from "../apis/serverApi";
 import * as SecureStore from "expo-secure-store";
 import { User } from "../../entities/user.entity";
-import { Template } from "../../entities/template.entity";
+import { Workout } from "../../entities/workout.entity";
+import { serverApi } from "../apis/serverApi";
 
 export type UserSliceState = {
   token: string | null;
@@ -34,6 +34,14 @@ const userSlice: Slice = createSlice({
       serverApi.endpoints.getUserData.matchFulfilled,
       (state: UserSliceState, action: { payload: User }) => {
         state.user = action.payload;
+      }
+    );
+    builder.addMatcher(
+      serverApi.endpoints.getUserWorkouts.matchFulfilled,
+      (state: UserSliceState, action: { payload: Workout[] }) => {
+        if (state.user) {
+          state.user.workouts = [...state.user.workouts, ...action.payload];
+        }
       }
     );
   },

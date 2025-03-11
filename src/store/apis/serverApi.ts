@@ -58,6 +58,9 @@ export const serverApi = createApi({
     getUserData: build.query<User, number>({
       query: (userId) => `users/getData/${userId}`,
     }),
+    getUserWorkouts: build.query<Workout[], number>({
+      query: (userId) => `workouts/getWorkouts/${userId}`,
+    }),
     getTemplates: build.query<Template[], number>({
       query: (userId) => `templates/getTemplates/${userId}`,
     }),
@@ -75,4 +78,5 @@ export const {
   useGetExercisesQuery,
   useAddTemplateMutation,
   useAddWorkoutMutation,
+  useLazyGetUserWorkoutsQuery,
 } = serverApi;
