@@ -25,11 +25,13 @@ export const NumericInput: FC<{
       {exercisesState[exerciseIndex].sets[setIndex] && (
         <TextInput
           // ref={null} todo
-          value={
-            exercisesState[exerciseIndex].sets[setIndex][
-              fieldType
-            ]?.toString() || ""
-          }
+          value={(
+            parseFloat(
+              exercisesState[exerciseIndex].sets[setIndex][
+                fieldType
+              ]?.toString() || ""
+            ) || ""
+          ).toString()}
           onChangeText={(value) => {
             setValue(
               `exercises.${exerciseIndex}.sets.${setIndex}.${fieldType}`,

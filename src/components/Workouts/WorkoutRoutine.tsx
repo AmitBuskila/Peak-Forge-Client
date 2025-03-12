@@ -2,28 +2,37 @@ import { FC, useEffect } from "react";
 import { useWatch } from "react-hook-form";
 import { View } from "react-native";
 import Animatable from "react-native-reanimated";
-import { Workout } from "../../../types/template";
 import { useWorkoutFormContext } from "../../contexts/WorkoutForm.context";
-import { useSetListAnimation } from "../../hooks/setAnimation.hook";
-import { formatWorkoutToFormValues } from "../../utils/formatActions";
-import { SetList } from "./SetList/SetList";
-import { WorkoutCarousel } from "./WorkoutCarousel/WorkoutCarousel";
-import { FormField } from "../GenericComponents/FormField";
-import { TimerPicker } from "./WorkoutCarousel/TimerPicker";
 import { Template } from "../../entities/template.entity";
+import { Workout } from "../../entities/workout.entity";
+import { useSetListAnimation } from "../../hooks/setAnimation.hook";
+import { useLazyGetLatestWorkoutQuery } from "../../store/apis/serverApi";
+import { formatWorkoutToFormValues } from "../../utils/formatActions";
+import { FormField } from "../GenericComponents/FormField";
+import { SetList } from "./SetList/SetList";
+import { TimerPicker } from "./WorkoutCarousel/TimerPicker";
+import { WorkoutCarousel } from "./WorkoutCarousel/WorkoutCarousel";
 
-export const WorkoutRoutine: FC<{ workout?: Template }> = ({ workout }) => {
+export const WorkoutRoutine: FC<{ template?: Template }> = ({ template }) => {
   const [exerciseIndex] = useWorkoutFormContext().currExerciseIndex;
   const { control, setValue } = useWorkoutFormContext().form;
   const exercises = useWatch({ control, name: "exercises" });
   const animatedStyle = useSetListAnimation({ exerciseIndex, exercises });
+  const [getLatestWorkout] = useLazyGetLatestWorkoutQuery();
 
   useEffect(() => {
-    setValue(
-      "exercises",
-      workout ? formatWorkoutToFormValues(workout).exercises : []
-    );
-  }, [workout]);
+    (async () => {
+      if (template) {
+        const latestWorkout = await getLatestWorkout(template.id).unwrap();
+        setValue(
+          "exercises",
+          template
+            ? formatWorkoutToFormValues(template, latestWorkout).exercises
+            : []
+        );
+      }
+    })();
+  }, [template]);
 
   return (
     <View>
@@ -43,7 +52,7 @@ export const WorkoutRoutine: FC<{ workout?: Template }> = ({ workout }) => {
                 multiline
               />
             </View>
-            <SetList isWorkout={!!workout} exerciseIndex={exerciseIndex} />
+            <SetList isWorkout={!!template} exerciseIndex={exerciseIndex} />
           </Animatable.View>
         </View>
       )}

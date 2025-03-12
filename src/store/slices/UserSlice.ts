@@ -40,7 +40,7 @@ const userSlice: Slice = createSlice({
       serverApi.endpoints.getUserWorkouts.matchFulfilled,
       (state: UserSliceState, action: { payload: Workout[] }) => {
         if (state.user) {
-          state.user.workouts = [...state.user.workouts, ...action.payload];
+          state.user.workouts = [...action.payload];
         }
       }
     );

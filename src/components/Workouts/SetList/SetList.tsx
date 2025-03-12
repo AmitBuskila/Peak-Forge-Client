@@ -2,10 +2,13 @@ import React, { FC, useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { useSelector } from "react-redux";
 import {
   FormWorkoutSet,
   useWorkoutFormContext,
 } from "../../../contexts/WorkoutForm.context";
+import { Workout } from "../../../entities/workout.entity";
+import { UserSliceState } from "../../../store/slices/UserSlice";
 import { EmptyElement } from "../../GenericComponents/EmptyElement";
 import { SetHeader } from "./SetHeader";
 import { SetItem } from "./SetItem";
@@ -19,6 +22,7 @@ const workoutHeaders: string[] = [
   "Done",
 ];
 
+//TODO ADD THIRD SET DELETES SECOND
 export const SetList: FC<{
   isWorkout: boolean;
   exerciseIndex: number;

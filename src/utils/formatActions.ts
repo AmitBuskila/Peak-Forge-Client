@@ -1,6 +1,7 @@
-import { Exercise, Set, Workout } from "../../types/template";
 import { FormValues } from "../contexts/WorkoutForm.context";
+import { Set } from "../entities/set.entity";
 import { Template } from "../entities/template.entity";
+import { Workout } from "../entities/workout.entity";
 
 //todo create return type
 export const formatWorkoutToServer = (
@@ -37,8 +38,9 @@ export const formatTemplateToServer = (
     description: data.description,
     image: data.image,
     userId,
-    workoutExercises: data.exercises.map((formExercise) => ({
+    workoutExercises: data.exercises.map((formExercise, index) => ({
       exercise: { id: formExercise.key },
+      index,
       restTime: formExercise.timer,
       notes: formExercise.notes,
       sets: formExercise.sets.map((formSet) => ({
@@ -51,24 +53,36 @@ export const formatTemplateToServer = (
 };
 
 export const formatWorkoutToFormValues = (
-  workout: Template
+  template: Template,
+  latestWorkout: Workout | null
 ): Omit<FormValues, "totalTime"> => {
   return {
-    workoutName: workout.name,
-    description: workout.description || "",
-    image: workout.image || "",
-    exercises: workout.workoutExercises.map((workoutExercise) => ({
-      imageUri: workoutExercise.exercise?.image || "",
-      label: workoutExercise.exercise?.name || "",
-      notes: workoutExercise.notes,
-      timer: workoutExercise.restTime,
-      key: workoutExercise.exercise?.id.toString() || "",
-      sets: workoutExercise.sets.map((set) => ({
-        weight: set.weight,
-        minReps: set.minReps,
-        maxReps: set.maxReps,
-        key: set.id.toString(),
-      })),
-    })),
+    workoutName: template.name,
+    description: template.description || "",
+    image: template.image || "",
+    exercises: template.workoutExercises.map(
+      (workoutExercise, exerciseIndex) => ({
+        imageUri: workoutExercise.exercise?.image || "",
+        label: workoutExercise.exercise?.name || "",
+        notes: workoutExercise.notes,
+        timer: workoutExercise.restTime,
+        key: workoutExercise.exercise?.id.toString() || "",
+        sets: workoutExercise.sets.map((set, setIndex) => {
+          const previousSet: Set | undefined =
+            latestWorkout?.workoutExercises[exerciseIndex].sets[setIndex];
+          return {
+            weight: set.weight,
+            previous: previousSet?.repsDone
+              ? parseFloat(previousSet?.weight?.toString() || "") +
+                " X " +
+                previousSet?.repsDone?.toString()
+              : undefined,
+            minReps: set.minReps,
+            maxReps: set.maxReps,
+            key: set.id.toString(),
+          };
+        }),
+      })
+    ),
   };
 };

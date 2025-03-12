@@ -77,7 +77,7 @@ export const ActiveWorkout = () => {
             }
             enabled
           >
-            <WorkoutRoutine workout={activeWorkout as Template} />
+            <WorkoutRoutine template={activeWorkout as Template} />
             <CustomButton
               title="Finish Workout"
               handlePress={handleSubmit(handleFinishWorkout)}

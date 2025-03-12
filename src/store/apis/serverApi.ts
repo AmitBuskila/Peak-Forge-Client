@@ -55,11 +55,24 @@ export const serverApi = createApi({
         body: workout,
       }),
     }),
+    getExercisesLatestResults: build.mutation<
+      Workout,
+      { userId: number; exerciseIds: number[] }
+    >({
+      query: ({ userId, exerciseIds }) => ({
+        url: `exercises/getLatestResults`,
+        method: "POST",
+        body: { userId, exerciseIds },
+      }),
+    }),
     getUserData: build.query<User, number>({
       query: (userId) => `users/getData/${userId}`,
     }),
     getUserWorkouts: build.query<Workout[], number>({
       query: (userId) => `workouts/getWorkouts/${userId}`,
+    }),
+    getLatestWorkout: build.query<Workout | null, number>({
+      query: (templateId) => `workouts/getLatestWorkout/${templateId}`,
     }),
     getTemplates: build.query<Template[], number>({
       query: (userId) => `templates/getTemplates/${userId}`,
@@ -79,4 +92,6 @@ export const {
   useAddTemplateMutation,
   useAddWorkoutMutation,
   useLazyGetUserWorkoutsQuery,
+  useGetExercisesLatestResultsMutation,
+  useLazyGetLatestWorkoutQuery,
 } = serverApi;

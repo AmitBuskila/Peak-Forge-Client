@@ -1,4 +1,5 @@
 import { FormWorkoutSet } from "../../../contexts/WorkoutForm.context";
+import { Workout } from "../../../entities/workout.entity";
 
 export const getFlexResolver = (
   isWorkout: boolean
