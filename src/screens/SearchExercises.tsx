@@ -60,10 +60,14 @@ export const SearchExercisesScreen: FC = () => {
       />
       {exercises ? (
         <FlatList
-          data={exercises.filter((exercise) =>
-            exercise.name
-              .toLocaleLowerCase()
-              .includes(searchValue.toLocaleLowerCase())
+          data={exercises.filter(
+            (exercise) =>
+              exercise.name
+                .toLocaleLowerCase()
+                .includes(searchValue.toLocaleLowerCase()) &&
+              !fields.find(
+                (currentExercise) => +currentExercise.key === exercise.id
+              )
           )}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
