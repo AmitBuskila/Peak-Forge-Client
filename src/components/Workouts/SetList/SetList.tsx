@@ -1,41 +1,31 @@
 import React, { FC, useEffect, useState } from "react";
+import { Path } from "react-hook-form";
 import { TouchableOpacity, View } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { useSelector } from "react-redux";
 import {
+  FormValues,
   FormWorkoutSet,
   useWorkoutFormContext,
 } from "../../../contexts/WorkoutForm.context";
-import { Workout } from "../../../entities/workout.entity";
-import { UserSliceState } from "../../../store/slices/UserSlice";
 import { EmptyElement } from "../../GenericComponents/EmptyElement";
 import { SetHeader } from "./SetHeader";
 import { SetItem } from "./SetItem";
 
-const templateHeaders: string[] = ["Set", "Weight", "Rep Range"];
-const workoutHeaders: string[] = [
-  "Set",
-  "Previous",
-  "Weight",
-  "Rep Range",
-  "Done",
-];
-
-//TODO ADD THIRD SET DELETES SECOND
 export const SetList: FC<{
   isWorkout: boolean;
   exerciseIndex: number;
 }> = ({ isWorkout, exerciseIndex }) => {
   const { setValue, getValues } = useWorkoutFormContext().form;
+  const exerciseSetsPath: Path<FormValues> = `exercises.${exerciseIndex}.sets`;
   const [fields, setFields] = useState<FormWorkoutSet[]>(
-    getValues(`exercises.${exerciseIndex}.sets`)
+    getValues(exerciseSetsPath)
   );
 
   const append = (set: FormWorkoutSet) => {
-    const newSets: FormWorkoutSet[] = [...fields, set];
+    const newSets: FormWorkoutSet[] = [...getValues(exerciseSetsPath), set];
+    setValue(exerciseSetsPath, newSets);
     setFields(newSets);
-    setValue(`exercises.${exerciseIndex}.sets`, newSets);
   };
 
   const remove = (indexToRemove: number) => {
@@ -48,8 +38,6 @@ export const SetList: FC<{
     const currentSets = getValues(`exercises.${exerciseIndex}.sets`);
     setFields(currentSets);
   }, [exerciseIndex]);
-
-  const headers: string[] = isWorkout ? workoutHeaders : templateHeaders;
 
   const renderHiddenItem = ({ index }: { index: number }) => (
     <View className="flex flex-row justify-end items-center bg-red-500 h-full rounded-lg">
@@ -66,7 +54,7 @@ export const SetList: FC<{
 
   const handleEmptyElementPress = () => {
     const newSet: Partial<FormWorkoutSet> = {
-      key: ((fields?.length ?? 0) + 1).toString(),
+      key: new Date().getTime().toString(),
     };
     append(newSet as FormWorkoutSet);
   };
