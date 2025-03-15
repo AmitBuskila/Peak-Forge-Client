@@ -51,9 +51,7 @@ const userSlice: Slice = createSlice({
     builder.addMatcher(
       serverApi.endpoints.getExercises.matchFulfilled,
       (state: UserSliceState, action: { payload: Exercise[] }) => {
-        if (state.user) {
-          state.exercises = action.payload;
-        }
+        state.exercises = action.payload;
       }
     );
     builder.addMatcher(
