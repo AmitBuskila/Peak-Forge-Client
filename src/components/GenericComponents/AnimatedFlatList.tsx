@@ -44,7 +44,7 @@ export const AnimatedFlatList = <T extends { id: number }>({
   }: ListRenderItemInfo<T>) => (
     <Animatable.View
       className="mr-4"
-      animation={activeItem.id === item.id ? "zoomIn" : "zoomOut"}
+      animation={activeItem?.id === item?.id ? "zoomIn" : "zoomOut"}
       duration={300}
     >
       {renderItem &&

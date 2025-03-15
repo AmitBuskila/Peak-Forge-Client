@@ -59,8 +59,8 @@ const userSlice: Slice = createSlice({
       (state: UserSliceState, action: { payload: Template }) => {
         if (
           state.user &&
-          !state.user.templates.some(
-            (template) => template.id === action.payload.id
+          !state.user?.templates.some(
+            (template) => template?.id === action.payload.id
           )
         ) {
           state.user.templates = [...state.user.templates, action.payload];

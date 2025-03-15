@@ -22,13 +22,11 @@ export const HomeScreen: FC = () => {
           </Text>
         </View>
         <View className="justify-center items-center ">
-          {user?.templates && (
-            <AnimatedFlatList
-              data={user.templates}
-              renderItem={({ item }) => <WorkoutTemplate workout={item} />}
-              horizontal={true}
-            />
-          )}
+          <AnimatedFlatList
+            data={user?.templates || []}
+            renderItem={({ item }) => <WorkoutTemplate workout={item} />}
+            horizontal={true}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
