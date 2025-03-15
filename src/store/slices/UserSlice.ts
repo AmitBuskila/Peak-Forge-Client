@@ -4,6 +4,7 @@ import { User } from "../../entities/user.entity";
 import { Workout } from "../../entities/workout.entity";
 import { serverApi } from "../apis/serverApi";
 import { Exercise } from "../../entities/exercise.entity";
+import { Template } from "../../entities/template.entity";
 
 export type UserSliceState = {
   token: string | null;
@@ -52,6 +53,19 @@ const userSlice: Slice = createSlice({
       (state: UserSliceState, action: { payload: Exercise[] }) => {
         if (state.user) {
           state.exercises = action.payload;
+        }
+      }
+    );
+    builder.addMatcher(
+      serverApi.endpoints.addTemplate.matchFulfilled,
+      (state: UserSliceState, action: { payload: Template }) => {
+        if (
+          state.user &&
+          !state.user.templates.some(
+            (template) => template.id === action.payload.id
+          )
+        ) {
+          state.user.templates = [...state.user.templates, action.payload];
         }
       }
     );
