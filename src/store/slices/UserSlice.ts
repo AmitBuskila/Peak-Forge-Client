@@ -3,15 +3,18 @@ import * as SecureStore from "expo-secure-store";
 import { User } from "../../entities/user.entity";
 import { Workout } from "../../entities/workout.entity";
 import { serverApi } from "../apis/serverApi";
+import { Exercise } from "../../entities/exercise.entity";
 
 export type UserSliceState = {
   token: string | null;
   user: User | null;
+  exercises: Exercise[];
 };
 
 const initialState: UserSliceState = {
   token: null,
   user: null,
+  exercises: [],
 };
 
 const userSlice: Slice = createSlice({
@@ -41,6 +44,14 @@ const userSlice: Slice = createSlice({
       (state: UserSliceState, action: { payload: Workout[] }) => {
         if (state.user) {
           state.user.workouts = [...action.payload];
+        }
+      }
+    );
+    builder.addMatcher(
+      serverApi.endpoints.getExercises.matchFulfilled,
+      (state: UserSliceState, action: { payload: Exercise[] }) => {
+        if (state.user) {
+          state.exercises = action.payload;
         }
       }
     );

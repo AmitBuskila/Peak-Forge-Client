@@ -88,7 +88,7 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useLazyGetUserDataQuery,
-  useGetExercisesQuery,
+  useLazyGetExercisesQuery,
   useAddTemplateMutation,
   useAddWorkoutMutation,
   useLazyGetUserWorkoutsQuery,

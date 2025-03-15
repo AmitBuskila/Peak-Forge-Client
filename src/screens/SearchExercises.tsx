@@ -11,7 +11,8 @@ import {
   useWorkoutFormContext,
 } from "../contexts/WorkoutForm.context";
 import { Exercise as ExerciseEntity } from "../entities/exercise.entity";
-import { useGetExercisesQuery } from "../store/apis/serverApi";
+import { useSelector } from "react-redux";
+import { UserSliceState } from "../store/slices/UserSlice";
 
 export const SearchExercisesScreen: FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -25,7 +26,9 @@ export const SearchExercisesScreen: FC = () => {
     useState<ExerciseEntity | null>(null);
   const modalRef = useAppContext().activeWorkoutModalRef;
   const [activeWorkout] = useAppContext().activeWorkout;
-  const { data: exercises } = useGetExercisesQuery();
+  const exercises = useSelector(
+    ({ userSlice }: { userSlice: UserSliceState }) => userSlice.exercises
+  );
 
   const handleConfirm = () => {
     if (selectedExercise) {
