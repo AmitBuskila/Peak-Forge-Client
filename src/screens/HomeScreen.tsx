@@ -1,17 +1,21 @@
-import React, { FC } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { FC, useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import AnimatedFlatList from "../components/GenericComponents/AnimatedFlatList";
 import { WorkoutTemplate } from "../components/Workouts/WorkoutTemplate";
+import { useAppContext } from "../contexts/AppContext.context";
 import { useFetchData } from "../hooks/fetchUserData.hook";
 import { UserSliceState } from "../store/slices/UserSlice";
+import { useLoadUnsavedWorkout } from "../hooks/workout.hooks";
 
 export const HomeScreen: FC = () => {
   useFetchData();
   const user = useSelector(
     ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
   );
+  useLoadUnsavedWorkout(user);
 
   return (
     <SafeAreaView>

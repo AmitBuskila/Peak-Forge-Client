@@ -44,13 +44,7 @@ const Context = createContext<{
 
 const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
   const form = useForm<FormValues>({
-    defaultValues: {
-      totalTime: 0,
-      workoutName: "",
-      description: "",
-      image: "",
-      exercises: [],
-    },
+    defaultValues: { totalTime: 0, exercises: [] },
   });
   const [currExerciseIndex, setCurrExerciseIndex] = useState<number>(0);
   const activeWorkoutModalRef = useRef<BottomSheetModal>(null);

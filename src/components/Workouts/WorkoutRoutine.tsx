@@ -1,13 +1,11 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { useWatch } from "react-hook-form";
 import { View } from "react-native";
 import Animatable from "react-native-reanimated";
 import { useWorkoutFormContext } from "../../contexts/WorkoutForm.context";
 import { Template } from "../../entities/template.entity";
-import { Workout } from "../../entities/workout.entity";
 import { useSetListAnimation } from "../../hooks/setAnimation.hook";
-import { useLazyGetLatestWorkoutQuery } from "../../store/apis/serverApi";
-import { formatWorkoutToFormValues } from "../../utils/formatActions";
+import { useInitializeForm } from "../../hooks/workout.hooks";
 import { FormField } from "../GenericComponents/FormField";
 import { SetList } from "./SetList/SetList";
 import { TimerPicker } from "./WorkoutCarousel/TimerPicker";
@@ -15,24 +13,10 @@ import { WorkoutCarousel } from "./WorkoutCarousel/WorkoutCarousel";
 
 export const WorkoutRoutine: FC<{ template?: Template }> = ({ template }) => {
   const [exerciseIndex] = useWorkoutFormContext().currExerciseIndex;
-  const { control, setValue } = useWorkoutFormContext().form;
+  const { control } = useWorkoutFormContext().form;
   const exercises = useWatch({ control, name: "exercises" });
   const animatedStyle = useSetListAnimation({ exerciseIndex, exercises });
-  const [getLatestWorkout] = useLazyGetLatestWorkoutQuery();
-
-  useEffect(() => {
-    (async () => {
-      if (template) {
-        const latestWorkout = await getLatestWorkout(template.id).unwrap();
-        setValue(
-          "exercises",
-          template
-            ? formatWorkoutToFormValues(template, latestWorkout).exercises
-            : []
-        );
-      }
-    })();
-  }, [template]);
+  useInitializeForm(template);
 
   return (
     <View>

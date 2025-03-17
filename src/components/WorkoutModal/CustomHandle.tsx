@@ -1,7 +1,8 @@
-import { View, StyleSheet, Text, Button } from "react-native";
-import { useAppContext } from "../../contexts/AppContext.context";
-import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
 import { useWatch } from "react-hook-form";
+import { Alert, Button, StyleSheet, Text, View } from "react-native";
+import { useAppContext } from "../../contexts/AppContext.context";
 import { useWorkoutFormContext } from "../../contexts/WorkoutForm.context";
 
 export const CustomHandle = () => {
@@ -21,7 +22,7 @@ export const CustomHandle = () => {
 
   const formatTimer = (): string => {
     const hours: number = Math.floor(totalTime / 3600);
-    const minutes: number = Math.floor(totalTime / 60);
+    const minutes: number = Math.floor(totalTime / 60) % 60;
     let seconds: number = totalTime % 60;
     return `${hours > 0 ? hours + ":" : ""}${minutes < 10 ? "0" + minutes : minutes}:${(seconds < 10 ? "0" : "") + seconds}`;
   };
@@ -35,10 +36,28 @@ export const CustomHandle = () => {
             title="Discard?"
             color={"#FF4D4F"}
             onPress={() => {
-              modalRef.current?.dismiss();
-              setActiveWorkout(null);
-              setCurrentExerciseIndex(0);
-              reset();
+              Alert.alert(
+                "Discard workout",
+                "Are you sure you want to proceed?",
+                [
+                  {
+                    text: "Confirm",
+                    onPress: async () => {
+                      modalRef.current?.dismiss();
+                      setActiveWorkout(null);
+                      setCurrentExerciseIndex(0);
+                      AsyncStorage.removeItem("workoutData");
+                      AsyncStorage.removeItem("activeWorkout");
+                      reset();
+                    },
+                  },
+                  {
+                    text: "Cancel",
+                    style: "cancel",
+                    onPress: () => {},
+                  },
+                ]
+              );
             }}
           />
         </View>

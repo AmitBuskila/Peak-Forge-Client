@@ -3,54 +3,51 @@ import {
   BottomSheetModalProvider,
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { useWatch } from "react-hook-form";
 import { KeyboardAvoidingView } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
+import { useSelector } from "react-redux";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
 import { CustomHandle } from "../components/WorkoutModal/CustomHandle";
 import { Countdown } from "../components/Workouts/Countdown";
 import { WorkoutRoutine } from "../components/Workouts/WorkoutRoutine";
 import { useAppContext } from "../contexts/AppContext.context";
 import {
-  FormExercise,
   FormValues,
   useWorkoutFormContext,
 } from "../contexts/WorkoutForm.context";
 import { Template } from "../entities/template.entity";
-import { getRestTime } from "../hooks/getRestTime.hook";
+import { useLoadUnsavedData, useProgressWorkout } from "../hooks/workout.hooks";
 import { useAddWorkoutMutation } from "../store/apis/serverApi";
-import { formatWorkoutToServer } from "../utils/formatActions";
-import { useSelector } from "react-redux";
 import { UserSliceState } from "../store/slices/UserSlice";
+import { formatWorkoutToServer } from "../utils/formatActions";
 
+//todo total time dont reset
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
   const [addWorkout] = useAddWorkoutMutation();
-  const [activeWorkout] = useAppContext().activeWorkout;
-  const [curr] = useWorkoutFormContext().currExerciseIndex;
-  const { control, handleSubmit } = useWorkoutFormContext().form;
+  const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
+  const [currentExerciseIndex, setCurrentExerciseIndex] =
+    useWorkoutFormContext().currExerciseIndex;
+  const { handleSubmit, reset } = useWorkoutFormContext().form;
   const snapPoints: string[] = ["8%", "80%", "100%"];
-  const exercises: FormExercise[] = useWatch({ control, name: "exercises" });
   const [duration, setDuration] = useState<number>(0);
   const [timerKey, setTimerKey] = useState<number>(0);
   const user = useSelector(
     ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
   );
-
-  const doneStates: (number | undefined)[][] = exercises?.map((exercise) =>
-    exercise?.sets?.map((set) => set.done)
-  );
-
-  useEffect(() => {
-    const restTime: number = getRestTime(exercises);
-    setDuration(restTime);
-    setTimerKey((prev) => prev + 1);
-  }, [JSON.stringify(doneStates)]);
+  useProgressWorkout({ setDuration, setTimerKey });
+  useLoadUnsavedData();
 
   const handleFinishWorkout = (data: FormValues) => {
     addWorkout(formatWorkoutToServer(data, user?.id!, activeWorkout?.id!));
-    modalRef.current?.close();
+    modalRef.current?.dismiss();
+    setActiveWorkout(null);
+    setCurrentExerciseIndex(0);
+    AsyncStorage.removeItem("workoutData");
+    AsyncStorage.removeItem("activeWorkout");
+    reset();
   };
 
   // todo make modal height scrollable with keyboard
@@ -73,7 +70,8 @@ export const ActiveWorkout = () => {
           <KeyboardAvoidingView
             behavior={"position"}
             keyboardVerticalOffset={
-              (activeWorkout?.workoutExercises[curr]?.sets.length || 1) * 50
+              (activeWorkout?.workoutExercises[currentExerciseIndex]?.sets
+                .length || 1) * 50
             }
             enabled
           >

@@ -1,5 +1,6 @@
 import { FC } from "react";
 import {
+  Alert,
   GestureResponderEvent,
   ImageBackground,
   Text,
@@ -7,14 +8,38 @@ import {
 } from "react-native";
 import { useAppContext } from "../../contexts/AppContext.context";
 import { Template } from "../../entities/template.entity";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const WorkoutTemplate: FC<{ workout: Template }> = ({ workout }) => {
   const modalRef = useAppContext().activeWorkoutModalRef;
-  const [_, setActiveWorkout] = useAppContext().activeWorkout;
+  const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
+
+  const handleStartWorkout = () => {
+    setActiveWorkout(workout);
+    AsyncStorage.setItem("activeWorkout", JSON.stringify(workout));
+    modalRef.current?.present();
+  };
 
   const handleTemplatePress = (e: GestureResponderEvent) => {
-    setActiveWorkout(workout);
-    modalRef.current?.present();
+    if (activeWorkout) {
+      Alert.alert(
+        "Start " + workout.name,
+        "Another workout in progress, continue anyway?",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+            onPress: () => console.log("Cancelled"),
+          },
+          {
+            text: "Confirm",
+            onPress: () => handleStartWorkout(),
+          },
+        ]
+      );
+    } else {
+      handleStartWorkout();
+    }
   };
 
   return (
