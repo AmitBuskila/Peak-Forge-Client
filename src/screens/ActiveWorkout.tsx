@@ -23,7 +23,6 @@ import { useAddWorkoutMutation } from "../store/apis/serverApi";
 import { UserSliceState } from "../store/slices/UserSlice";
 import { formatWorkoutToServer } from "../utils/formatActions";
 
-//todo total time dont reset
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
   const [addWorkout] = useAddWorkoutMutation();

@@ -48,7 +48,7 @@ export const CustomHandle = () => {
                       setCurrentExerciseIndex(0);
                       AsyncStorage.removeItem("workoutData");
                       AsyncStorage.removeItem("activeWorkout");
-                      reset();
+                      reset({ totalTime: 0, exercises: [] });
                     },
                   },
                   {
