@@ -1,24 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect } from "react";
-import { useWatch } from "react-hook-form";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { useAppContext } from "../../contexts/AppContext.context";
 import { useWorkoutFormContext } from "../../contexts/WorkoutForm.context";
+import { useBackgroundTimer } from "../../hooks/useBackgroundTimer";
 
 export const CustomHandle = () => {
   const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
-  const { control, setValue, reset } = useWorkoutFormContext().form;
+  const { reset } = useWorkoutFormContext().form;
   const [_, setCurrentExerciseIndex] =
     useWorkoutFormContext().currExerciseIndex;
   const modalRef = useAppContext().activeWorkoutModalRef;
-  const totalTime = useWatch({ control, name: "totalTime" });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setValue("totalTime", totalTime + 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [totalTime]);
+  const totalTime = useBackgroundTimer();
 
   const formatTimer = (): string => {
     const hours: number = Math.floor(totalTime / 3600);

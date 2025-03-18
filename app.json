@@ -25,7 +25,8 @@
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "bundleIdentifier": "com.amitbuskila.mygymbro"
     },
     "android": {
       "adaptiveIcon": {
@@ -35,7 +36,8 @@
       "permissions": [
         "android.permission.RECORD_AUDIO",
         "android.permission.RECORD_AUDIO"
-      ]
+      ],
+      "package": "com.amitbuskila.mygymbro"
     },
     "web": {
       "favicon": "./assets/favicon.png",
