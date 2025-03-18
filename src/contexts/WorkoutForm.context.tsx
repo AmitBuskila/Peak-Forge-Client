@@ -17,6 +17,7 @@ export interface FormWorkoutSet {
   weight: number;
   minReps: number;
   maxReps: number;
+  isSecondary: boolean;
   done?: number;
 }
 
@@ -40,6 +41,7 @@ const Context = createContext<{
   form: UseFormReturn<FormValues>;
   currExerciseIndex: [number, Dispatch<SetStateAction<number>>];
   activeWorkoutModalRef: RefObject<BottomSheetModal>;
+  isMainSet: [number, Dispatch<SetStateAction<number>>];
 } | null>(null);
 
 const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
@@ -48,6 +50,7 @@ const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
   });
   const [currExerciseIndex, setCurrExerciseIndex] = useState<number>(0);
   const activeWorkoutModalRef = useRef<BottomSheetModal>(null);
+  const [isMainSetType, setIsMainSetType] = useState<number>(1);
 
   const contextValue = useMemo(
     () => ({
@@ -57,8 +60,12 @@ const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
         Dispatch<SetStateAction<number>>,
       ],
       activeWorkoutModalRef,
+      isMainSet: [isMainSetType, setIsMainSetType] as [
+        number,
+        Dispatch<SetStateAction<number>>,
+      ],
     }),
-    [form, currExerciseIndex, activeWorkoutModalRef]
+    [form, currExerciseIndex, activeWorkoutModalRef, isMainSetType]
   );
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;

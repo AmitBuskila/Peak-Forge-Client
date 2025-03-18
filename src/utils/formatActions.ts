@@ -19,12 +19,18 @@ export const formatWorkoutToServer = (
       exercise: { id: formExercise.key },
       restTime: formExercise.timer,
       notes: formExercise.notes,
-      sets: formExercise.sets.map((formSet) => ({
-        minReps: +formSet.minReps,
-        maxReps: +formSet.maxReps,
-        weight: +formSet.weight,
-        ...(formSet.done && { repsDone: +formSet.done }),
-      })),
+      sets: formExercise.sets.map((formSet) => {
+        // bug is register reps of b to a
+        console.log(formSet);
+
+        return {
+          isSecondary: formSet.isSecondary,
+          minReps: +formSet.minReps,
+          maxReps: +formSet.maxReps,
+          weight: +formSet.weight,
+          ...(formSet.done && { repsDone: +formSet.done }),
+        };
+      }),
     })),
   };
 };
@@ -73,6 +79,7 @@ export const formatWorkoutToFormValues = (
           const previousSet: Set | undefined =
             latestWorkout?.workoutExercises[exerciseIndex].sets[setIndex];
           return {
+            isSecondary: set.isSecondary,
             weight: set.weight,
             previous: previousSet?.repsDone
               ? parseFloat(previousSet?.weight?.toString() || "") +

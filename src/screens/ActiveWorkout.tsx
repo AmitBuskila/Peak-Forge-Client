@@ -27,8 +27,7 @@ export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
   const [addWorkout] = useAddWorkoutMutation();
   const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
-  const [currentExerciseIndex, setCurrentExerciseIndex] =
-    useWorkoutFormContext().currExerciseIndex;
+  const [currentExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
   const { handleSubmit, reset } = useWorkoutFormContext().form;
   const snapPoints: string[] = ["8%", "80%", "100%"];
   const [duration, setDuration] = useState<number>(0);
@@ -43,7 +42,6 @@ export const ActiveWorkout = () => {
     addWorkout(formatWorkoutToServer(data, user?.id!, activeWorkout?.id!));
     modalRef.current?.dismiss();
     setActiveWorkout(null);
-    setCurrentExerciseIndex(0);
     AsyncStorage.removeItem("workoutData");
     AsyncStorage.removeItem("activeWorkout");
     reset();

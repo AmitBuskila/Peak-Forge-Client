@@ -14,6 +14,7 @@ export const NumericInput: FC<{
   setIndex: number;
 }> = ({ fieldType: fieldType, exerciseIndex, setIndex }) => {
   const { control, setValue } = useWorkoutFormContext().form;
+  const [isMainSetType] = useWorkoutFormContext().isMainSet;
 
   const exercisesState: FormExercise[] = useWatch({
     control,
@@ -33,6 +34,14 @@ export const NumericInput: FC<{
             ) || ""
           ).toString()}
           onChangeText={(value) => {
+            if (
+              exercisesState[exerciseIndex]?.sets.some(
+                (set) => set.isSecondary
+              ) &&
+              isMainSetType
+            ) {
+              return;
+            }
             setValue(
               `exercises.${exerciseIndex}.sets.${setIndex}.${fieldType}`,
               value

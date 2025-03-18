@@ -7,8 +7,6 @@ import { useBackgroundTimer } from "../../hooks/useBackgroundTimer";
 export const CustomHandle = () => {
   const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
   const { reset } = useWorkoutFormContext().form;
-  const [_, setCurrentExerciseIndex] =
-    useWorkoutFormContext().currExerciseIndex;
   const modalRef = useAppContext().activeWorkoutModalRef;
   const totalTime = useBackgroundTimer();
 
@@ -37,7 +35,6 @@ export const CustomHandle = () => {
                     onPress: async () => {
                       modalRef.current?.dismiss();
                       setActiveWorkout(null);
-                      setCurrentExerciseIndex(0);
                       AsyncStorage.removeItem("workoutData");
                       AsyncStorage.removeItem("activeWorkout");
                       reset({ totalTime: 0, exercises: [] });

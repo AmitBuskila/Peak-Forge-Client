@@ -15,6 +15,7 @@ import { CustomImagePicker } from "../GenericComponents/CustomImagePicker";
 import { FormField } from "../GenericComponents/FormField";
 import { WorkoutRoutine } from "./WorkoutRoutine";
 
+//todo fix exit not reseting states
 export const TemplateModal: FC<{}> = () => {
   const user = useSelector(
     ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user

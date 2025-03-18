@@ -19,6 +19,7 @@ export const WorkoutCarousel: FC<{ workout?: Workout }> = ({ workout }) => {
   const [_, setCurrExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
   const fields = useWatch({ control, name: "exercises" });
   const modalRef = useAppContext().activeWorkoutModalRef;
+  const [isMainSetType, setIsMainSetType] = useWorkoutFormContext().isMainSet;
 
   const data: FormExercise[] = [
     ...fields,
@@ -41,7 +42,12 @@ export const WorkoutCarousel: FC<{ workout?: Workout }> = ({ workout }) => {
         data={data}
         loop={false}
         scrollAnimationDuration={1000}
-        onSnapToItem={(index) => setCurrExerciseIndex(index)}
+        onSnapToItem={(index) => {
+          setCurrExerciseIndex(index);
+          setIsMainSetType(
+            fields[index]?.sets?.some((set) => set.isSecondary) ? 0 : 1
+          );
+        }}
         renderItem={({ index, item }) => {
           if (item?.key === "0") {
             return (
