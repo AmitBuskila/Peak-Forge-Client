@@ -64,7 +64,9 @@ export const formatWorkoutToFormValues = (
       (workoutExercise, exerciseIndex) => ({
         imageUri: workoutExercise.exercise?.image || "",
         label: workoutExercise.exercise?.name || "",
-        notes: workoutExercise.notes,
+        notes:
+          latestWorkout?.workoutExercises[exerciseIndex].notes ||
+          workoutExercise.notes,
         timer: workoutExercise.restTime,
         key: workoutExercise.exercise?.id.toString() || "",
         sets: workoutExercise.sets.map((set, setIndex) => {

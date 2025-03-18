@@ -28,7 +28,7 @@ export const HomeScreen: FC = () => {
         <View className="justify-center items-center ">
           <AnimatedFlatList
             data={user?.templates || []}
-            renderItem={({ item }) => <WorkoutTemplate workout={item} />}
+            renderItem={({ item }) => <WorkoutTemplate template={item} />}
             horizontal={true}
           />
         </View>
