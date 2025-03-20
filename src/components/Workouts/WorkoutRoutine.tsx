@@ -28,7 +28,11 @@ export const WorkoutRoutine: FC<{ template?: Template }> = ({ template }) => {
           <Animatable.View style={animatedStyle}>
             <View className="w-[95vw] mx-auto flex-row justify-around">
               <TimerPicker />
-              <ToggleSwitch isOn={isMainSetType} setIsOn={setIsMainSetType} />
+              <ToggleSwitch
+                isOn={isMainSetType}
+                setIsOn={setIsMainSetType}
+                sets={exercises[exerciseIndex]?.sets}
+              />
             </View>
             <View className="mx-auto my-2">
               <FormField

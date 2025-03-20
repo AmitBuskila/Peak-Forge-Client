@@ -1,12 +1,14 @@
 import { Dispatch, FC, SetStateAction } from "react";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 import Animated, {
   interpolate,
   interpolateColor,
   useAnimatedStyle,
   useSharedValue,
+  withSequence,
   withTiming,
 } from "react-native-reanimated";
+import { FormWorkoutSet } from "../../contexts/WorkoutForm.context";
 
 interface SwitchProps {
   value: number;
@@ -77,10 +79,34 @@ export const Switch: FC<SwitchProps> = ({
 export const ToggleSwitch: FC<{
   isOn: number;
   setIsOn: Dispatch<SetStateAction<number>>;
-}> = ({ isOn, setIsOn }) => {
+  sets: FormWorkoutSet[];
+}> = ({ isOn, setIsOn, sets }) => {
+  const rotate = useSharedValue(0);
+
   const handlePress = () => {
-    setIsOn((prev) => (prev + 1) % 2);
+    if (!isOn && sets.some((set) => set.isSecondary)) {
+      rotate.value = withSequence(
+        withTiming(10, { duration: 50 }),
+        withTiming(0, { duration: 50 }),
+        withTiming(-10, { duration: 50 }),
+        withTiming(0, { duration: 50 }),
+        withTiming(10, { duration: 50 }),
+        withTiming(0, { duration: 50 })
+      );
+    } else {
+      setIsOn((prev) => (prev + 1) % 2);
+    }
   };
 
-  return <Switch value={isOn} onPress={handlePress} />;
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ rotateZ: `${rotate.value}deg` }],
+  }));
+
+  return (
+    <View>
+      <Animated.View style={animatedStyle}>
+        <Switch value={isOn} onPress={handlePress} />
+      </Animated.View>
+    </View>
+  );
 };

@@ -8,7 +8,6 @@ import {
 } from "../store/apis/serverApi";
 import { UserSliceState } from "../store/slices/UserSlice";
 
-//todo timer not reset minutes on hour
 export const useFetchData = () => {
   const token = useSelector(
     ({ userSlice }: { userSlice: UserSliceState }) => userSlice.token

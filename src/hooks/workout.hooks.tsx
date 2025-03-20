@@ -9,8 +9,8 @@ import { formatWorkoutToFormValues } from "../utils/formatActions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { User } from "../entities/user.entity";
 import { useAppContext } from "../contexts/AppContext.context";
-import { getRestTime } from "./getRestTime.hook";
 import { useWatch } from "react-hook-form";
+import { timeStringToSeconds } from "../components/Workouts/Countdown";
 
 export const useInitializeForm = (template: Template | undefined) => {
   const [getLatestWorkout] = useLazyGetLatestWorkoutQuery();
@@ -79,13 +79,17 @@ export const useProgressWorkout = ({
   const { control, getValues } = useWorkoutFormContext().form;
   const exercises: FormExercise[] = useWatch({ control, name: "exercises" });
   const [activeWorkout] = useAppContext().activeWorkout;
+  const [currExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
 
   const doneStates: (number | undefined)[][] = exercises?.map((exercise) =>
     exercise?.sets?.map((set) => set.done)
   );
+
   useEffect(() => {
     if (activeWorkout) {
-      const restTime: number = getRestTime(exercises);
+      const restTime: number = timeStringToSeconds(
+        exercises[currExerciseIndex]?.timer || "1:00"
+      );
       setDuration(restTime);
       setTimerKey((prev: number) => prev + 1);
       AsyncStorage.setItem("workoutData", JSON.stringify(getValues()));

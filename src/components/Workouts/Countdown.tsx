@@ -1,12 +1,19 @@
-import React, { FC, useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { FC } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animateable, {
-  useSharedValue,
   useAnimatedStyle,
+  useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+
+export const timeStringToSeconds = (time: string): number => {
+  const parts = time.split(":").map(Number);
+  return parts.length === 3
+    ? parts[0] * 3600 + parts[1] * 60 + parts[2]
+    : parts[0] * 60 + parts[1];
+};
 
 export const Countdown: FC<{ duration: number; timerKey: number }> = ({
   duration,

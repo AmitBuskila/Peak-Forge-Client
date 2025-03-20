@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Path } from "react-hook-form";
+import { Path, useWatch } from "react-hook-form";
 import { TouchableOpacity, View } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -16,15 +16,22 @@ export const SetList: FC<{
   isWorkout: boolean;
   exerciseIndex: number;
 }> = ({ isWorkout, exerciseIndex }) => {
-  const { setValue, getValues } = useWorkoutFormContext().form;
+  const { setValue, getValues, control } = useWorkoutFormContext().form;
   const exerciseSetsPath: Path<FormValues> = `exercises.${exerciseIndex}.sets`;
+  const sets = useWatch({ control, name: exerciseSetsPath });
+  const [isMainSetType] = useWorkoutFormContext().isMainSet;
   const [fields, setFields] = useState<FormWorkoutSet[]>(
     getValues(exerciseSetsPath).filter((set) =>
       isMainSetType ? !set.isSecondary : set.isSecondary
     )
   );
 
-  const [isMainSetType] = useWorkoutFormContext().isMainSet;
+  useEffect(() => {
+    const currentSets = getValues(exerciseSetsPath).filter((set) =>
+      isMainSetType ? !set.isSecondary : set.isSecondary
+    );
+    setFields(currentSets);
+  }, [exerciseIndex, isMainSetType]);
 
   const append = (set: FormWorkoutSet) => {
     setFields((sets) => [...sets, set]);
@@ -39,12 +46,13 @@ export const SetList: FC<{
     );
   };
 
-  useEffect(() => {
-    const currentSets = getValues(exerciseSetsPath).filter((set) =>
-      isMainSetType ? !set.isSecondary : set.isSecondary
-    );
-    setFields(currentSets);
-  }, [exerciseIndex, isMainSetType]);
+  const handleEmptyElementPress = () => {
+    const newSet: Partial<FormWorkoutSet> = {
+      key: new Date().getTime().toString(),
+      isSecondary: !isMainSetType,
+    };
+    append(newSet as FormWorkoutSet);
+  };
 
   const renderHiddenItem = ({ key }: { key: number }) => (
     <View className="flex flex-row justify-end items-center bg-red-500 h-full rounded-lg">
@@ -58,14 +66,6 @@ export const SetList: FC<{
       </TouchableOpacity>
     </View>
   );
-
-  const handleEmptyElementPress = () => {
-    const newSet: Partial<FormWorkoutSet> = {
-      key: new Date().getTime().toString(),
-      isSecondary: !isMainSetType,
-    };
-    append(newSet as FormWorkoutSet);
-  };
 
   return (
     <SwipeListView
@@ -83,7 +83,11 @@ export const SetList: FC<{
       renderItem={({ item, index }) => (
         <SetItem
           item={item}
-          setIndex={index}
+          setIndex={
+            isMainSetType
+              ? index
+              : sets.filter((set) => !set.isSecondary).length + index
+          }
           exerciseIndex={exerciseIndex}
           isWorkout={isWorkout}
         />

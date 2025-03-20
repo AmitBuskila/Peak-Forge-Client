@@ -3,7 +3,6 @@ import { NumericInput } from "../../GenericComponents/NumericInput";
 import { FormWorkoutSet } from "../../../contexts/WorkoutForm.context";
 import { getFlexResolver } from "./utils";
 
-//   todo use wheel picker
 export const SetItem = ({
   item,
   setIndex,

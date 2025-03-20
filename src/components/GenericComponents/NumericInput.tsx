@@ -14,8 +14,6 @@ export const NumericInput: FC<{
   setIndex: number;
 }> = ({ fieldType: fieldType, exerciseIndex, setIndex }) => {
   const { control, setValue } = useWorkoutFormContext().form;
-  const [isMainSetType] = useWorkoutFormContext().isMainSet;
-
   const exercisesState: FormExercise[] = useWatch({
     control,
     name: `exercises`,
@@ -25,7 +23,6 @@ export const NumericInput: FC<{
     <View>
       {exercisesState[exerciseIndex].sets[setIndex] && (
         <TextInput
-          // ref={null} todo
           value={(
             parseFloat(
               exercisesState[exerciseIndex].sets[setIndex][
@@ -34,20 +31,10 @@ export const NumericInput: FC<{
             ) || ""
           ).toString()}
           onChangeText={(value) => {
-            if (
-              exercisesState[exerciseIndex]?.sets.some(
-                (set) => set.isSecondary
-              ) &&
-              isMainSetType
-            ) {
-              return;
-            }
             setValue(
               `exercises.${exerciseIndex}.sets.${setIndex}.${fieldType}`,
               value
             );
-          }}
-          onBlur={() => {
             if (fieldType === "done") {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
             }
