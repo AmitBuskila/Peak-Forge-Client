@@ -84,7 +84,7 @@ export const ToggleSwitch: FC<{
   const rotate = useSharedValue(0);
 
   const handlePress = () => {
-    if (!isOn && sets.some((set) => set.isSecondary)) {
+    if (!isOn && sets.some((set) => set.isSecondary && set.done)) {
       rotate.value = withSequence(
         withTiming(10, { duration: 50 }),
         withTiming(0, { duration: 50 }),

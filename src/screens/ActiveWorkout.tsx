@@ -48,12 +48,15 @@ export const ActiveWorkout = () => {
   useLoadUnsavedData();
 
   const handleFinishWorkout = (data: FormValues) => {
-    addWorkout(formatWorkoutToServer(data, user?.id!, activeWorkout?.id!));
-    modalRef.current?.dismiss();
-    setActiveWorkout(null);
-    AsyncStorage.removeItem("workoutData");
-    AsyncStorage.removeItem("activeWorkout");
-    reset();
+    addWorkout(formatWorkoutToServer(data, user?.id!, activeWorkout?.id!)).then(
+      () => {
+        modalRef.current?.dismiss();
+        setActiveWorkout(null);
+        AsyncStorage.removeItem("workoutData");
+        AsyncStorage.removeItem("activeWorkout");
+        reset();
+      }
+    );
   };
 
   // todo make modal height scrollable with keyboard

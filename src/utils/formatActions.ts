@@ -1,7 +1,16 @@
-import { FormValues } from "../contexts/WorkoutForm.context";
+import { FormValues, FormWorkoutSet } from "../contexts/WorkoutForm.context";
 import { Set } from "../entities/set.entity";
 import { Template } from "../entities/template.entity";
 import { Workout } from "../entities/workout.entity";
+
+const logRepsDone = (
+  isSecondaryExercise: boolean,
+  set: FormWorkoutSet
+): number | undefined => {
+  return isSecondaryExercise && !set.isSecondary && set.previous
+    ? +set.previous.split("X")[1].trim()
+    : Number(set.done) || undefined;
+};
 
 //todo create return type
 export const formatWorkoutToServer = (
@@ -14,24 +23,26 @@ export const formatWorkoutToServer = (
     templateId,
     totalTime: data.totalTime,
     startDate: new Date(new Date().getTime() - data.totalTime * 1000),
-    workoutExercises: data.exercises.map((formExercise, index) => ({
-      index,
-      exercise: { id: formExercise.key },
-      restTime: formExercise.timer,
-      notes: formExercise.notes,
-      sets: formExercise.sets.map((formSet) => {
-        // bug is register reps of b to a
-        console.log(formSet);
-
-        return {
-          isSecondary: formSet.isSecondary,
-          minReps: +formSet.minReps,
-          maxReps: +formSet.maxReps,
-          weight: +formSet.weight,
-          ...(formSet.done && { repsDone: +formSet.done }),
-        };
-      }),
-    })),
+    workoutExercises: data.exercises.map((formExercise, index) => {
+      const isSecondaryExercise: boolean = formExercise.sets.some(
+        (set) => set.isSecondary && set.done
+      );
+      return {
+        index,
+        exercise: { id: formExercise.key },
+        restTime: formExercise.timer,
+        notes: formExercise.notes,
+        sets: formExercise.sets.map((formSet) => {
+          return {
+            isSecondary: formSet.isSecondary,
+            minReps: +formSet.minReps,
+            maxReps: +formSet.maxReps,
+            weight: +formSet.weight,
+            done: logRepsDone(isSecondaryExercise, formSet),
+          };
+        }),
+      };
+    }),
   };
 };
 
