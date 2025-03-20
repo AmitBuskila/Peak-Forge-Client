@@ -48,6 +48,7 @@ export const ActiveWorkout = () => {
   useLoadUnsavedData();
 
   const handleFinishWorkout = (data: FormValues) => {
+    // console.log(formatWorkoutToServer(data, user?.id!, activeWorkout?.id!));
     addWorkout(formatWorkoutToServer(data, user?.id!, activeWorkout?.id!)).then(
       () => {
         modalRef.current?.dismiss();

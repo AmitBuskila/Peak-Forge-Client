@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import { Path, useWatch } from "react-hook-form";
 import { TouchableOpacity, View } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
@@ -20,26 +20,16 @@ export const SetList: FC<{
   const exerciseSetsPath: Path<FormValues> = `exercises.${exerciseIndex}.sets`;
   const sets = useWatch({ control, name: exerciseSetsPath });
   const [isMainSetType] = useWorkoutFormContext().isMainSet;
-  const [fields, setFields] = useState<FormWorkoutSet[]>(
-    getValues(exerciseSetsPath).filter((set) =>
-      isMainSetType ? !set.isSecondary : set.isSecondary
-    )
-  );
 
   useEffect(() => {
-    const currentSets = getValues(exerciseSetsPath).filter((set) =>
-      isMainSetType ? !set.isSecondary : set.isSecondary
-    );
-    setFields(currentSets);
+    setValue(exerciseSetsPath, getValues(exerciseSetsPath));
   }, [exerciseIndex, isMainSetType]);
 
   const append = (set: FormWorkoutSet) => {
-    setFields((sets) => [...sets, set]);
     setValue(exerciseSetsPath, [...getValues(exerciseSetsPath), set]);
   };
 
   const remove = (key: number) => {
-    setFields((sets) => sets.filter((field) => +field.key !== key));
     setValue(
       exerciseSetsPath,
       getValues(exerciseSetsPath).filter((field) => +field.key !== key)
@@ -70,7 +60,9 @@ export const SetList: FC<{
   return (
     <SwipeListView
       ListHeaderComponent={<SetHeader isWorkout={isWorkout} />}
-      data={fields}
+      data={sets.filter((set) =>
+        isMainSetType ? !set.isSecondary : set.isSecondary
+      )}
       keyExtractor={(item) => item.key}
       useAnimatedList={true}
       ListFooterComponent={

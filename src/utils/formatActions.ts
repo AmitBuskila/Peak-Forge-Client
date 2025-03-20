@@ -38,7 +38,7 @@ export const formatWorkoutToServer = (
             minReps: +formSet.minReps,
             maxReps: +formSet.maxReps,
             weight: +formSet.weight,
-            done: logRepsDone(isSecondaryExercise, formSet),
+            repsDone: logRepsDone(isSecondaryExercise, formSet),
           };
         }),
       };
@@ -82,13 +82,13 @@ export const formatWorkoutToFormValues = (
         imageUri: workoutExercise.exercise?.image || "",
         label: workoutExercise.exercise?.name || "",
         notes:
-          latestWorkout?.workoutExercises[exerciseIndex].notes ||
+          latestWorkout?.workoutExercises[exerciseIndex]?.notes ||
           workoutExercise.notes,
         timer: workoutExercise.restTime,
         key: workoutExercise.exercise?.id.toString() || "",
         sets: workoutExercise.sets.map((set, setIndex) => {
           const previousSet: Set | undefined =
-            latestWorkout?.workoutExercises[exerciseIndex].sets[setIndex];
+            latestWorkout?.workoutExercises[exerciseIndex]?.sets[setIndex];
           return {
             isSecondary: set.isSecondary,
             weight: set.weight,

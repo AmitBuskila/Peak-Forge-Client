@@ -16,13 +16,11 @@ export const useInitializeForm = (template: Template | undefined) => {
   const [getLatestWorkout] = useLazyGetLatestWorkoutQuery();
   const { setValue } = useWorkoutFormContext().form;
   const [_, setIsMainSetType] = useWorkoutFormContext().isMainSet;
-  const [__, setCurrExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
 
   useEffect(() => {
     (async () => {
       if (template) {
         setIsMainSetType(1);
-        setCurrExerciseIndex(0);
         const latestWorkout = await getLatestWorkout(template.id).unwrap();
         setValue(
           "exercises",
