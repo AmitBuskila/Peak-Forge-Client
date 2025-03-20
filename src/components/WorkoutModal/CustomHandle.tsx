@@ -3,12 +3,17 @@ import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { useAppContext } from "../../contexts/AppContext.context";
 import { useWorkoutFormContext } from "../../contexts/WorkoutForm.context";
 import { useBackgroundTimer } from "../../hooks/useBackgroundTimer";
+import { useEffect } from "react";
 
 export const CustomHandle = () => {
   const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
-  const { reset } = useWorkoutFormContext().form;
+  const { reset, setValue } = useWorkoutFormContext().form;
   const modalRef = useAppContext().activeWorkoutModalRef;
   const totalTime = useBackgroundTimer();
+
+  useEffect(() => {
+    setValue("totalTime", totalTime);
+  }, [totalTime]);
 
   const formatTimer = (): string => {
     const hours: number = Math.floor(totalTime / 3600);
