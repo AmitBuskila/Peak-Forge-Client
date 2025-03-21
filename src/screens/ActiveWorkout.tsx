@@ -36,7 +36,7 @@ export const ActiveWorkout = () => {
   const [updateTemplate] = useUpdateTemplateMutation();
   const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
   const [currentExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
-  const { handleSubmit, reset, control } = useWorkoutFormContext().form;
+  const { handleSubmit, reset } = useWorkoutFormContext().form;
   const snapPoints: string[] = ["8%", "80%", "100%"];
   const [duration, setDuration] = useState<number>(0);
   const [timerKey, setTimerKey] = useState<number>(0);
@@ -58,12 +58,7 @@ export const ActiveWorkout = () => {
     });
     addWorkout(formatWorkoutToServer(data, user?.id!, activeWorkout?.id!)).then(
       () => {
-        setTimerKey(0);
         modalRef.current?.dismiss();
-        setActiveWorkout(null);
-        AsyncStorage.removeItem("workoutData");
-        AsyncStorage.removeItem("activeWorkout");
-        reset();
       }
     );
   };
@@ -82,9 +77,14 @@ export const ActiveWorkout = () => {
         enableContentPanningGesture={false}
         backgroundStyle={{ backgroundColor: "#232533" }}
         bottomInset={getStatusBarHeight() + 2}
-        handleComponent={() => (
-          <CustomHandle resetTimer={() => setTimerKey(0)} />
-        )}
+        onDismiss={() => {
+          setTimerKey(0);
+          setActiveWorkout(null);
+          AsyncStorage.removeItem("workoutData");
+          AsyncStorage.removeItem("activeWorkout");
+          reset({ totalTime: 0, exercises: [] });
+        }}
+        handleComponent={CustomHandle}
       >
         <BottomSheetScrollView>
           <KeyboardAvoidingView
