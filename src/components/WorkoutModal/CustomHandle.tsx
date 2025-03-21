@@ -1,21 +1,31 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FC, useEffect, useState } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { useAppContext } from "../../contexts/AppContext.context";
 import { useWorkoutFormContext } from "../../contexts/WorkoutForm.context";
 import { useBackgroundTimer } from "../../hooks/useBackgroundTimer";
-import { useEffect } from "react";
 
-export const CustomHandle = () => {
-  const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
-  const { reset, setValue } = useWorkoutFormContext().form;
+export const CustomHandle: FC = () => {
+  const [activeWorkout] = useAppContext().activeWorkout;
+  const { setValue } = useWorkoutFormContext().form;
   const modalRef = useAppContext().activeWorkoutModalRef;
-  const totalTime = useBackgroundTimer();
+  const totalTime = useBackgroundTimer(18000); //5 hours max
+  const [passedTime, setPassedTime] = useState<number>(0);
 
   useEffect(() => {
-    setValue("totalTime", totalTime);
-  }, [totalTime]);
+    (async () => {
+      const workoutData = await AsyncStorage.getItem("workoutData");
+      if (workoutData) {
+        setPassedTime(JSON.parse(workoutData).totalTime);
+      }
+    })();
+  }, []);
 
-  const formatTimer = (): string => {
+  useEffect(() => {
+    setValue("totalTime", totalTime + passedTime);
+  }, [totalTime, passedTime]);
+
+  const formatTimer = (totalTime: number): string => {
     const hours: number = Math.floor(totalTime / 3600);
     const minutes: number = Math.floor(totalTime / 60) % 60;
     let seconds: number = totalTime % 60;
@@ -39,10 +49,6 @@ export const CustomHandle = () => {
                     text: "Confirm",
                     onPress: async () => {
                       modalRef.current?.dismiss();
-                      setActiveWorkout(null);
-                      AsyncStorage.removeItem("workoutData");
-                      AsyncStorage.removeItem("activeWorkout");
-                      reset({ totalTime: 0, exercises: [] });
                     },
                   },
                   {
@@ -66,7 +72,7 @@ export const CustomHandle = () => {
             style={[styles.text, { marginRight: 10 }]}
             className="font-pblack color-secondary-100"
           >
-            {formatTimer()}
+            {formatTimer(totalTime + passedTime)}
           </Text>
         </View>
       </View>
