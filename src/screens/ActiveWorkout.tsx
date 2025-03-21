@@ -4,6 +4,7 @@ import {
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { pick } from "lodash";
 import { useState } from "react";
 import { KeyboardAvoidingView } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
@@ -14,7 +15,6 @@ import { Countdown } from "../components/Workouts/Countdown";
 import { WorkoutRoutine } from "../components/Workouts/WorkoutRoutine";
 import { useAppContext } from "../contexts/AppContext.context";
 import {
-  FormExercise,
   FormValues,
   useWorkoutFormContext,
 } from "../contexts/WorkoutForm.context";
@@ -29,8 +29,6 @@ import {
   formatTemplateToServer,
   formatWorkoutToServer,
 } from "../utils/formatActions";
-import { useWatch } from "react-hook-form";
-import { pick } from "lodash";
 
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
@@ -39,18 +37,12 @@ export const ActiveWorkout = () => {
   const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
   const [currentExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
   const { handleSubmit, reset, control } = useWorkoutFormContext().form;
-  const exercises: FormExercise[] = useWatch({ control, name: "exercises" });
   const snapPoints: string[] = ["8%", "80%", "100%"];
   const [duration, setDuration] = useState<number>(0);
   const [timerKey, setTimerKey] = useState<number>(0);
   const user = useSelector(
     ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
   );
-
-  //todo think of better way
-  const isStartedWorkout: boolean =
-    !exercises.length ||
-    (!currentExerciseIndex && exercises[0]?.sets.every((set) => !set.done));
 
   useProgressWorkout({ setDuration, setTimerKey });
   useLoadUnsavedData();
@@ -66,6 +58,7 @@ export const ActiveWorkout = () => {
     });
     addWorkout(formatWorkoutToServer(data, user?.id!, activeWorkout?.id!)).then(
       () => {
+        setTimerKey(0);
         modalRef.current?.dismiss();
         setActiveWorkout(null);
         AsyncStorage.removeItem("workoutData");
@@ -78,7 +71,7 @@ export const ActiveWorkout = () => {
   // todo make modal height scrollable with keyboard
   return (
     <BottomSheetModalProvider>
-      {!!activeWorkout && !isStartedWorkout && (
+      {!!activeWorkout && timerKey > 1 && (
         <Countdown duration={duration} timerKey={timerKey} />
       )}
       <BottomSheetModal
@@ -89,7 +82,9 @@ export const ActiveWorkout = () => {
         enableContentPanningGesture={false}
         backgroundStyle={{ backgroundColor: "#232533" }}
         bottomInset={getStatusBarHeight() + 2}
-        handleComponent={CustomHandle}
+        handleComponent={() => (
+          <CustomHandle resetTimer={() => setTimerKey(0)} />
+        )}
       >
         <BottomSheetScrollView>
           <KeyboardAvoidingView
