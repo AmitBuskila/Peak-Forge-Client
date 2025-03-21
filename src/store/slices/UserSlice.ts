@@ -67,6 +67,16 @@ const userSlice: Slice = createSlice({
         }
       }
     );
+    builder.addMatcher(
+      serverApi.endpoints.updateTemplate.matchFulfilled,
+      (state: UserSliceState, action: { payload: Template }) => {
+        if (state.user) {
+          state.user.templates = state.user.templates.map((template) =>
+            template.id === action.payload.id ? action.payload : template
+          );
+        }
+      }
+    );
   },
 });
 

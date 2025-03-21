@@ -45,7 +45,9 @@ export const WorkoutCarousel: FC<{ workout?: Workout }> = ({ workout }) => {
         onSnapToItem={(index) => {
           setCurrExerciseIndex(index);
           setIsMainSetType(
-            fields[index]?.sets?.some((set) => set.isSecondary) ? 0 : 1
+            fields[index]?.sets?.some((set) => set.isSecondary && set.done)
+              ? 0
+              : 1
           );
         }}
         renderItem={({ index, item }) => {

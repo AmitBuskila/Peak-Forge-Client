@@ -20,14 +20,22 @@ import {
 } from "../contexts/WorkoutForm.context";
 import { Template } from "../entities/template.entity";
 import { useLoadUnsavedData, useProgressWorkout } from "../hooks/workout.hooks";
-import { useAddWorkoutMutation } from "../store/apis/serverApi";
+import {
+  useAddWorkoutMutation,
+  useUpdateTemplateMutation,
+} from "../store/apis/serverApi";
 import { UserSliceState } from "../store/slices/UserSlice";
-import { formatWorkoutToServer } from "../utils/formatActions";
+import {
+  formatTemplateToServer,
+  formatWorkoutToServer,
+} from "../utils/formatActions";
 import { useWatch } from "react-hook-form";
+import { pick } from "lodash";
 
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
   const [addWorkout] = useAddWorkoutMutation();
+  const [updateTemplate] = useUpdateTemplateMutation();
   const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
   const [currentExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
   const { handleSubmit, reset, control } = useWorkoutFormContext().form;
@@ -49,6 +57,13 @@ export const ActiveWorkout = () => {
 
   const handleFinishWorkout = (data: FormValues) => {
     // console.log(formatWorkoutToServer(data, user?.id!, activeWorkout?.id!));
+    updateTemplate({
+      templateId: activeWorkout?.id!,
+      template: pick(
+        formatTemplateToServer(data, user?.id!),
+        "workoutExercises"
+      ),
+    });
     addWorkout(formatWorkoutToServer(data, user?.id!, activeWorkout?.id!)).then(
       () => {
         modalRef.current?.dismiss();

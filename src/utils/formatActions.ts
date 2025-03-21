@@ -56,11 +56,17 @@ export const formatTemplateToServer = (
     image: data.image,
     userId,
     workoutExercises: data.exercises.map((formExercise, index) => ({
-      exercise: { id: formExercise.key },
+      exercise: {
+        id: formExercise.key,
+        image: formExercise.imageUri,
+        name: formExercise.label,
+      },
       index,
       restTime: formExercise.timer,
       notes: formExercise.notes,
-      sets: formExercise.sets.map((formSet) => ({
+      sets: formExercise.sets.map((formSet, index) => ({
+        index,
+        isSecondary: formSet.isSecondary,
         minReps: +formSet.minReps,
         maxReps: +formSet.maxReps,
         weight: +formSet.weight,

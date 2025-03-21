@@ -75,6 +75,7 @@ export const SetList: FC<{
       renderItem={({ item, index }) => (
         <SetItem
           item={item}
+          displayIndex={index + 1}
           setIndex={
             isMainSetType
               ? index

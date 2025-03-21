@@ -6,17 +6,17 @@ import { getFlexResolver } from "./utils";
 export const SetItem = ({
   item,
   setIndex,
+  displayIndex,
   exerciseIndex,
   isWorkout,
 }: {
   item: FormWorkoutSet;
   setIndex: number;
+  displayIndex: number;
   exerciseIndex: number;
   isWorkout: boolean;
 }) => {
   const flexResolver = getFlexResolver(isWorkout);
-
-  const itemIndex: number = setIndex + 1;
 
   return (
     <View className="flex-row items-center bg-gray-100 h-20 border-b border-secondary-200 rounded-lg">
@@ -25,7 +25,7 @@ export const SetItem = ({
         style={{ flex: flexResolver["key"] }}
         className="items-center"
       >
-        <Text className="px-1 text-l font-bold">{itemIndex}</Text>
+        <Text className="px-1 text-l font-bold">{displayIndex}</Text>
       </View>
       {isWorkout && (
         <View

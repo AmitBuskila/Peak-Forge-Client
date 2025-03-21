@@ -55,6 +55,16 @@ export const serverApi = createApi({
         body: workout,
       }),
     }),
+    updateTemplate: build.mutation<
+      Template,
+      { template: any; templateId: number }
+    >({
+      query: ({ template, templateId }) => ({
+        url: `templates/updateTemplate/${templateId}`,
+        method: "PUT",
+        body: template,
+      }),
+    }),
     getExercisesLatestResults: build.mutation<
       Workout,
       { userId: number; exerciseIds: number[] }
@@ -91,6 +101,7 @@ export const {
   useLazyGetExercisesQuery,
   useAddTemplateMutation,
   useAddWorkoutMutation,
+  useUpdateTemplateMutation,
   useLazyGetUserWorkoutsQuery,
   useGetExercisesLatestResultsMutation,
   useLazyGetLatestWorkoutQuery,
