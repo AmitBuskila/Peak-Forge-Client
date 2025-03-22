@@ -1,5 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { useAppContext } from "../../contexts/AppContext.context";
 import { useWorkoutFormContext } from "../../contexts/WorkoutForm.context";
@@ -10,20 +9,10 @@ export const CustomHandle: FC = () => {
   const { setValue } = useWorkoutFormContext().form;
   const modalRef = useAppContext().activeWorkoutModalRef;
   const totalTime = useBackgroundTimer(18000); //5 hours max
-  const [passedTime, setPassedTime] = useState<number>(0);
 
   useEffect(() => {
-    (async () => {
-      const workoutData = await AsyncStorage.getItem("workoutData");
-      if (workoutData) {
-        setPassedTime(JSON.parse(workoutData).totalTime);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    setValue("totalTime", totalTime + passedTime);
-  }, [totalTime, passedTime]);
+    setValue("totalTime", totalTime);
+  }, [totalTime]);
 
   const formatTimer = (totalTime: number): string => {
     const hours: number = Math.floor(totalTime / 3600);
@@ -46,7 +35,8 @@ export const CustomHandle: FC = () => {
                 "Are you sure you want to proceed?",
                 [
                   {
-                    text: "Confirm",
+                    text: "Discard",
+                    style: "destructive",
                     onPress: async () => {
                       modalRef.current?.dismiss();
                     },
@@ -54,7 +44,6 @@ export const CustomHandle: FC = () => {
                   {
                     text: "Cancel",
                     style: "cancel",
-                    onPress: () => {},
                   },
                 ]
               );
@@ -72,7 +61,7 @@ export const CustomHandle: FC = () => {
             style={[styles.text, { marginRight: 10 }]}
             className="font-pblack color-secondary-100"
           >
-            {formatTimer(totalTime + passedTime)}
+            {formatTimer(totalTime)}
           </Text>
         </View>
       </View>
