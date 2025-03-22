@@ -1,18 +1,23 @@
-import { FC } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FC, useRef } from "react";
 import {
   Alert,
   GestureResponderEvent,
   ImageBackground,
   Text,
   TouchableOpacity,
+  View,
 } from "react-native";
+import { Menu } from "react-native-popup-menu";
+import IonIcons from "react-native-vector-icons/Ionicons";
 import { useAppContext } from "../../contexts/AppContext.context";
 import { Template } from "../../entities/template.entity";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import TemplateMenu from "./TemplateMenu";
 
 export const WorkoutTemplate: FC<{ template: Template }> = ({ template }) => {
   const modalRef = useAppContext().activeWorkoutModalRef;
   const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
+  const menuRef = useRef<Menu>(null);
 
   const handleStartWorkout = () => {
     setActiveWorkout(template);
@@ -29,7 +34,7 @@ export const WorkoutTemplate: FC<{ template: Template }> = ({ template }) => {
           {
             text: "Cancel",
             style: "cancel",
-            onPress: () => console.log("Cancelled"),
+            isPreferred: true,
           },
           {
             text: "Confirm",
@@ -55,7 +60,21 @@ export const WorkoutTemplate: FC<{ template: Template }> = ({ template }) => {
           uri: template.image,
         }}
         resizeMode="cover"
-      />
+      >
+        <View style={{ position: "absolute", top: 10, right: 10 }}>
+          <IonIcons
+            name={"ellipsis-vertical"}
+            size={30}
+            color={"whitesmoke"}
+            onPress={() => {
+              if (menuRef.current) {
+                menuRef.current.open();
+              }
+            }}
+          />
+          <TemplateMenu ref={menuRef} />
+        </View>
+      </ImageBackground>
       <Text className="3s font-psemibold color-secondary-100 ">
         {template.name || "new template"}
       </Text>

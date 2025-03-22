@@ -11,6 +11,7 @@ import { AppProvider } from "./src/contexts/AppContext.context";
 import { WorkoutFormProvider } from "./src/contexts/WorkoutForm.context";
 import { Navigation } from "./src/navigation/Navigation";
 import { store } from "./src/store";
+import { MenuProvider } from "react-native-popup-menu";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -45,11 +46,13 @@ export default function App() {
     <SafeAreaView className={`bg-${barColor} h-full color-white`}>
       <Provider store={store}>
         <AppProvider>
-          <GestureHandlerRootView>
-            <WorkoutFormProvider>
-              <Navigation />
-            </WorkoutFormProvider>
-          </GestureHandlerRootView>
+          <MenuProvider>
+            <GestureHandlerRootView>
+              <WorkoutFormProvider>
+                <Navigation />
+              </WorkoutFormProvider>
+            </GestureHandlerRootView>
+          </MenuProvider>
         </AppProvider>
       </Provider>
 

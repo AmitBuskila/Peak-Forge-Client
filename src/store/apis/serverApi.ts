@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Template } from "../../entities/template.entity";
-import { SignUpFormValues } from "../../screens/SignUpScreen";
-import { User } from "../../entities/user.entity";
-import { Exercise } from "../../entities/exercise.entity";
 import { FormValues } from "../../contexts/WorkoutForm.context";
+import { Exercise } from "../../entities/exercise.entity";
+import { Template } from "../../entities/template.entity";
+import { User } from "../../entities/user.entity";
 import { Workout } from "../../entities/workout.entity";
+import { SignUpFormValues } from "../../screens/SignUpScreen";
 
 const dynamicBaseQuery = async (args: any, api: any, extraOptions: any) => {
   const baseQuery = fetchBaseQuery({
@@ -65,6 +65,16 @@ export const serverApi = createApi({
         body: template,
       }),
     }),
+    removeTemplate: build.mutation<
+      { deletedId: number },
+      { templateId: number }
+    >({
+      query: ({ templateId }) => ({
+        url: `templates/removeTemplate/${templateId}`,
+        method: "DELETE",
+        body: templateId,
+      }),
+    }),
     getExercisesLatestResults: build.mutation<
       Workout,
       { userId: number; exerciseIds: number[] }
@@ -96,6 +106,7 @@ export const serverApi = createApi({
 export const {
   useGetTemplatesQuery,
   useLoginMutation,
+  useRemoveTemplateMutation,
   useRegisterMutation,
   useLazyGetUserDataQuery,
   useLazyGetExercisesQuery,

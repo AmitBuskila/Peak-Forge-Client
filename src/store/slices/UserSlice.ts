@@ -77,6 +77,16 @@ const userSlice: Slice = createSlice({
         }
       }
     );
+    builder.addMatcher(
+      serverApi.endpoints.removeTemplate.matchFulfilled,
+      (state: UserSliceState, action: { payload: { deletedId: number } }) => {
+        if (state.user) {
+          state.user.templates = state.user.templates.filter(
+            (template) => template.id !== action.payload.deletedId
+          );
+        }
+      }
+    );
   },
 });
 
