@@ -1,15 +1,15 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
+import * as SecureStore from "expo-secure-store";
+import { useEffect } from "react";
 import IonIcons from "react-native-vector-icons/Ionicons";
+import { useDispatch, useSelector } from "react-redux";
 import { ActiveWorkout } from "../screens/ActiveWorkout";
 import { AddSessionScreen } from "../screens/AddSession";
 import { OtherScreen } from "../screens/OtherScreen";
-import { HomeStack } from "./stacks/HomeStack";
-import { useDispatch, useSelector } from "react-redux";
 import { loginToken, UserSliceState } from "../store/slices/UserSlice";
+import { HomeStack } from "./stacks/HomeStack";
 import { SigningStack } from "./stacks/SigningStack";
-import * as SecureStore from "expo-secure-store";
-import { useEffect, useState } from "react";
 
 const Tab = createBottomTabNavigator();
 

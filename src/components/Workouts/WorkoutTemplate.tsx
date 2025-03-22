@@ -72,7 +72,7 @@ export const WorkoutTemplate: FC<{ template: Template }> = ({ template }) => {
               }
             }}
           />
-          <TemplateMenu ref={menuRef} templateId={template.id} />
+          <TemplateMenu ref={menuRef} template={template} />
         </View>
       </ImageBackground>
       <Text className="3s font-psemibold color-secondary-100 ">

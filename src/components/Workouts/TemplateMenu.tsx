@@ -1,4 +1,5 @@
-import React, { FC, forwardRef } from "react";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import React, { forwardRef } from "react";
 import { Alert, Text } from "react-native";
 import {
   Menu,
@@ -6,15 +7,19 @@ import {
   MenuOptions,
   MenuTrigger,
 } from "react-native-popup-menu";
+import { useAppContext } from "../../contexts/AppContext.context";
+import { Template } from "../../entities/template.entity";
 import { useRemoveTemplateMutation } from "../../store/apis/serverApi";
 
 interface TemplateMenuProps {
-  templateId: number;
+  template: Template;
 }
 
 const TemplateMenu = forwardRef<Menu, TemplateMenuProps>(
-  ({ templateId }, ref) => {
+  ({ template }, ref) => {
     const [removeTemplate] = useRemoveTemplateMutation();
+    const navigation = useNavigation<NavigationProp<string>>();
+    const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
 
     return (
       <Menu ref={ref} style={{ width: 10 }}>
@@ -28,7 +33,12 @@ const TemplateMenu = forwardRef<Menu, TemplateMenuProps>(
             },
           }}
         >
-          <MenuOption onSelect={() => alert(`Edit`)}>
+          <MenuOption
+            onSelect={() => {
+              navigation.navigate("Create Template");
+              setActiveWorkout(template);
+            }}
+          >
             <Text className="font-bold">Edit</Text>
           </MenuOption>
           <MenuOption
@@ -44,7 +54,7 @@ const TemplateMenu = forwardRef<Menu, TemplateMenuProps>(
                   {
                     text: "Delete",
                     style: "destructive",
-                    onPress: () => removeTemplate({ templateId }),
+                    onPress: () => removeTemplate({ templateId: template.id }),
                   },
                 ]
               )

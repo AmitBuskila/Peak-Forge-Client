@@ -1,15 +1,22 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useWatch } from "react-hook-form";
 import { KeyboardAvoidingView, ScrollView, View } from "react-native";
 import { useSelector } from "react-redux";
+import { useAppContext } from "../../contexts/AppContext.context";
 import {
   FormValues,
   useWorkoutFormContext,
 } from "../../contexts/WorkoutForm.context";
-import { useAddTemplateMutation } from "../../store/apis/serverApi";
+import {
+  useAddTemplateMutation,
+  useUpdateTemplateMutation,
+} from "../../store/apis/serverApi";
 import { UserSliceState } from "../../store/slices/UserSlice";
-import { formatTemplateToServer } from "../../utils/formatActions";
+import {
+  formatTemplateToFormValues,
+  formatTemplateToServer,
+} from "../../utils/formatActions";
 import { CustomButton } from "../GenericComponents/CustomButton";
 import { CustomImagePicker } from "../GenericComponents/CustomImagePicker";
 import { FormField } from "../GenericComponents/FormField";
@@ -20,14 +27,34 @@ export const TemplateModal: FC<{}> = () => {
   const user = useSelector(
     ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
   );
-  const { control, setValue, getValues, handleSubmit } =
+  const { control, setValue, getValues, handleSubmit, reset } =
     useWorkoutFormContext().form;
   const [addTemplate] = useAddTemplateMutation();
+  const [updateTemplate] = useUpdateTemplateMutation();
   const navigation = useNavigation<NavigationProp<string>>();
   const image = useWatch({ control, name: "image" });
+  const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
+
+  useEffect(() => {
+    if (activeWorkout) {
+      reset(formatTemplateToFormValues(activeWorkout, null));
+    }
+    return () => {
+      setActiveWorkout(null);
+      reset({ exercises: [], workoutName: "", description: "", image: "" });
+    };
+  }, [navigation]);
 
   const onSubmit = (data: FormValues) => {
-    addTemplate(formatTemplateToServer(data, user?.id!));
+    console.log(formatTemplateToServer(data, user?.id!));
+    activeWorkout
+      ? updateTemplate({
+          templateId: activeWorkout.id,
+          template: formatTemplateToServer(data, user?.id!),
+        })
+      : addTemplate(formatTemplateToServer(data, user?.id!));
+    setActiveWorkout(null);
+    reset({ exercises: [], workoutName: "", description: "", image: "" });
     navigation.navigate("Home");
   };
 
@@ -68,7 +95,7 @@ export const TemplateModal: FC<{}> = () => {
           </View>
 
           <CustomButton
-            title="Create Template"
+            title={(activeWorkout ? "Update" : "Create") + " template"}
             handlePress={handleSubmit(onSubmit, onError)}
           />
         </View>

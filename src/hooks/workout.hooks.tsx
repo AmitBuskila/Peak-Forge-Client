@@ -5,7 +5,7 @@ import {
 } from "../contexts/WorkoutForm.context";
 import { Template } from "../entities/template.entity";
 import { useLazyGetLatestWorkoutQuery } from "../store/apis/serverApi";
-import { formatWorkoutToFormValues } from "../utils/formatActions";
+import { formatTemplateToFormValues } from "../utils/formatActions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { User } from "../entities/user.entity";
 import { useAppContext } from "../contexts/AppContext.context";
@@ -27,7 +27,7 @@ export const useInitializeForm = (template: Template | undefined) => {
         setValue(
           "exercises",
           template
-            ? formatWorkoutToFormValues(template, latestWorkout).exercises
+            ? formatTemplateToFormValues(template, latestWorkout).exercises
             : []
         );
       }

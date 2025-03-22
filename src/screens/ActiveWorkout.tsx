@@ -29,6 +29,11 @@ import {
   formatTemplateToServer,
   formatWorkoutToServer,
 } from "../utils/formatActions";
+import {
+  NavigationProp,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
@@ -43,6 +48,11 @@ export const ActiveWorkout = () => {
   const user = useSelector(
     ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
   );
+  const navigation = useNavigation<NavigationProp<string>>();
+  const homeStackIndex: number | undefined =
+    navigation.getState()?.routes[navigation.getState().index].state?.index;
+  const isShowTimer: boolean =
+    !!activeWorkout && timerKey > 1 && !homeStackIndex;
 
   useProgressWorkout({ setDuration, setTimerKey });
   useLoadUnsavedData();
@@ -66,9 +76,7 @@ export const ActiveWorkout = () => {
   // todo make modal height scrollable with keyboard
   return (
     <BottomSheetModalProvider>
-      {!!activeWorkout && timerKey > 1 && (
-        <Countdown duration={duration} timerKey={timerKey} />
-      )}
+      {isShowTimer && <Countdown duration={duration} timerKey={timerKey} />}
       <BottomSheetModal
         ref={modalRef}
         index={1}

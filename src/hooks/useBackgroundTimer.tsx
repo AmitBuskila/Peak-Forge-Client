@@ -15,7 +15,7 @@ export const useBackgroundTimer = (duration: number) => {
     (async () => {
       const workoutData = await AsyncStorage.getItem("workoutData");
       if (workoutData) {
-        setPassedTime(JSON.parse(workoutData).totalTime);
+        setPassedTime(JSON.parse(workoutData).totalTime || 0);
       }
     })();
   }, []);

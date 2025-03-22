@@ -75,7 +75,7 @@ export const formatTemplateToServer = (
   };
 };
 
-export const formatWorkoutToFormValues = (
+export const formatTemplateToFormValues = (
   template: Template,
   latestWorkout: Workout | null
 ): Omit<FormValues, "totalTime"> => {
