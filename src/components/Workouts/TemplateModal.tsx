@@ -44,6 +44,7 @@ export const TemplateModal: FC<{}> = () => {
     };
   }, [navigation]);
 
+  //todo add loading when waiting
   const onSubmit = async (data: FormValues) => {
     activeWorkout
       ? await updateTemplate({
