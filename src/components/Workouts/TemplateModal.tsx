@@ -22,7 +22,6 @@ import { CustomImagePicker } from "../GenericComponents/CustomImagePicker";
 import { FormField } from "../GenericComponents/FormField";
 import { WorkoutRoutine } from "./WorkoutRoutine";
 
-//todo fix exit not reseting states
 export const TemplateModal: FC<{}> = () => {
   const user = useSelector(
     ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
@@ -45,14 +44,13 @@ export const TemplateModal: FC<{}> = () => {
     };
   }, [navigation]);
 
-  const onSubmit = (data: FormValues) => {
-    console.log(formatTemplateToServer(data, user?.id!));
+  const onSubmit = async (data: FormValues) => {
     activeWorkout
-      ? updateTemplate({
+      ? await updateTemplate({
           templateId: activeWorkout.id,
           template: formatTemplateToServer(data, user?.id!),
         })
-      : addTemplate(formatTemplateToServer(data, user?.id!));
+      : await addTemplate(formatTemplateToServer(data, user?.id!));
     setActiveWorkout(null);
     reset({ exercises: [], workoutName: "", description: "", image: "" });
     navigation.navigate("Home");
