@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState } from "react";
 import { Text } from "react-native";
 import {
   Menu,
@@ -7,11 +7,12 @@ import {
   MenuTrigger,
 } from "react-native-popup-menu";
 import { useWorkoutFormContext } from "../../contexts/WorkoutForm.context";
+import { ReorderExercisesModal } from "./WorkoutCarousel/ReorderExercisesModal";
 
 export const ExerciseMenu = forwardRef<Menu, any>((_, ref) => {
   const { setValue, getValues } = useWorkoutFormContext().form;
-  const [currentExerciseIndex, setCurrExerciseIndex] =
-    useWorkoutFormContext().currExerciseIndex;
+  const [currentExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   return (
     <Menu ref={ref} style={{ width: 10 }}>
@@ -37,10 +38,14 @@ export const ExerciseMenu = forwardRef<Menu, any>((_, ref) => {
         >
           <Text className="font-bold">Remove</Text>
         </MenuOption>
-        <MenuOption onSelect={() => {}}>
+        <MenuOption onSelect={() => setIsModalVisible(true)}>
           <Text className="text-blue-500 font-bold">Reorder</Text>
         </MenuOption>
       </MenuOptions>
+      <ReorderExercisesModal
+        isVisible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+      />
     </Menu>
   );
 });
