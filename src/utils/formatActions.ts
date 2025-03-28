@@ -22,7 +22,7 @@ export const formatWorkoutToServer = (
       return {
         index,
         exercise: { id: +formExercise.key },
-        restTime: formExercise.timer || "1:00",
+        restTime: formExercise.timer,
         notes: formExercise.notes,
         sets: formExercise.sets.map((formSet) => {
           return {
@@ -56,7 +56,7 @@ export const formatTemplateToServer = (
         name: formExercise.label,
       },
       index,
-      restTime: formExercise.timer || "1:00",
+      restTime: formExercise.timer,
       notes: formExercise.notes,
       sets: formExercise.sets.map((formSet, index) => ({
         index,

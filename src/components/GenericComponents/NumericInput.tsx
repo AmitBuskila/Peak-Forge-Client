@@ -23,13 +23,18 @@ export const NumericInput: FC<{
   });
   const [_, setTimer] = useAppContext().timer;
 
-  const handleLogRepsDone = () => {
+  const handleLogRepsDone = (value: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-    const restTime: number = timeStringToSeconds(
-      exercisesState[exerciseIndex]?.timer || "1:00"
-    );
-    setTimer((prev) => ({ key: prev.key + 1, duration: restTime }));
-    AsyncStorage.setItem("workoutData", JSON.stringify(getValues()));
+    if (value) {
+      const restTime: number = timeStringToSeconds(
+        exercisesState[exerciseIndex]?.timer || "0:00"
+      );
+      setTimer((prev) => ({
+        key: restTime ? prev.key + 1 : 0,
+        duration: restTime,
+      }));
+      AsyncStorage.setItem("workoutData", JSON.stringify(getValues()));
+    }
   };
 
   return (
@@ -49,7 +54,7 @@ export const NumericInput: FC<{
               value
             );
             if (fieldType === "done") {
-              handleLogRepsDone();
+              handleLogRepsDone(value);
             }
           }}
           maxLength={3}
