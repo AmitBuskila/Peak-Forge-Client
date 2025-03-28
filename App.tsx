@@ -33,7 +33,6 @@ export default function App() {
     if (error) throw error;
 
     if (fontsLoaded) {
-      SplashScreen.hideAsync();
       setBarColor("primary");
     }
   }, [fontsLoaded, error]);

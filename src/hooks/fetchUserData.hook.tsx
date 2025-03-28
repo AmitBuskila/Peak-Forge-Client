@@ -7,6 +7,7 @@ import {
   useLazyGetUserWorkoutsQuery,
 } from "../store/apis/serverApi";
 import { UserSliceState } from "../store/slices/UserSlice";
+import * as SplashScreen from "expo-splash-screen";
 
 export const useFetchData = () => {
   const token = useSelector(
@@ -22,7 +23,7 @@ export const useFetchData = () => {
       const userId: number = (decodedToken as { id: number }).id;
       getUserData(userId);
       getUserWorkouts(userId);
-      getExercises();
+      getExercises().then(() => SplashScreen.hideAsync());
     }
   }, [decodedToken]);
 };

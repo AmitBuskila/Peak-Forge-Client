@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useWatch } from "react-hook-form";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import Animatable from "react-native-reanimated";
 import { useWorkoutFormContext } from "../../contexts/WorkoutForm.context";
 import { Template } from "../../entities/template.entity";
@@ -18,9 +18,13 @@ export const WorkoutRoutine: FC<{ template?: Template }> = ({ template }) => {
   const [isMainSetType, setIsMainSetType] = useWorkoutFormContext().isMainSet;
   const exercises = useWatch({ control, name: "exercises" });
   const animatedStyle = useSetListAnimation({ exerciseIndex, exercises });
-  useInitializeForm(template);
+  const isFetching: boolean = useInitializeForm(template);
 
-  return (
+  return isFetching ? (
+    <View>
+      <Text>Loading...</Text>
+    </View>
+  ) : (
     <View>
       <WorkoutCarousel />
       {!!exercises[exerciseIndex]?.sets && (

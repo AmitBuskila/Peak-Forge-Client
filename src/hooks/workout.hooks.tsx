@@ -7,8 +7,8 @@ import { User } from "../entities/user.entity";
 import { useLazyGetLatestWorkoutQuery } from "../store/apis/serverApi";
 import { formatTemplateToFormValues } from "../utils/formatActions";
 
-export const useInitializeForm = (template: Template | undefined) => {
-  const [getLatestWorkout] = useLazyGetLatestWorkoutQuery();
+export const useInitializeForm = (template: Template | undefined): boolean => {
+  const [getLatestWorkout, { isFetching }] = useLazyGetLatestWorkoutQuery();
   const { setValue } = useWorkoutFormContext().form;
   const [_, setIsMainSetType] = useWorkoutFormContext().isMainSet;
   const [__, setCurrExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
@@ -28,6 +28,8 @@ export const useInitializeForm = (template: Template | undefined) => {
       }
     })();
   }, [template]);
+
+  return isFetching;
 };
 
 export const useLoadUnsavedWorkout = (user: User | null) => {
