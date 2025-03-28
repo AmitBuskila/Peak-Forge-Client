@@ -58,7 +58,6 @@ export const ActiveWorkout = () => {
   useLoadUnsavedData();
 
   const handleFinishWorkout = (data: FormValues) => {
-    // console.log(formatWorkoutToServer(data, user?.id!, activeWorkout?.id!));
     updateTemplate({
       templateId: activeWorkout?.id!,
       template: pick(

@@ -48,6 +48,7 @@ export const ReorderExercisesModal: FC<{
     );
   };
 
+  //Todo fix flicker on drag end
   return (
     <Modal visible={isVisible} transparent animationType="slide">
       <View className="flex-1 justify-center items-center bg-[rgba(0,0,0,0.5)]">

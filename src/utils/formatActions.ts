@@ -1,16 +1,8 @@
-import { FormValues, FormWorkoutSet } from "../contexts/WorkoutForm.context";
+import { FormValues } from "../contexts/WorkoutForm.context";
 import { Set } from "../entities/set.entity";
 import { Template } from "../entities/template.entity";
 import { Workout } from "../entities/workout.entity";
-
-const logRepsDone = (
-  isSecondaryExercise: boolean,
-  set: FormWorkoutSet
-): number | undefined => {
-  return isSecondaryExercise && !set.isSecondary && set.previous
-    ? +set.previous.split("X")[1].trim()
-    : Number(set.done) || undefined;
-};
+import { WorkoutExercise } from "../entities/workoutExercise.entity";
 
 //todo create return type
 export const formatWorkoutToServer = (
@@ -29,8 +21,8 @@ export const formatWorkoutToServer = (
       );
       return {
         index,
-        exercise: { id: formExercise.key },
-        restTime: formExercise.timer,
+        exercise: { id: +formExercise.key },
+        restTime: formExercise.timer || "1:00",
         notes: formExercise.notes,
         sets: formExercise.sets.map((formSet) => {
           return {
@@ -38,7 +30,9 @@ export const formatWorkoutToServer = (
             minReps: +formSet.minReps,
             maxReps: +formSet.maxReps,
             weight: +formSet.weight,
-            repsDone: logRepsDone(isSecondaryExercise, formSet),
+            repsDone: formSet.previous
+              ? +formSet.previous.split("X")[1].trim()
+              : Number(formSet.done) || undefined,
           };
         }),
       };
@@ -57,12 +51,12 @@ export const formatTemplateToServer = (
     userId,
     workoutExercises: data.exercises.map((formExercise, index) => ({
       exercise: {
-        id: formExercise.key,
+        id: +formExercise.key,
         image: formExercise.imageUri,
         name: formExercise.label,
       },
       index,
-      restTime: formExercise.timer,
+      restTime: formExercise.timer || "1:00",
       notes: formExercise.notes,
       sets: formExercise.sets.map((formSet, index) => ({
         index,
@@ -83,18 +77,22 @@ export const formatTemplateToFormValues = (
     workoutName: template.name,
     description: template.description || "",
     image: template.image || "",
-    exercises: template.workoutExercises.map(
-      (workoutExercise, exerciseIndex) => ({
+    exercises: template.workoutExercises.map((workoutExercise) => {
+      const latestWorkoutExercise: WorkoutExercise | undefined =
+        latestWorkout?.workoutExercises.find(
+          (prevExercise) =>
+            prevExercise.exercise?.id === workoutExercise.exercise?.id
+        );
+
+      return {
         imageUri: workoutExercise.exercise?.image || "",
         label: workoutExercise.exercise?.name || "",
-        notes:
-          latestWorkout?.workoutExercises[exerciseIndex]?.notes ||
-          workoutExercise.notes,
+        notes: latestWorkoutExercise?.notes || workoutExercise.notes,
         timer: workoutExercise.restTime,
         key: workoutExercise.exercise?.id.toString() || "",
         sets: workoutExercise.sets.map((set, setIndex) => {
           const previousSet: Set | undefined =
-            latestWorkout?.workoutExercises[exerciseIndex]?.sets[setIndex];
+            latestWorkoutExercise?.sets[setIndex];
           return {
             isSecondary: set.isSecondary,
             weight: set.weight,
@@ -108,7 +106,7 @@ export const formatTemplateToFormValues = (
             key: set.id.toString(),
           };
         }),
-      })
-    ),
+      };
+    }),
   };
 };
