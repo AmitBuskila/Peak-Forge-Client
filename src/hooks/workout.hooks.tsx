@@ -1,16 +1,11 @@
-import { SetStateAction, useEffect, Dispatch } from "react";
-import {
-  FormExercise,
-  useWorkoutFormContext,
-} from "../contexts/WorkoutForm.context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
+import { useAppContext } from "../contexts/AppContext.context";
+import { useWorkoutFormContext } from "../contexts/WorkoutForm.context";
 import { Template } from "../entities/template.entity";
+import { User } from "../entities/user.entity";
 import { useLazyGetLatestWorkoutQuery } from "../store/apis/serverApi";
 import { formatTemplateToFormValues } from "../utils/formatActions";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { User } from "../entities/user.entity";
-import { useAppContext } from "../contexts/AppContext.context";
-import { useWatch } from "react-hook-form";
-import { timeStringToSeconds } from "../components/Workouts/Countdown";
 
 export const useInitializeForm = (template: Template | undefined) => {
   const [getLatestWorkout] = useLazyGetLatestWorkoutQuery();
@@ -67,32 +62,4 @@ export const useLoadUnsavedData = () => {
       }
     })();
   }, []);
-};
-
-export const useProgressWorkout = ({
-  setDuration,
-  setTimerKey,
-}: {
-  setDuration: Dispatch<SetStateAction<number>>;
-  setTimerKey: Dispatch<SetStateAction<number>>;
-}) => {
-  const { control, getValues } = useWorkoutFormContext().form;
-  const exercises: FormExercise[] = useWatch({ control, name: "exercises" });
-  const [activeWorkout] = useAppContext().activeWorkout;
-  const [currExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
-
-  const doneStates: (number | undefined)[][] = exercises?.map((exercise) =>
-    exercise?.sets?.map((set) => set.done)
-  );
-
-  useEffect(() => {
-    if (activeWorkout) {
-      const restTime: number = timeStringToSeconds(
-        exercises[currExerciseIndex]?.timer || "1:00"
-      );
-      setDuration(restTime);
-      setTimerKey((prev: number) => prev + 1);
-      AsyncStorage.setItem("workoutData", JSON.stringify(getValues()));
-    }
-  }, [JSON.stringify(doneStates)]);
 };

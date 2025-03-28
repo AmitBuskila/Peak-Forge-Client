@@ -1,23 +1,36 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Haptics from "expo-haptics";
 import React, { FC } from "react";
 import { Path, useWatch } from "react-hook-form";
 import { TextInput, View } from "react-native";
+import { useAppContext } from "../../contexts/AppContext.context";
 import {
   FormExercise,
   FormWorkoutSet,
   useWorkoutFormContext,
 } from "../../contexts/WorkoutForm.context";
+import { timeStringToSeconds } from "../Workouts/Countdown";
 
 export const NumericInput: FC<{
   fieldType: Path<FormWorkoutSet>;
   exerciseIndex: number;
   setIndex: number;
 }> = ({ fieldType: fieldType, exerciseIndex, setIndex }) => {
-  const { control, setValue } = useWorkoutFormContext().form;
+  const { control, setValue, getValues } = useWorkoutFormContext().form;
   const exercisesState: FormExercise[] = useWatch({
     control,
     name: `exercises`,
   });
+  const [_, setTimer] = useAppContext().timer;
+
+  const handleLogRepsDone = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    const restTime: number = timeStringToSeconds(
+      exercisesState[exerciseIndex]?.timer || "1:00"
+    );
+    setTimer((prev) => ({ key: prev.key + 1, duration: restTime }));
+    AsyncStorage.setItem("workoutData", JSON.stringify(getValues()));
+  };
 
   return (
     <View>
@@ -36,7 +49,7 @@ export const NumericInput: FC<{
               value
             );
             if (fieldType === "done") {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+              handleLogRepsDone();
             }
           }}
           maxLength={3}

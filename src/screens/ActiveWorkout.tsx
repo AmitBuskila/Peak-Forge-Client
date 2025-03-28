@@ -4,8 +4,8 @@ import {
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { pick } from "lodash";
-import { useState } from "react";
 import { KeyboardAvoidingView } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { useSelector } from "react-redux";
@@ -19,7 +19,7 @@ import {
   useWorkoutFormContext,
 } from "../contexts/WorkoutForm.context";
 import { Template } from "../entities/template.entity";
-import { useLoadUnsavedData, useProgressWorkout } from "../hooks/workout.hooks";
+import { useLoadUnsavedData } from "../hooks/workout.hooks";
 import {
   useAddWorkoutMutation,
   useUpdateTemplateMutation,
@@ -29,11 +29,6 @@ import {
   formatTemplateToServer,
   formatWorkoutToServer,
 } from "../utils/formatActions";
-import {
-  NavigationProp,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
 
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
@@ -43,18 +38,12 @@ export const ActiveWorkout = () => {
   const [currentExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
   const { handleSubmit, reset } = useWorkoutFormContext().form;
   const snapPoints: string[] = ["8%", "80%", "100%"];
-  const [duration, setDuration] = useState<number>(0);
-  const [timerKey, setTimerKey] = useState<number>(0);
+  const [timer, setTimer] = useAppContext().timer;
   const user = useSelector(
     ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
   );
   const navigation = useNavigation<NavigationProp<string>>();
-  const homeStackIndex: number | undefined =
-    navigation.getState()?.routes[navigation.getState().index].state?.index;
-  const isShowTimer: boolean =
-    !!activeWorkout && timerKey > 1 && !homeStackIndex;
-
-  useProgressWorkout({ setDuration, setTimerKey });
+  navigation.getState()?.routes[navigation.getState().index].state?.index;
   useLoadUnsavedData();
 
   const handleFinishWorkout = (data: FormValues) => {
@@ -75,7 +64,9 @@ export const ActiveWorkout = () => {
   // todo make modal height scrollable with keyboard
   return (
     <BottomSheetModalProvider>
-      {isShowTimer && <Countdown duration={duration} timerKey={timerKey} />}
+      {!!timer.key && (
+        <Countdown duration={timer.duration} timerKey={timer.key} />
+      )}
       <BottomSheetModal
         ref={modalRef}
         index={1}
@@ -85,7 +76,7 @@ export const ActiveWorkout = () => {
         backgroundStyle={{ backgroundColor: "#232533" }}
         bottomInset={getStatusBarHeight() + 2}
         onDismiss={() => {
-          setTimerKey(0);
+          setTimer({ key: 0, duration: 0 });
           setActiveWorkout(null);
           AsyncStorage.removeItem("workoutData");
           AsyncStorage.removeItem("activeWorkout");

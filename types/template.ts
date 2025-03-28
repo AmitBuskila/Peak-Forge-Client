@@ -24,3 +24,8 @@ export interface Exercise {
   timer?: string;
   notes?: string;
 }
+
+export interface TimerProps {
+  key: number;
+  duration: number;
+}
