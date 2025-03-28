@@ -36,7 +36,11 @@ export const FormField: FC<{
            focus:border-secondary items-center text-gray-100 ${styles} `}
             onBlur={onBlur}
             onChangeText={onChange}
-            value={controlledValue || value?.toString()}
+            value={
+              controlledValue === undefined
+                ? value?.toString()
+                : controlledValue
+            }
             textAlignVertical="top"
             multiline={multiline}
             placeholder={isHeader ? "" : title + "..."}

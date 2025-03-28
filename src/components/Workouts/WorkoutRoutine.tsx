@@ -38,7 +38,7 @@ export const WorkoutRoutine: FC<{ template?: Template }> = ({ template }) => {
               <FormField
                 control={control}
                 controlName={`exercises.${exerciseIndex}.notes`}
-                controlledValue={exercises[exerciseIndex]?.notes}
+                controlledValue={exercises[exerciseIndex]?.notes || ""}
                 title="notes"
                 isHeader={false}
                 styles="w-[85vw] h-14"
