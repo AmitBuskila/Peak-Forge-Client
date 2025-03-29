@@ -56,10 +56,11 @@ export const WorkoutTemplate: FC<{ template: Template }> = ({ template }) => {
       <ImageBackground
         style={{ width: 150, height: 200 }}
         className="bg-white width-50 h-50 rounded-[35px] my-5 overflow-hidden shadow-lg shadow-black/40 "
-        source={{
-          uri: template.image,
-        }}
-        resizeMode="cover"
+        source={
+          template?.image
+            ? { uri: template.image }
+            : require("../../../assets/images/dumbbell.jpg")
+        }
       >
         <View style={{ position: "absolute", top: 10, right: 10 }}>
           <IonIcons

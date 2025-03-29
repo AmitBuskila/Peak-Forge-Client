@@ -22,7 +22,7 @@ export const WorkoutRoutine: FC<{ template?: Template }> = ({ template }) => {
 
   return isFetching ? (
     <View>
-      <Text>Loading...</Text>
+      <Text className="text-white text-center">Loading...</Text>
     </View>
   ) : (
     <View>

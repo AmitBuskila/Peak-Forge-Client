@@ -17,7 +17,7 @@ export const CustomHandle: FC = () => {
   const formatTimer = (totalTime: number): string => {
     const hours: number = Math.floor(totalTime / 3600);
     const minutes: number = Math.floor(totalTime / 60) % 60;
-    let seconds: number = totalTime % 60;
+    const seconds: number = totalTime % 60;
     return `${hours > 0 ? hours + ":" : ""}${minutes < 10 ? "0" + minutes : minutes}:${(seconds < 10 ? "0" : "") + seconds}`;
   };
 

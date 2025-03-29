@@ -74,6 +74,13 @@ export const TemplateModal: FC<{}> = () => {
             controlName="workoutName"
             control={control}
             styles="w-full h-14"
+            rules={{
+              required: "Workout must have a name",
+              minLength: {
+                value: 2,
+                message: "Name must be at least 2 characters long ",
+              },
+            }}
           />
           <View className="my-2 flex flex-row items-center">
             <FormField
