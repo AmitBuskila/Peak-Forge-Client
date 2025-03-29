@@ -20,6 +20,7 @@ export const useFetchData = () => {
 
   useEffect(() => {
     if (decodedToken) {
+      SplashScreen.preventAutoHideAsync();
       const userId: number = (decodedToken as { id: number }).id;
       getUserData(userId);
       getUserWorkouts(userId);

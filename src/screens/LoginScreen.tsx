@@ -61,22 +61,16 @@ export const LoginScreen: FC = () => {
         <View>
           <CustomButton title="Sign-in" handlePress={handleSignIn} />
         </View>
-        <Text className="text-gray-100 font-pmedium text-center mt-5">
-          Don't have an account?{" "}
-          <TouchableOpacity onPress={handleSignUpClick}>
-            <Text className="underline text-gray-100 font-pmedium mt-5">
-              Sign up
-            </Text>
-          </TouchableOpacity>
-        </Text>
-        <Text className="text-gray-100 font-pmedium text-center ">
-          Forgot password?{" "}
-          <TouchableOpacity onPress={handleForgotPassword}>
-            <Text className="underline text-gray-100 font-pmedium">
-              Click here
-            </Text>
-          </TouchableOpacity>
-        </Text>
+        <TouchableOpacity onPress={handleSignUpClick}>
+          <Text className="underline text-gray-100 text-center font-pmedium mt-5">
+            Don't have an account?
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleForgotPassword}>
+          <Text className="underline text-gray-100 font-pmedium text-center mt-2">
+            Forgot password?
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

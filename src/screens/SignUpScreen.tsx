@@ -53,24 +53,52 @@ export const SignUpScreen: FC = () => {
           control={control}
           controlName={"firstName"}
           styles="h-10"
+          rules={{
+            minLength: {
+              value: 2,
+              message: "First name must be at least 2 characters long",
+            },
+            required: "Required field",
+          }}
         />
         <FormField
           title={"Last Name"}
           control={control}
           controlName={"lastName"}
           styles="h-10"
+          rules={{
+            minLength: {
+              value: 2,
+              message: "Last name must be at least 2 characters long",
+            },
+            required: "Required field",
+          }}
         />
         <FormField
           title={"Email"}
           control={control}
           controlName={"email"}
           styles="h-10"
+          rules={{
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
+              message: "Enter a valid Gmail address (e.g, example@gmail.com)",
+            },
+            required: "Required field",
+          }}
         />
         <FormField
           title={"Password"}
           control={control}
           controlName={"password"}
           styles="h-10"
+          rules={{
+            required: "Required field",
+            minLength: {
+              value: 8,
+              message: "Password must be at least 8 characters long",
+            },
+          }}
         />
         {!!helperText && (
           <Text className="text-red-500 font-pmedium text-center">

@@ -1,5 +1,4 @@
 import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native";
@@ -12,6 +11,7 @@ import { WorkoutFormProvider } from "./src/contexts/WorkoutForm.context";
 import { Navigation } from "./src/navigation/Navigation";
 import { store } from "./src/store";
 import { MenuProvider } from "react-native-popup-menu";
+import * as SplashScreen from "expo-splash-screen";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -34,6 +34,7 @@ export default function App() {
 
     if (fontsLoaded) {
       setBarColor("primary");
+      SplashScreen.hideAsync();
     }
   }, [fontsLoaded, error]);
 
