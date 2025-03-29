@@ -5,8 +5,8 @@ import { useEffect } from "react";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { useDispatch, useSelector } from "react-redux";
 import { ActiveWorkout } from "../screens/ActiveWorkout";
-import { AddSessionScreen } from "../screens/AddSession";
-import { OtherScreen } from "../screens/OtherScreen";
+import { Stats } from "../screens/StatsScreen";
+import { ProfileScreen } from "../screens/ProfileScreen";
 import { loginToken, UserSliceState } from "../store/slices/UserSlice";
 import { HomeStack } from "./stacks/HomeStack";
 import { SigningStack } from "./stacks/SigningStack";
@@ -14,9 +14,9 @@ import { SigningStack } from "./stacks/SigningStack";
 const Tab = createBottomTabNavigator();
 
 const screenResolver: Record<string, string> = {
-  Home: "home",
-  Other: "settings",
-  AddSession: "list",
+  Home: "barbell",
+  Profile: "people",
+  Stats: "stats-chart",
 };
 
 export const Navigation = () => {
@@ -49,12 +49,11 @@ export const Navigation = () => {
             tabBarStyle: { backgroundColor: "#161622" },
             tabBarActiveTintColor: "#5f2aa1",
             tabBarInactiveTintColor: "gray",
-            headerRight: () => <IonIcons name="home" size={30} />,
           })}
         >
-          <Tab.Screen name={"Other"} component={OtherScreen} />
+          <Tab.Screen name={"Profile"} component={ProfileScreen} />
           <Tab.Screen name={"Home"} component={HomeStack} />
-          <Tab.Screen name={"AddSession"} component={AddSessionScreen} />
+          <Tab.Screen name={"Stats"} component={Stats} />
         </Tab.Navigator>
       ) : (
         <SigningStack />

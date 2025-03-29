@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
 import { loginToken } from "../store/slices/UserSlice";
 
-export const OtherScreen: FC = () => {
+export const ProfileScreen: FC = () => {
   const dispatch = useDispatch();
 
   return (

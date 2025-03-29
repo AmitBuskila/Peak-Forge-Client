@@ -1,8 +1,8 @@
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { FC, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
 import { useLoginMutation } from "../store/apis/serverApi";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
 
 export const LoginScreen: FC = () => {
   const [username, setUsername] = useState<string>("");

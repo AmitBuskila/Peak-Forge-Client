@@ -4,7 +4,7 @@
     "slug": "my-gym-bro",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/appLogo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "plugins": [
@@ -17,9 +17,9 @@
       "expo-secure-store"
     ],
     "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/appLogo.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#161622"
     },
     "ios": {
       "supportsTablet": true,
@@ -30,7 +30,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/appLogo.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
