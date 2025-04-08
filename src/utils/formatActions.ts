@@ -16,9 +16,6 @@ export const formatWorkoutToServer = (
     totalTime: data.totalTime,
     startDate: new Date(new Date().getTime() - data.totalTime * 1000),
     workoutExercises: data.exercises.map((formExercise, index) => {
-      const isSecondaryExercise: boolean = formExercise.sets.some(
-        (set) => set.isSecondary && set.done
-      );
       return {
         index,
         exercise: { id: +formExercise.key },
@@ -30,9 +27,9 @@ export const formatWorkoutToServer = (
             minReps: +formSet.minReps,
             maxReps: +formSet.maxReps,
             weight: +formSet.weight,
-            repsDone: formSet.previous
-              ? +formSet.previous.split("X")[1].trim()
-              : Number(formSet.done) || undefined,
+            repsDone: Number(
+              formSet.done || formSet.previous?.split("X")[1].trim()
+            ),
           };
         }),
       };
