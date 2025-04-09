@@ -13,15 +13,15 @@ export const useFetchData = () => {
   const token = useSelector(
     ({ userSlice }: { userSlice: UserSliceState }) => userSlice.token
   );
-  const { decodedToken, isExpired } = useJwt(token!);
+  const { decodedToken } = useJwt(token!);
   const [getUserData] = useLazyGetUserDataQuery();
   const [getUserWorkouts] = useLazyGetUserWorkoutsQuery();
   const [getExercises] = useLazyGetExercisesQuery();
 
   useEffect(() => {
-    if (decodedToken) {
+    const userId: number = (decodedToken as { id: number })?.id;
+    if (userId) {
       SplashScreen.preventAutoHideAsync();
-      const userId: number = (decodedToken as { id: number }).id;
       getUserData(userId);
       getUserWorkouts(userId);
       getExercises().then(() => SplashScreen.hideAsync());
