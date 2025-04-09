@@ -21,7 +21,6 @@ export const LoginScreen: FC = () => {
 
   const handleSignIn = () => {
     login({ email: username, password }).then((res) => {
-      console.log(res);
       if (res.error) {
         setIsError(true);
       }

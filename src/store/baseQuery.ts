@@ -28,10 +28,7 @@ export const customBaseQuery: typeof baseQuery = async (
           extraOptions
         )
       ).data as { accessToken: string };
-      console.log(refreshResult);
-
       await SecureStore.setItemAsync("USER_TOKEN", refreshResult.accessToken);
-      console.log("New access token:", refreshResult.accessToken);
       api.dispatch(loginToken(refreshResult.accessToken));
     } catch (e) {
       console.log(e);
