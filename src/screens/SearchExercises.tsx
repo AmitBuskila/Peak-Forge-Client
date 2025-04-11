@@ -3,6 +3,8 @@ import { FC, useState } from "react";
 import { useFieldArray } from "react-hook-form";
 import { FlatList, View } from "react-native";
 import { SearchBar } from "react-native-elements";
+import { useSelector } from "react-redux";
+import { ClickChip } from "../components/GenericComponents/ClickChip";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
 import { ExerciseItem } from "../components/Workouts/ExerciseItem";
 import { useAppContext } from "../contexts/AppContext.context";
@@ -11,11 +13,28 @@ import {
   useWorkoutFormContext,
 } from "../contexts/WorkoutForm.context";
 import { Exercise as ExerciseEntity } from "../entities/exercise.entity";
-import { useSelector } from "react-redux";
 import { UserSliceState } from "../store/slices/UserSlice";
+import { ScrollView } from "react-native-gesture-handler";
+
+const muscles = [
+  "Chest",
+  "Triceps",
+  "Shoulders",
+  "Back",
+  "Biceps",
+  "Hamstrings",
+  "Traps",
+  "Forearms",
+  "Quadriceps",
+  "Glutes",
+  "Calves",
+  "Core",
+  "Hip Flexors",
+];
 
 export const SearchExercisesScreen: FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
+  const [selectedMuscle, setSelectedMuscle] = useState<string | null>(null);
   const { control } = useWorkoutFormContext().form;
   const navigation = useNavigation<NavigationProp<string>>();
   const { append, fields } = useFieldArray({
@@ -61,8 +80,20 @@ export const SearchExercisesScreen: FC = () => {
         onChangeText={setSearchValue}
         value={searchValue}
       />
+      <ScrollView horizontal className="flex-row h-[8vh]">
+        {muscles.map((muscle) => (
+          <ClickChip
+            title={muscle}
+            color={selectedMuscle !== muscle ? "#1E1E2D" : "#7448ac"}
+            onClick={() =>
+              setSelectedMuscle(selectedMuscle === muscle ? null : muscle)
+            }
+          />
+        ))}
+      </ScrollView>
       {exercises ? (
         <FlatList
+          className="h-[80vh]"
           data={exercises.filter(
             (exercise) =>
               exercise.name
@@ -70,7 +101,9 @@ export const SearchExercisesScreen: FC = () => {
                 .includes(searchValue.toLocaleLowerCase()) &&
               !fields.find(
                 (currentExercise) => +currentExercise.key === exercise.id
-              )
+              ) &&
+              (exercise.primaryMuscle === selectedMuscle ||
+                exercise.secondaryMuscle === selectedMuscle)
           )}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
