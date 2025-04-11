@@ -3,7 +3,7 @@ import * as SecureStore from "expo-secure-store";
 import { loginToken } from "./slices/UserSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://192.168.1.100:8080",
+  baseUrl: process.env.EXPO_PUBLIC_API_URL,
   prepareHeaders: (headers, { getState }: { getState: any }) => {
     const token = getState().userSlice.token;
     if (token) {
