@@ -89,16 +89,16 @@ export const ActiveWorkout = () => {
             behavior={"position"}
             keyboardVerticalOffset={
               (activeWorkout?.workoutExercises[currentExerciseIndex]?.sets
-                .length || 1) * 50
+                .length || 1) * 30
             }
             enabled
           >
             <WorkoutRoutine template={activeWorkout as Template} />
-            <CustomButton
-              title="Finish Workout"
-              handlePress={handleSubmit(handleFinishWorkout)}
-            />
           </KeyboardAvoidingView>
+          <CustomButton
+            title="Finish Workout"
+            handlePress={handleSubmit(handleFinishWorkout)}
+          />
         </BottomSheetScrollView>
       </BottomSheetModal>
     </BottomSheetModalProvider>

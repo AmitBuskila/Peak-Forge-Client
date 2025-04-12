@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
+    "update": "powershell -Command \"$env:EXPO_NO_DOTENV='true'; $env:EXPO_PUBLIC_API_URL='https://mygymbro-server.onrender.com'; eas update\"",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",

@@ -1,17 +1,17 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React, { FC } from "react";
-import { useFieldArray, useWatch } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import { View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import { screenWidth } from "../../../../constants";
 import { Workout } from "../../../../types/template";
+import { useAppContext } from "../../../contexts/AppContext.context";
 import {
   FormExercise,
   useWorkoutFormContext,
 } from "../../../contexts/WorkoutForm.context";
 import { EmptyElement } from "../../GenericComponents/EmptyElement";
 import { WorkoutImage } from "./WorkoutImage";
-import { useAppContext } from "../../../contexts/AppContext.context";
 
 export const WorkoutCarousel: FC<{ workout?: Workout }> = ({ workout }) => {
   const { control } = useWorkoutFormContext().form;

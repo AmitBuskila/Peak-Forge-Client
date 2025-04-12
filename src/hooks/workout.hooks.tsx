@@ -56,7 +56,7 @@ export const useLoadUnsavedData = () => {
       const workoutData: string | null =
         await AsyncStorage.getItem("workoutData");
       if (workoutData) {
-        //todo make it not shitty with timeout
+        //todo make work without timeout
         const timer = setTimeout(() => {
           reset(JSON.parse(workoutData));
         }, 2000);
