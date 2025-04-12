@@ -1,11 +1,10 @@
-import { FC, useState } from "react";
-import { Text, View } from "react-native";
-import { FormField } from "../components/GenericComponents/FormField";
-import { Control, useForm } from "react-hook-form";
-import { FormValues } from "../contexts/WorkoutForm.context";
-import { CustomButton } from "../components/GenericComponents/CustomButton";
-import { useRegisterMutation } from "../store/apis/serverApi";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { FC, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Text, View } from "react-native";
+import { CustomButton } from "../components/GenericComponents/CustomButton";
+import { FormField } from "../components/GenericComponents/FormField";
+import { useRegisterMutation } from "../store/apis/serverApi";
 
 export interface SignUpFormValues {
   firstName: string;
@@ -34,7 +33,7 @@ export const SignUpScreen: FC = () => {
   const onSubmit = (data: SignUpFormValues) => {
     register(data).then((res: any) => {
       console.log(res);
-      if (res?.error?.data?.includes("duplicate")) {
+      if (res?.error?.data?.detail?.includes("already exists")) {
         setHelperText("Email already linked to an account");
       } else if (res.error) {
         setHelperText("Error occurred");

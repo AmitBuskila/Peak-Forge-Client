@@ -1,6 +1,6 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { FC, useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
 import { useLoginMutation } from "../store/apis/serverApi";
 
@@ -10,13 +10,22 @@ export const LoginScreen: FC = () => {
   const [isError, setIsError] = useState<boolean>(false);
   const [login] = useLoginMutation();
   const navigation = useNavigation<NavigationProp<string>>();
+  const [passwordResetText, setPasswordResetText] = useState<string>("");
 
   const handleSignUpClick = () => {
     navigation.navigate("Sign Up");
   };
 
   const handleForgotPassword = () => {
-    console.log("Forgot password clicked");
+    if (!username.match(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)) {
+      setPasswordResetText("Please enter a valid email address");
+    } else {
+      Alert.alert(
+        "Password Reset",
+        "A password reset link has been sent to your email address."
+      );
+      navigation.navigate("Forgot Password");
+    }
   };
 
   const handleSignIn = () => {
@@ -42,6 +51,11 @@ export const LoginScreen: FC = () => {
             value={username}
             keyboardType="email-address"
           />
+          {passwordResetText && (
+            <Text className="text-red-500 font-pmedium text-center">
+              {passwordResetText}
+            </Text>
+          )}
         </View>
         <View className="mb-3">
           <Text className="text-base text-gray-100 font-pmedium">password</Text>
