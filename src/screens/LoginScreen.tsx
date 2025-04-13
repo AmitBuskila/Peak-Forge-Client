@@ -1,16 +1,24 @@
-import { NavigationProp, useNavigation } from "@react-navigation/native";
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from "@react-navigation/native";
 import { FC, useState } from "react";
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
-import { useLoginMutation } from "../store/apis/serverApi";
+import {
+  useLoginMutation,
+  useSendEmailResetCodeMutation,
+} from "../store/apis/serverApi";
 
 export const LoginScreen: FC = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
   const [login] = useLoginMutation();
-  const navigation = useNavigation<NavigationProp<string>>();
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
   const [passwordResetText, setPasswordResetText] = useState<string>("");
+  const [sendEmailCode] = useSendEmailResetCodeMutation();
 
   const handleSignUpClick = () => {
     navigation.navigate("Sign Up");
@@ -20,11 +28,15 @@ export const LoginScreen: FC = () => {
     if (!username.match(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)) {
       setPasswordResetText("Please enter a valid email address");
     } else {
-      Alert.alert(
-        "Password Reset",
-        "A password reset link has been sent to your email address."
-      );
-      navigation.navigate("Forgot Password");
+      setPasswordResetText("");
+      sendEmailCode(username).then((res) => {
+        if (res.error) {
+          setIsError(true);
+        } else {
+          setIsError(false);
+          navigation.navigate("Forgot Password", { referrer: username });
+        }
+      });
     }
   };
 

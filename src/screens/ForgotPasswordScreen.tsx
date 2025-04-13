@@ -1,15 +1,35 @@
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { FC, useState } from "react";
-import { View, Text, TextInput } from "react-native";
-import { DigitCode } from "../components/GenericComponents/DigitCode";
 import { useForm } from "react-hook-form";
-import { FormField } from "../components/GenericComponents/FormField";
+import { Text, View } from "react-native";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
+import { DigitCode } from "../components/GenericComponents/DigitCode";
+import { FormField } from "../components/GenericComponents/FormField";
+import { useUpdateUserMutation } from "../store/apis/serverApi";
 
 export const ForgotPasswordScreen: FC = () => {
+  const route = useRoute();
+  const [updateUser] = useUpdateUserMutation();
   const [isCodeCorrect, setIsCodeCorrect] = useState<boolean>(false);
   const { control, handleSubmit } = useForm<{ password: string }>();
+  const email: string | undefined = (route.params as { referrer: string })
+    ?.referrer;
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
 
-  const onSubmit = (data: { password: string }) => {};
+  const onSubmit = (data: { password: string }) => {
+    updateUser({ email, password: data.password }).then((res) => {
+      if (res.error) {
+        console.error("Error updating password:", res.error);
+      } else {
+        navigation.navigate("Login");
+      }
+    });
+  };
 
   return (
     <View className="bg-primary h-full">
@@ -19,7 +39,11 @@ export const ForgotPasswordScreen: FC = () => {
             <Text className="font-pbold text-md text-secondary-200 text-center my-4">
               Please enter the six digit code sent to your Email
             </Text>
-            <DigitCode onSubmit={(text) => setIsCodeCorrect(true)} length={6} />
+            <DigitCode
+              username={email}
+              onCorrect={() => setIsCodeCorrect(true)}
+              length={6}
+            />
           </View>
         ) : (
           <View>

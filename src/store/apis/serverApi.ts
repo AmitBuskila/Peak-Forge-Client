@@ -52,6 +52,13 @@ export const serverApi = createApi({
         body: template,
       }),
     }),
+    updateUser: build.mutation<User, Partial<User>>({
+      query: (user) => ({
+        url: `users/updateUser`,
+        method: "PUT",
+        body: user,
+      }),
+    }),
     removeTemplate: build.mutation<
       { deletedId: number },
       { templateId: number }
@@ -60,6 +67,23 @@ export const serverApi = createApi({
         url: `templates/removeTemplate/${templateId}`,
         method: "DELETE",
         body: templateId,
+      }),
+    }),
+    sendEmailResetCode: build.mutation<{ status: number }, string>({
+      query: (username) => ({
+        url: `users/getResetCode`,
+        method: "POST",
+        body: { username },
+      }),
+    }),
+    validateResetCode: build.mutation<
+      { status: number },
+      { code: string; username: string }
+    >({
+      query: ({ code, username }) => ({
+        url: `users/validateCode`,
+        method: "POST",
+        body: { code, username },
       }),
     }),
     getExercisesLatestResults: build.mutation<
@@ -103,4 +127,7 @@ export const {
   useLazyGetUserWorkoutsQuery,
   useGetExercisesLatestResultsMutation,
   useLazyGetLatestWorkoutQuery,
+  useSendEmailResetCodeMutation,
+  useValidateResetCodeMutation,
+  useUpdateUserMutation,
 } = serverApi;

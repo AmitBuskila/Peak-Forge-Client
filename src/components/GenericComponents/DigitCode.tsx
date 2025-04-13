@@ -6,14 +6,17 @@ import Animated, {
   withSequence,
   withTiming,
 } from "react-native-reanimated";
+import { useValidateResetCodeMutation } from "../../store/apis/serverApi";
 
 const AnimatedBox = Animated.createAnimatedComponent(View);
 
 export const DigitCode: FC<{
-  onSubmit: (text: string) => void;
+  onCorrect: () => void;
+  username: string;
   length: number;
-}> = ({ onSubmit, length }) => {
+}> = ({ onCorrect, length, username }) => {
   const [code, setCode] = useState<string>("");
+  const [validateCode] = useValidateResetCodeMutation();
   const [hasError, setHasError] = useState<boolean>(false);
   const inputRef = useRef<TextInput | null>(null);
   const shake = useSharedValue(0);
@@ -26,23 +29,24 @@ export const DigitCode: FC<{
     if (text.length <= length && /^\d*$/.test(text)) {
       setCode(text);
       if (text.length === length) {
-        const isCorrect: boolean = text === "123456"; // For testing
-        if (!isCorrect) {
-          setHasError(true);
-          shake.value = withSequence(
-            withTiming(-10, { duration: 50 }),
-            withTiming(10, { duration: 50 }),
-            withTiming(-10, { duration: 50 }),
-            withTiming(10, { duration: 50 }),
-            withTiming(0, { duration: 50 })
-          );
-          setTimeout(() => {
-            setHasError(false);
-            setCode("");
-          }, 500);
-        } else {
-          onSubmit(text);
-        }
+        validateCode({ code: text, username }).then((res) => {
+          if (res?.data?.status === 200) {
+            onCorrect();
+          } else {
+            setHasError(true);
+            shake.value = withSequence(
+              withTiming(-10, { duration: 50 }),
+              withTiming(10, { duration: 50 }),
+              withTiming(-10, { duration: 50 }),
+              withTiming(10, { duration: 50 }),
+              withTiming(0, { duration: 50 })
+            );
+            setTimeout(() => {
+              setHasError(false);
+              setCode("");
+            }, 500);
+          }
+        });
       }
     }
   };
