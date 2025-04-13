@@ -26,7 +26,7 @@ export const LoginScreen: FC = () => {
 
   const handleForgotPassword = () => {
     if (!username.match(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)) {
-      setPasswordResetText("Please enter a valid email address");
+      setPasswordResetText("Please enter a valid Gmail address");
     } else {
       setPasswordResetText("");
       sendEmailCode(username).then((res) => {
