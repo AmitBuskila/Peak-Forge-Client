@@ -15,7 +15,8 @@ export const NumericInput: FC<{
   fieldType: Path<FormWorkoutSet>;
   exerciseIndex: number;
   setIndex: number;
-}> = ({ fieldType: fieldType, exerciseIndex, setIndex }) => {
+  float?: boolean;
+}> = ({ fieldType: fieldType, exerciseIndex, setIndex, float = false }) => {
   const { control, setValue, getValues } = useWorkoutFormContext().form;
   const exercisesState: FormExercise[] = useWatch({
     control,
@@ -42,11 +43,11 @@ export const NumericInput: FC<{
       {exercisesState[exerciseIndex].sets[setIndex] && (
         <TextInput
           value={(
-            parseFloat(
-              exercisesState[exerciseIndex].sets[setIndex][
-                fieldType
-              ]?.toString() || ""
-            ) || ""
+            exercisesState[exerciseIndex].sets[setIndex][
+              fieldType
+            ]?.toString() ||
+            "" ||
+            ""
           ).toString()}
           onChangeText={(value) => {
             setValue(
@@ -57,8 +58,8 @@ export const NumericInput: FC<{
               handleLogRepsDone(value);
             }
           }}
-          maxLength={3}
-          keyboardType="number-pad"
+          maxLength={5}
+          keyboardType={float ? "decimal-pad" : "number-pad"}
           className={`border-2 border-${fieldType === "done" ? "secondary" : "black"}-200  bg-primary rounded-xl
            focus:border-secondary items-center text-center text-gray-100 w-16 py-1.5`}
         />

@@ -47,6 +47,7 @@ export const SetItem = ({
           fieldType="weight"
           setIndex={setIndex}
           exerciseIndex={exerciseIndex}
+          float
         />
       </View>
       <View
