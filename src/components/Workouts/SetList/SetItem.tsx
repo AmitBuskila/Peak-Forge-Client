@@ -77,6 +77,7 @@ export const SetItem = ({
             fieldType="done"
             setIndex={setIndex}
             exerciseIndex={exerciseIndex}
+            displayIndex={displayIndex - 1}
           />
         </View>
       )}

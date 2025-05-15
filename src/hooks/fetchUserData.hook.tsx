@@ -8,6 +8,7 @@ import {
 } from "../store/apis/serverApi";
 import { UserSliceState } from "../store/slices/UserSlice";
 import * as SplashScreen from "expo-splash-screen";
+import { registerForPushNotifications } from "../utils/notifications";
 
 export const useFetchData = () => {
   const token = useSelector(
@@ -25,6 +26,7 @@ export const useFetchData = () => {
       getUserData(userId);
       getUserWorkouts(userId);
       getExercises().then(() => SplashScreen.hideAsync());
+      registerForPushNotifications();
     }
   }, [decodedToken]);
 };

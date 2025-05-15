@@ -10,23 +10,40 @@ import {
   useWorkoutFormContext,
 } from "../../contexts/WorkoutForm.context";
 import { timeStringToSeconds } from "../Workouts/Countdown";
+import { schedulePushNotification } from "../../utils/notifications";
 
 export const NumericInput: FC<{
   fieldType: Path<FormWorkoutSet>;
   exerciseIndex: number;
   setIndex: number;
   float?: boolean;
-}> = ({ fieldType: fieldType, exerciseIndex, setIndex, float = false }) => {
+  displayIndex?: number;
+}> = ({
+  fieldType: fieldType,
+  exerciseIndex,
+  setIndex,
+  float = false,
+  displayIndex = -1,
+}) => {
   const { control, setValue, getValues } = useWorkoutFormContext().form;
+  const [isMainSetType, setIsMainSetType] = useWorkoutFormContext().isMainSet;
   const exercisesState: FormExercise[] = useWatch({
     control,
     name: `exercises`,
   });
   const [_, setTimer] = useAppContext().timer;
+  const currentSets = exercisesState[exerciseIndex].sets.filter(
+    (set) => set.isSecondary === !isMainSetType
+  );
 
   const handleLogRepsDone = (value: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     if (value) {
+      if (
+        exercisesState.length - 1 === exerciseIndex &&
+        currentSets.length - 1 === displayIndex
+      )
+        return;
       const restTime: number = timeStringToSeconds(
         exercisesState[exerciseIndex]?.timer || "0:00"
       );
@@ -35,6 +52,14 @@ export const NumericInput: FC<{
         duration: restTime,
       }));
       AsyncStorage.setItem("workoutData", JSON.stringify(getValues()));
+      const nextExerciseIndex: number =
+        currentSets.length - 1 === displayIndex
+          ? exerciseIndex + 1
+          : exerciseIndex;
+      schedulePushNotification(
+        restTime * 1000,
+        exercisesState[nextExerciseIndex]?.label
+      );
     }
   };
 
