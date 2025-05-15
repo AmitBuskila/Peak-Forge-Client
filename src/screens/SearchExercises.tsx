@@ -103,7 +103,8 @@ export const SearchExercisesScreen: FC = () => {
                 (currentExercise) => +currentExercise.key === exercise.id
               ) &&
               (exercise.primaryMuscle === selectedMuscle ||
-                exercise.secondaryMuscle === selectedMuscle)
+                exercise.secondaryMuscle === selectedMuscle ||
+                !selectedMuscle)
           )}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
