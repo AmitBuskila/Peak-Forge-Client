@@ -67,8 +67,8 @@ export const NumericInput: FC<{
     <View>
       {exercisesState[exerciseIndex].sets[setIndex] && (
         <TextInput
-          value={exercisesState[exerciseIndex].sets[setIndex][fieldType]
-            ?.toString()
+          value={(exercisesState[exerciseIndex].sets[setIndex][fieldType] || "")
+            .toString()
             .replace(/(\.\d*?[1-9])0+$/, "$1")
             .replace(/\.0+$/, "")
             .replace(/\.$/, "")}
