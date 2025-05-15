@@ -25,14 +25,6 @@ export const HomeStack = () => {
         }}
         component={TemplateModal}
       />
-      <Stack.Screen
-        name="Exercises"
-        options={{
-          headerStyle: { backgroundColor: "#161622" },
-          headerTintColor: "#CDCDE0",
-        }}
-        component={SearchExercisesScreen}
-      />
     </Stack.Navigator>
   );
 };

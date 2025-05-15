@@ -1,24 +1,36 @@
-import { FC } from "react";
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from "@react-navigation/native";
+import { FC, useState } from "react";
 import { Text, View } from "react-native";
-import { LineChart } from "react-native-gifted-charts";
+import { useSelector } from "react-redux";
+import { CustomButton } from "../components/GenericComponents/CustomButton";
+import { Exercise } from "../entities/exercise.entity";
+import { UserSliceState } from "../store/slices/UserSlice";
 
 export const Stats: FC = () => {
-  const data = [{ value: 15 }, { value: 30 }, { value: 26 }, { value: 40 }];
+  const user = useSelector(
+    ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
+  );
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
+  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
+    null
+  );
 
   return (
     <View className="bg-primary h-full">
-      <LineChart
-        areaChart
-        data={data}
-        startFillColor="rgb(46, 217, 255)"
-        startOpacity={0.8}
-        endFillColor="rgb(203, 241, 250)"
-        endOpacity={0.3}
-        isAnimated={true}
-        adjustToWidth
+      <CustomButton
+        title="Choose Exercise"
+        handlePress={() =>
+          navigation.navigate("Exercises", {
+            onSelect: (exercise: Exercise) => setSelectedExercise(exercise),
+          })
+        }
       />
-      <Text className="text-white text-center font-bold my-auto text-xl">
-        Coming soon!
+      <Text className="text-3xl text-gray-100 font-pbold text-center mb-5">
+        {selectedExercise?.name}
       </Text>
     </View>
   );

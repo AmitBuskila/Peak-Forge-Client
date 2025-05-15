@@ -1,4 +1,8 @@
-import { NavigationProp, useNavigation } from "@react-navigation/native";
+import {
+  NavigationProp,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { FC, useState } from "react";
 import { useFieldArray } from "react-hook-form";
 import { FlatList, View } from "react-native";
@@ -37,7 +41,7 @@ export const SearchExercisesScreen: FC = () => {
   const [selectedMuscle, setSelectedMuscle] = useState<string | null>(null);
   const { control } = useWorkoutFormContext().form;
   const navigation = useNavigation<NavigationProp<string>>();
-  const { append, fields } = useFieldArray({
+  const { fields } = useFieldArray({
     control,
     name: "exercises",
   });
@@ -48,15 +52,14 @@ export const SearchExercisesScreen: FC = () => {
   const exercises = useSelector(
     ({ userSlice }: { userSlice: UserSliceState }) => userSlice.exercises
   );
+  const route = useRoute();
+  const { onSelect } = route.params as {
+    onSelect: (exercise: ExerciseEntity) => void;
+  };
 
   const handleConfirm = () => {
     if (selectedExercise) {
-      append({
-        key: selectedExercise.id.toString(),
-        label: selectedExercise.name,
-        imageUri: selectedExercise.image,
-        sets: [{ key: "1" } as FormWorkoutSet],
-      });
+      onSelect(selectedExercise);
       navigation.goBack();
       modalRef.current?.snapToIndex(3);
     }

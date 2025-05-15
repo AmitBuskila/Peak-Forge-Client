@@ -10,14 +10,40 @@ import { ProfileScreen } from "../screens/ProfileScreen";
 import { loginToken, UserSliceState } from "../store/slices/UserSlice";
 import { HomeStack } from "./stacks/HomeStack";
 import { SigningStack } from "./stacks/SigningStack";
+import { SearchExercisesScreen } from "../screens/SearchExercises";
+import { createStackNavigator } from "@react-navigation/stack";
 
 const Tab = createBottomTabNavigator();
+const RootStack = createStackNavigator();
 
 const screenResolver: Record<string, string> = {
   Home: "barbell",
   Profile: "people",
   Stats: "stats-chart",
 };
+
+const MainTabs = () => (
+  <Tab.Navigator
+    initialRouteName={"Home"}
+    screenOptions={({ route }: { route: { name: string } }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName: string = screenResolver[route.name];
+        if (focused) {
+          iconName += "-outline";
+        }
+        return <IonIcons name={iconName} size={size} color={color} />;
+      },
+      headerShown: false,
+      tabBarStyle: { backgroundColor: "#161622" },
+      tabBarActiveTintColor: "#5f2aa1",
+      tabBarInactiveTintColor: "gray",
+    })}
+  >
+    <Tab.Screen name={"Profile"} component={ProfileScreen} />
+    <Tab.Screen name={"Home"} component={HomeStack} />
+    <Tab.Screen name={"Stats"} component={Stats} />
+  </Tab.Navigator>
+);
 
 export const Navigation = () => {
   const userSlice = useSelector(
@@ -35,26 +61,18 @@ export const Navigation = () => {
   return (
     <NavigationContainer>
       {userSlice.token ? (
-        <Tab.Navigator
-          initialRouteName={"Home"}
-          screenOptions={({ route }: { route: { name: string } }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName: string = screenResolver[route.name];
-              if (focused) {
-                iconName += "-outline";
-              }
-              return <IonIcons name={iconName} size={size} color={color} />;
-            },
-            headerShown: false,
-            tabBarStyle: { backgroundColor: "#161622" },
-            tabBarActiveTintColor: "#5f2aa1",
-            tabBarInactiveTintColor: "gray",
-          })}
-        >
-          <Tab.Screen name={"Profile"} component={ProfileScreen} />
-          <Tab.Screen name={"Home"} component={HomeStack} />
-          <Tab.Screen name={"Stats"} component={Stats} />
-        </Tab.Navigator>
+        <RootStack.Navigator screenOptions={{ headerShown: false }}>
+          <RootStack.Screen name="Main" component={MainTabs} />
+          <RootStack.Screen
+            name="Exercises"
+            component={SearchExercisesScreen}
+            options={{
+              headerShown: true,
+              headerStyle: { backgroundColor: "#161622" },
+              headerTintColor: "#CDCDE0",
+            }}
+          />
+        </RootStack.Navigator>
       ) : (
         <SigningStack />
       )}
