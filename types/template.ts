@@ -1,3 +1,5 @@
+import { Set as SetEntity } from "../src/entities/set.entity";
+
 export interface Workout {
   id: number;
   name: string;
@@ -29,3 +31,5 @@ export interface TimerProps {
   key: number;
   duration: number;
 }
+
+export type SetStats = SetEntity & { date: string };

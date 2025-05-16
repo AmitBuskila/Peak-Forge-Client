@@ -4,34 +4,30 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import { FC, useState } from "react";
-import { Text, View } from "react-native";
-import { useSelector } from "react-redux";
+import { ScrollView, View } from "react-native";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
+import { Chart } from "../components/Statistics/Chart";
 import { Exercise } from "../entities/exercise.entity";
-import { UserSliceState } from "../store/slices/UserSlice";
 
 export const Stats: FC = () => {
-  const user = useSelector(
-    ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
-  );
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
     null
   );
 
   return (
-    <View className="bg-primary h-full">
+    <ScrollView className="bg-primary h-full">
       <CustomButton
-        title="Choose Exercise"
+        title="View Exercise Results"
         handlePress={() =>
           navigation.navigate("Exercises", {
             onSelect: (exercise: Exercise) => setSelectedExercise(exercise),
           })
         }
       />
-      <Text className="text-3xl text-gray-100 font-pbold text-center mb-5">
-        {selectedExercise?.name}
-      </Text>
-    </View>
+      <View className="mt-4">
+        <Chart exercise={selectedExercise} />
+      </View>
+    </ScrollView>
   );
 };

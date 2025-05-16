@@ -1,4 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
+import { SetStats } from "../../../types/template";
 import { FormValues } from "../../contexts/WorkoutForm.context";
 import { Exercise } from "../../entities/exercise.entity";
 import { Template } from "../../entities/template.entity";
@@ -111,6 +112,13 @@ export const serverApi = createApi({
     getExercises: build.query<Exercise[], void>({
       query: () => `exercises/getExercises`,
     }),
+    getExerciseStats: build.query<
+      SetStats[],
+      { userId: number; exerciseId: number }
+    >({
+      query: ({ exerciseId, userId }) =>
+        `workouts/users/${userId}/exercises/${exerciseId}/results`,
+    }),
   }),
 });
 
@@ -130,4 +138,5 @@ export const {
   useSendEmailResetCodeMutation,
   useValidateResetCodeMutation,
   useUpdateUserMutation,
+  useLazyGetExerciseStatsQuery,
 } = serverApi;

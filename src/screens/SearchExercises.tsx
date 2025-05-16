@@ -86,6 +86,7 @@ export const SearchExercisesScreen: FC = () => {
       <ScrollView horizontal className="flex-row h-[8vh]">
         {muscles.map((muscle) => (
           <ClickChip
+            key={muscle}
             title={muscle}
             color={selectedMuscle !== muscle ? "#1E1E2D" : "#7448ac"}
             onClick={() =>
