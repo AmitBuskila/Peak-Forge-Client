@@ -62,6 +62,7 @@
     "react-native-reanimated-carousel": "^3.5.1",
     "react-native-reorderable-list": "^0.13.1",
     "react-native-safe-area-context": "5.4.0",
+    "react-native-select-dropdown": "^4.0.1",
     "react-native-status-bar-height": "^2.6.0",
     "react-native-svg": "15.11.2",
     "react-native-swipe-list-view": "^3.2.9",

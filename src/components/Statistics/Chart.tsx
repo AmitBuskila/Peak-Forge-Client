@@ -1,25 +1,15 @@
 import moment from "moment";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { Text } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
 import Animated, { LinearTransition, SlideInUp } from "react-native-reanimated";
-import { useSelector } from "react-redux";
-import { Exercise } from "../../entities/exercise.entity";
-import { useLazyGetExerciseStatsQuery } from "../../store/apis/serverApi";
-import { UserSliceState } from "../../store/slices/UserSlice";
+import { SetStats } from "../../../types/template";
 
-export const Chart: FC<{ exercise: Exercise | null }> = ({ exercise }) => {
-  const user = useSelector(
-    ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
-  );
-  const [getExerciseStats, { data: workSetsData }] =
-    useLazyGetExerciseStatsQuery();
+export const Chart: FC<{
+  workSetsData?: SetStats[];
+  exerciseName?: string;
+}> = ({ workSetsData, exerciseName }) => {
   let maxValue: number = 0;
-
-  useEffect(() => {
-    if (exercise)
-      getExerciseStats({ userId: user!.id, exerciseId: exercise.id });
-  }, [exercise]);
 
   const barData = workSetsData
     ?.filter((set) => !set.isSecondary && !!set.weight && !!set.repsDone)
@@ -54,16 +44,14 @@ export const Chart: FC<{ exercise: Exercise | null }> = ({ exercise }) => {
       >
         <Text className="text-gray-100 font-pblack text-xl mb-2 text-center">
           {barData.length
-            ? exercise?.name
+            ? exerciseName
             : "Looks like you havent done this exercie yet, come back later!"}
         </Text>
-        {barData.length && (
+        {!!barData.length && (
           <BarChart
-            isThreeD
-            isAnimated
             data={barData}
             noOfSections={3}
-            maxValue={maxValue + 10}
+            maxValue={maxValue + (maxValue > 100 ? 40 : 10)}
             barWidth={16}
             spacing={36}
             initialSpacing={12}

@@ -32,4 +32,4 @@ export interface TimerProps {
   duration: number;
 }
 
-export type SetStats = SetEntity & { date: string };
+export type SetStats = SetEntity & { date: string; exerciseName: string };

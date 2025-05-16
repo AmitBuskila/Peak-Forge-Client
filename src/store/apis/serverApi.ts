@@ -119,6 +119,9 @@ export const serverApi = createApi({
       query: ({ exerciseId, userId }) =>
         `workouts/users/${userId}/exercises/${exerciseId}/results`,
     }),
+    getTemplateStats: build.query<SetStats[][], number>({
+      query: (templateId) => `templates/getTemplateStats/${templateId}`,
+    }),
   }),
 });
 
@@ -139,4 +142,5 @@ export const {
   useValidateResetCodeMutation,
   useUpdateUserMutation,
   useLazyGetExerciseStatsQuery,
+  useLazyGetTemplateStatsQuery,
 } = serverApi;
