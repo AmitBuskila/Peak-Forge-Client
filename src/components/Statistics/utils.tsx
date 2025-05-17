@@ -1,9 +1,9 @@
-import { View, Text } from "react-native";
+import moment from "moment";
+import { Text, View } from "react-native";
 import { SetStats } from "../../../types/template";
 import { Exercise } from "../../entities/exercise.entity";
 import { Template } from "../../entities/template.entity";
 import { RepsAndWeightChart } from "./RepsAndWeightChart";
-import moment from "moment";
 
 export const getChartResolver = (
   selectedExercise: Exercise | null,
@@ -95,4 +95,35 @@ export const getRepsAndWeightChartData = (workSetsData?: SetStats[]) => {
     lineData,
     maxValue: maxValue * 1.15,
   };
+};
+
+export const getVolumeChartData = (workSetsData: SetStats[]) => {
+  let maxValue: number = 0;
+  const filteredData = workSetsData?.filter(
+    (set) => !set.isSecondary && !!set.weight && !!set.repsDone
+  );
+
+  const data = filteredData.reduce(
+    (acc: Record<string, { value: number; label: string }>, curr: SetStats) => {
+      const day: string = new Date(curr.date).toISOString().split("T")[0];
+      const volume: number = +curr.weight * +curr.repsDone!;
+      !acc[day]
+        ? (acc[day] = {
+            value: volume,
+            label: moment(curr.date).format("DD/MM"),
+          })
+        : (acc[day] = {
+            ...acc[day],
+            value: acc[day].value + volume,
+          });
+
+      if (acc[day]?.value && acc[day].value > maxValue)
+        maxValue = acc[day].value;
+
+      return acc;
+    },
+    {}
+  );
+
+  return { data: Object.values(data), maxValue: maxValue * 1.15 };
 };

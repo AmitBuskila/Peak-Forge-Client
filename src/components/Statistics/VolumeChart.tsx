@@ -1,17 +1,15 @@
+import { FC } from "react";
 import { Text } from "react-native";
 import { LineChart } from "react-native-gifted-charts";
 import Animated, { LinearTransition, SlideInUp } from "react-native-reanimated";
 import { SetStats } from "../../../types/template";
-import { getWeightChartData } from "./utils";
+import { getVolumeChartData } from "./utils";
 
-export const WeightChart = ({
-  workSetsData,
-  exerciseName,
-}: {
+export const VolumeChart: FC<{
   workSetsData: SetStats[];
   exerciseName: string;
-}) => {
-  const { data, maxValue } = getWeightChartData(workSetsData);
+}> = ({ workSetsData, exerciseName }) => {
+  const { data, maxValue } = getVolumeChartData(workSetsData);
 
   return (
     <Animated.View

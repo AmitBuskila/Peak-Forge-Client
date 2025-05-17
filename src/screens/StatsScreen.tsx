@@ -16,6 +16,7 @@ import {
   useLazyGetTemplateStatsQuery,
 } from "../store/apis/serverApi";
 import { UserSliceState } from "../store/slices/UserSlice";
+import { VolumeChart } from "../components/Statistics/VolumeChart";
 
 export const Stats: FC = () => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
@@ -77,6 +78,10 @@ export const Stats: FC = () => {
           isFetchingExercise || isFetchingTemplate
         )}
       <WeightChart
+        exerciseName={selectedExercise?.name || ""}
+        workSetsData={exerciseData || []}
+      />
+      <VolumeChart
         exerciseName={selectedExercise?.name || ""}
         workSetsData={exerciseData || []}
       />

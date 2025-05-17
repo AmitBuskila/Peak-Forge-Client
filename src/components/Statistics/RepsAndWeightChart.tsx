@@ -28,7 +28,7 @@ export const RepsAndWeightChart: FC<{
         <BarChart
           data={barData}
           noOfSections={3}
-          maxValue={maxValue + (maxValue > 100 ? 40 : 10)}
+          maxValue={maxValue}
           barWidth={16}
           spacing={36}
           initialSpacing={12}
