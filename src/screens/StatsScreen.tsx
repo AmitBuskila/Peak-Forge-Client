@@ -7,7 +7,8 @@ import { FC, useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { useSelector } from "react-redux";
 import { CustomSelectDropdown } from "../components/GenericComponents/SelectDropdown";
-import { RepsAndWeightChart } from "../components/Statistics/RepsAndWeightChart";
+import { getChartResolver } from "../components/Statistics/utils";
+import { WeightChart } from "../components/Statistics/WeightChart";
 import { Exercise } from "../entities/exercise.entity";
 import { Template } from "../entities/template.entity";
 import {
@@ -27,10 +28,14 @@ export const Stats: FC = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
     null
   );
-  const [getExerciseStats, { data: workSetsData }] =
-    useLazyGetExerciseStatsQuery();
-  const [getTemplateStats, { data, isFetching }] =
-    useLazyGetTemplateStatsQuery();
+  const [
+    getExerciseStats,
+    { data: exerciseData, isFetching: isFetchingExercise },
+  ] = useLazyGetExerciseStatsQuery();
+  const [
+    getTemplateStats,
+    { data: templateData, isFetching: isFetchingTemplate },
+  ] = useLazyGetTemplateStatsQuery();
 
   useEffect(() => {
     if (selectedExercise)
@@ -61,34 +66,20 @@ export const Stats: FC = () => {
           }}
           selectedItem={selectedTemplate || selectedExercise}
           placeholder="Select Routine Stats to view"
-          getLabel={(item) =>
-            item?.name === "Specific Exercise" && selectedExercise?.name
-              ? selectedExercise?.name
-              : item.name
-          }
+          getLabel={(item) => item.name}
         />
       </View>
-      {selectedExercise && (
-        <View className="mt-4">
-          <RepsAndWeightChart
-            workSetsData={workSetsData}
-            exerciseName={selectedExercise?.name}
-          />
-        </View>
-      )}
-      <View className="mt-4">
-        {!!data?.length &&
-          selectedTemplate &&
-          !isFetching &&
-          data.map((workSetsData, index) => (
-            <View className="mb-4" key={index}>
-              <RepsAndWeightChart
-                workSetsData={workSetsData}
-                exerciseName={workSetsData[0]?.exerciseName}
-              />
-            </View>
-          ))}
-      </View>
+      {(exerciseData || templateData) &&
+        getChartResolver(
+          selectedExercise,
+          selectedTemplate,
+          (selectedTemplate ? templateData : exerciseData)!,
+          isFetchingExercise || isFetchingTemplate
+        )}
+      <WeightChart
+        exerciseName={selectedExercise?.name || ""}
+        workSetsData={exerciseData || []}
+      />
     </ScrollView>
   );
 };
