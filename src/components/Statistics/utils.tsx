@@ -1,32 +1,75 @@
 import moment from "moment";
-import { Text, View } from "react-native";
+import { Dimensions, Text, View } from "react-native";
 import { SetStats } from "../../../types/template";
 import { Exercise } from "../../entities/exercise.entity";
 import { Template } from "../../entities/template.entity";
 import { RepsAndWeightChart } from "./RepsAndWeightChart";
+import { VolumeChart } from "./VolumeChart";
+import { WeightChart } from "./WeightChart";
+import { JSX } from "react";
+import { screenWidth } from "../../../constants";
 
-export const getChartResolver = (
+export const defaultChartProps = {
+  noOfSections: 3,
+  spacing: 50,
+  yAxisColor: "#232533",
+  xAxisColor: "#232533",
+  yAxisTextStyle: {
+    color: "#C2C2C2",
+    fontFamily: "Poppins-Regular",
+    fontSize: 11,
+  },
+  xAxisLabelTextStyle: {
+    color: "#C2C2C2",
+    fontFamily: "Poppins-Regular",
+    fontSize: 11,
+  },
+  rulesColor: "#232533",
+  rulesType: "solid",
+  rulesThickness: 1,
+  endSpacing: screenWidth / Dimensions.get("window").scale,
+};
+
+const chartResolver: Record<
+  string,
+  (data: SetStats[], exerciseName: string, index?: number) => JSX.Element
+> = {
+  Weight: (data, exerciseName) => (
+    <WeightChart exerciseName={exerciseName} workSetsData={data} />
+  ),
+  "Weight & Reps": (data, _, index) => (
+    <RepsAndWeightChart
+      key={index}
+      workSetsData={data}
+      exerciseName={data[0]?.exerciseName}
+    />
+  ),
+  Volume: (data, exerciseName) => (
+    <VolumeChart exerciseName={exerciseName} workSetsData={data} />
+  ),
+};
+
+export const getChartsToDisplay = (
   selectedExercise: Exercise | null,
   selectedTemplate: Template | null,
+  selectedChartType: { name: string },
   data: SetStats[] | SetStats[][],
   isFetching: boolean
 ) => {
   if (!isFetching) {
     if (selectedExercise) {
-      return (
-        <RepsAndWeightChart
-          workSetsData={data as SetStats[]}
-          exerciseName={selectedExercise?.name}
-        />
+      return chartResolver[selectedChartType.name](
+        data as SetStats[],
+        selectedExercise.name
       );
     } else if (selectedTemplate) {
-      return (data as SetStats[][])?.map((workSetsData, index) => (
-        <RepsAndWeightChart
-          key={index}
-          workSetsData={workSetsData}
-          exerciseName={workSetsData[0]?.exerciseName}
-        />
-      ));
+      return (data as SetStats[][])?.map((workSetsData, index) =>
+        chartResolver[selectedChartType.name](
+          workSetsData,
+          workSetsData[0]?.exerciseName,
+          index
+        )
+      );
     } else {
       return <View />;
     }

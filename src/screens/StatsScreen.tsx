@@ -7,8 +7,7 @@ import { FC, useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { useSelector } from "react-redux";
 import { CustomSelectDropdown } from "../components/GenericComponents/SelectDropdown";
-import { getChartResolver } from "../components/Statistics/utils";
-import { WeightChart } from "../components/Statistics/WeightChart";
+import { getChartsToDisplay } from "../components/Statistics/utils";
 import { Exercise } from "../entities/exercise.entity";
 import { Template } from "../entities/template.entity";
 import {
@@ -16,19 +15,21 @@ import {
   useLazyGetTemplateStatsQuery,
 } from "../store/apis/serverApi";
 import { UserSliceState } from "../store/slices/UserSlice";
-import { VolumeChart } from "../components/Statistics/VolumeChart";
 
 export const Stats: FC = () => {
+  const user = useSelector(
+    ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
+  );
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
     null
   );
-  const user = useSelector(
-    ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
-  );
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
     null
   );
+  const [selectedChartType, setSelectedChartType] = useState<{
+    name: string;
+  }>({ name: "Weight & Reps" });
   const [
     getExerciseStats,
     { data: exerciseData, isFetching: isFetchingExercise },
@@ -70,21 +71,29 @@ export const Stats: FC = () => {
           getLabel={(item) => item.name}
         />
       </View>
+      <View className="mt-4">
+        <CustomSelectDropdown
+          options={[
+            { name: "Weight" },
+            { name: "Volume" },
+            { name: "Weight & Reps" },
+          ]}
+          onSelect={(selectedItem) => {
+            setSelectedChartType(selectedItem);
+          }}
+          selectedItem={selectedChartType}
+          placeholder="Select Chart type"
+          getLabel={(item) => item.name}
+        />
+      </View>
       {(exerciseData || templateData) &&
-        getChartResolver(
+        getChartsToDisplay(
           selectedExercise,
           selectedTemplate,
+          selectedChartType,
           (selectedTemplate ? templateData : exerciseData)!,
           isFetchingExercise || isFetchingTemplate
         )}
-      <WeightChart
-        exerciseName={selectedExercise?.name || ""}
-        workSetsData={exerciseData || []}
-      />
-      <VolumeChart
-        exerciseName={selectedExercise?.name || ""}
-        workSetsData={exerciseData || []}
-      />
     </ScrollView>
   );
 };

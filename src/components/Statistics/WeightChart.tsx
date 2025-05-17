@@ -2,7 +2,7 @@ import { Text } from "react-native";
 import { LineChart } from "react-native-gifted-charts";
 import Animated, { LinearTransition, SlideInUp } from "react-native-reanimated";
 import { SetStats } from "../../../types/template";
-import { getWeightChartData } from "./utils";
+import { getWeightChartData, defaultChartProps } from "./utils";
 
 export const WeightChart = ({
   workSetsData,
@@ -22,42 +22,26 @@ export const WeightChart = ({
       <Text className="text-gray-100 font-pblack text-xl mb-2 text-center">
         {!!data?.length
           ? exerciseName
-          : "Looks like you havent done this exercie yet, come back later!"}
+          : "Looks like you havent done this exercise yet, come back later!"}
       </Text>
       {!!data?.length && (
         <LineChart
           data={data}
-          noOfSections={4}
           maxValue={maxValue}
-          spacing={50}
           thickness={3}
           hideDataPoints={false}
           color="#5f2aa1"
           dataPointsColor="#7448ac"
-          dataPointsRadius={5}
+          dataPointsRadius={4}
           areaChart
           startFillColor="#5f2aa1"
           endFillColor="#161622"
           startOpacity={0.18}
           endOpacity={0.01}
-          yAxisColor="#232533"
-          xAxisColor="#232533"
           yAxisLabelSuffix=""
-          yAxisTextStyle={{
-            color: "#C2C2C2",
-            fontFamily: "Poppins-Regular",
-            fontSize: 12,
-          }}
-          xAxisLabelTextStyle={{
-            color: "#C2C2C2",
-            fontFamily: "Poppins-Regular",
-            fontSize: 11,
-          }}
-          rulesColor="#232533"
-          rulesType="solid"
-          rulesThickness={1}
           textShiftY={-7}
           textShiftX={-5}
+          {...defaultChartProps}
         />
       )}
     </Animated.View>
