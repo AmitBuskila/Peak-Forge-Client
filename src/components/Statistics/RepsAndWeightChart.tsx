@@ -5,7 +5,7 @@ import { BarChart } from "react-native-gifted-charts";
 import Animated, { LinearTransition, SlideInUp } from "react-native-reanimated";
 import { SetStats } from "../../../types/template";
 
-export const Chart: FC<{
+export const RepsAndWeightChart: FC<{
   workSetsData?: SetStats[];
   exerciseName?: string;
 }> = ({ workSetsData, exerciseName }) => {
