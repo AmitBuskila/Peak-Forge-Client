@@ -27,13 +27,17 @@ export const CustomSelectDropdown = <T extends { name: string }>({
         </View>
       )}
       renderItem={(item) => (
-        <View className="w-full px-3 py-2 bg-primary">
+        <View className="w-full px-3 py-3 bg-primary">
           <Text className="text-base text-white font-pregular">
             {getLabel(item)}
           </Text>
+          <View className="w-full h-[1px] bg-secondary-200 mt-2 " />
         </View>
       )}
       defaultValue={selectedItem || placeholder}
+      dropdownStyle={{
+        backgroundColor: "#161622",
+      }}
     />
   );
 };

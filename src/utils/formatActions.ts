@@ -92,7 +92,7 @@ export const formatTemplateToFormValues = (
             latestWorkoutExercise?.sets[setIndex];
           return {
             isSecondary: set.isSecondary,
-            weight: set.weight,
+            weight: parseFloat(set.weight.toString()),
             previous: previousSet?.repsDone
               ? parseFloat(previousSet?.weight?.toString() || "") +
                 " X " +
