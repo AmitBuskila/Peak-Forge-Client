@@ -33,3 +33,4 @@ export interface TimerProps {
 }
 
 export type SetStats = SetEntity & { date: string; exerciseName: string };
+export type WeeklyVolumeStats = SetStats & { muscleGroups: string[] };

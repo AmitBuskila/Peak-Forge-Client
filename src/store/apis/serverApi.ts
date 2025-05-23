@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { SetStats } from "../../../types/template";
+import { SetStats, WeeklyVolumeStats } from "../../../types/template";
 import { FormValues } from "../../contexts/WorkoutForm.context";
 import { Exercise } from "../../entities/exercise.entity";
 import { Template } from "../../entities/template.entity";
@@ -122,6 +122,19 @@ export const serverApi = createApi({
     getTemplateStats: build.query<SetStats[][], number>({
       query: (templateId) => `templates/getTemplateStats/${templateId}`,
     }),
+    getWorkoutsStats: build.mutation<
+      WeeklyVolumeStats[],
+      { userId: number; fromDate: string; toDate: string }
+    >({
+      query: ({ userId, fromDate, toDate }) => ({
+        url: `workouts/workoutsResults/users/${userId}`,
+        method: "POST",
+        body: {
+          fromDate,
+          toDate,
+        },
+      }),
+    }),
   }),
 });
 
@@ -143,4 +156,5 @@ export const {
   useUpdateUserMutation,
   useLazyGetExerciseStatsQuery,
   useLazyGetTemplateStatsQuery,
+  useGetWorkoutsStatsMutation,
 } = serverApi;

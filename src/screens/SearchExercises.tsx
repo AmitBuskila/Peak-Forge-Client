@@ -19,22 +19,7 @@ import {
 import { Exercise as ExerciseEntity } from "../entities/exercise.entity";
 import { UserSliceState } from "../store/slices/UserSlice";
 import { ScrollView } from "react-native-gesture-handler";
-
-const muscles = [
-  "Chest",
-  "Triceps",
-  "Shoulders",
-  "Back",
-  "Biceps",
-  "Hamstrings",
-  "Traps",
-  "Forearms",
-  "Quadriceps",
-  "Glutes",
-  "Calves",
-  "Core",
-  "Hip Flexors",
-];
+import { muscles } from "../../constants";
 
 export const SearchExercisesScreen: FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");

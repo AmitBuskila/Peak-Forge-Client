@@ -1,0 +1,116 @@
+import moment, { Moment } from "moment";
+import { FC, useEffect, useState } from "react";
+import { Text, View } from "react-native";
+import { RadarChart } from "react-native-gifted-charts";
+import IonIcons from "react-native-vector-icons/Ionicons";
+import { useSelector } from "react-redux";
+import { WeeklyVolumeStats } from "../../../types/template";
+import { useGetWorkoutsStatsMutation } from "../../store/apis/serverApi";
+import { UserSliceState } from "../../store/slices/UserSlice";
+import { muscleToGeneral } from "./utils";
+
+export const WeeklyVolumeChart: FC = () => {
+  const [getWorkoutsResults, { data }] = useGetWorkoutsStatsMutation();
+  const user = useSelector(
+    ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
+  );
+  const [fromDate, setFromDate] = useState<Moment>(moment().startOf("week"));
+  const [toDate, setToDate] = useState<Moment>(moment().endOf("week"));
+
+  const isNextWeekDisabled: boolean = moment(toDate)
+    .add(1, "week")
+    .isAfter(moment().endOf("week"));
+
+  useEffect(() => {
+    if (user?.id) {
+      getWorkoutsResults({
+        userId: user.id,
+        fromDate: fromDate.format("YYYY-MM-DD HH:mm"),
+        toDate: toDate.format("YYYY-MM-DD HH:mm"),
+      });
+    }
+  }, [user?.id, fromDate, toDate]);
+
+  const chartData = data?.reduce(
+    (acc: Record<string, number>, curr: WeeklyVolumeStats) => {
+      curr.muscleGroups.forEach((muscle: string) => {
+        if (!acc[muscleToGeneral[muscle]]) {
+          acc[muscleToGeneral[muscle]] = 0;
+        }
+        acc[muscleToGeneral[muscle]]++;
+      });
+      return acc;
+    },
+    {}
+  );
+
+  const formattedChartData = {
+    Chest: chartData?.Chest || 0,
+    Shoulders: chartData?.Shoulders || 0,
+    Triceps: chartData?.Triceps || 0,
+    Back: chartData?.Back || 0,
+    Biceps: chartData?.Biceps || 0,
+    Legs: chartData?.Legs || 0,
+    Glutes: chartData?.Glutes || 0,
+    Core: chartData?.Core || 0,
+  };
+
+  return (
+    <View className="w-[100vw] h-1/2 mt-8">
+      <Text className="text-3xl font-pblack color-white text-center">
+        Weekly Volume
+      </Text>
+      <View className="flex-row justify-around items-center mt-2">
+        <IonIcons
+          name={"arrow-back"}
+          size={30}
+          color={"white"}
+          onPress={() => {
+            setFromDate(moment(fromDate).subtract(1, "week"));
+            setToDate(moment(toDate).subtract(1, "week"));
+          }}
+        />
+        <Text className="text-lg font-pblack color-white text-center">
+          {fromDate.format("MMMM Do")} - {toDate.format("MMMM Do")}
+        </Text>
+        <IonIcons
+          name={"arrow-forward"}
+          size={30}
+          color={isNextWeekDisabled ? "gray" : "white"}
+          disabled={isNextWeekDisabled}
+          onPress={() => {
+            setFromDate(moment(fromDate).add(1, "week"));
+            setToDate(moment(toDate).add(1, "week"));
+          }}
+        />
+      </View>
+
+      <RadarChart
+        data={Object.values(formattedChartData)}
+        labels={Object.keys(formattedChartData)}
+        labelConfig={{
+          stroke: "#5f2aa1",
+          fontWeight: "bold",
+          fontSize: 14,
+          fontFamily: "Poppins-SemiBold",
+          textAnchor: "middle",
+        }}
+        labelsPositionOffset={3.8}
+        chartSize={320}
+        maxValue={50}
+        isAnimated
+        polygonConfig={{
+          showGradient: true,
+          gradientColor: "#48138b",
+          gradientOpacity: 0.7,
+          stroke: "#5f2aa1",
+          strokeWidth: 2.5,
+        }}
+        gridConfig={{
+          strokeWidth: 0.5,
+          stroke: "#5f2aa1",
+        }}
+      />
+    </View>
+  );
+};

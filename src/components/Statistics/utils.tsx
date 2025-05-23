@@ -170,3 +170,19 @@ export const getVolumeChartData = (workSetsData: SetStats[]) => {
 
   return { data: Object.values(data), maxValue: maxValue * 1.15 };
 };
+
+export const muscleToGeneral: Record<string, string> = {
+  Chest: "Chest",
+  Shoulders: "Shoulders",
+  Triceps: "Triceps",
+  Biceps: "Biceps",
+  Forearms: "Arms",
+  Traps: "Back",
+  Back: "Back",
+  Core: "Core",
+  "Hip Flexors": "Legs",
+  Quadriceps: "Legs",
+  Hamstrings: "Legs",
+  Glutes: "Glutes",
+  Calves: "Legs",
+};

@@ -27,6 +27,7 @@ export const formatWorkoutToServer = (
             minReps: +formSet.minReps,
             maxReps: +formSet.maxReps,
             weight: +formSet.weight,
+            isFake: !formSet.done,
             repsDone: Number(
               formSet.done || formSet.previous?.split("X")[1].trim()
             ),
@@ -61,6 +62,7 @@ export const formatTemplateToServer = (
         minReps: +formSet.minReps,
         maxReps: +formSet.maxReps,
         weight: +formSet.weight,
+        isFake: true,
       })),
     })),
   };
@@ -70,6 +72,7 @@ export const formatTemplateToFormValues = (
   template: Template,
   latestWorkout: Workout | null
 ): Omit<FormValues, "totalTime"> => {
+  console.log(template);
   return {
     workoutName: template.name,
     description: template.description || "",
@@ -88,6 +91,8 @@ export const formatTemplateToFormValues = (
         timer: workoutExercise.restTime,
         key: workoutExercise.exercise?.id.toString() || "",
         sets: workoutExercise.sets.map((set, setIndex) => {
+          console.log(set.weight, set.isFake);
+
           const previousSet: Set | undefined =
             latestWorkoutExercise?.sets[setIndex];
           return {

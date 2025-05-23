@@ -7,6 +7,7 @@ import { WorkoutTemplate } from "../components/Workouts/WorkoutTemplate";
 import { useFetchData } from "../hooks/fetchUserData.hook";
 import { useLoadUnsavedWorkout } from "../hooks/workout.hooks";
 import { UserSliceState } from "../store/slices/UserSlice";
+import { WeeklyVolumeChart } from "../components/Statistics/WeeklyVolumeChart";
 
 export const HomeScreen: FC = () => {
   useFetchData();
@@ -29,6 +30,7 @@ export const HomeScreen: FC = () => {
             renderItem={({ item }) => <WorkoutTemplate template={item} />}
             horizontal={true}
           />
+          <WeeklyVolumeChart />
         </View>
       </ScrollView>
     </SafeAreaView>

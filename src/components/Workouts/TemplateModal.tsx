@@ -75,7 +75,7 @@ export const TemplateModal: FC<{}> = () => {
             control={control}
             styles="w-full h-14"
             rules={{
-              required: "Workout must have a name",
+              required: !!activeWorkout ? false : "Workout must have a name",
               minLength: {
                 value: 2,
                 message: "Name must be at least 2 characters long ",
