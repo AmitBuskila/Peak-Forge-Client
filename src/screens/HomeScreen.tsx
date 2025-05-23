@@ -3,11 +3,11 @@ import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import AnimatedFlatList from "../components/GenericComponents/AnimatedFlatList";
+import { WeeklyVolumeChart } from "../components/Statistics/WeeklyVolumeChart";
 import { WorkoutTemplate } from "../components/Workouts/WorkoutTemplate";
 import { useFetchData } from "../hooks/fetchUserData.hook";
 import { useLoadUnsavedWorkout } from "../hooks/workout.hooks";
 import { UserSliceState } from "../store/slices/UserSlice";
-import { WeeklyVolumeChart } from "../components/Statistics/WeeklyVolumeChart";
 
 export const HomeScreen: FC = () => {
   useFetchData();

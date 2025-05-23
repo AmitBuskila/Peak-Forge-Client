@@ -2,6 +2,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, {
   createContext,
   Dispatch,
+  JSX,
   RefObject,
   SetStateAction,
   useContext,

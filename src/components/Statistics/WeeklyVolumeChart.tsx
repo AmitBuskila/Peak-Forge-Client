@@ -16,6 +16,7 @@ export const WeeklyVolumeChart: FC = () => {
   );
   const [fromDate, setFromDate] = useState<Moment>(moment().startOf("week"));
   const [toDate, setToDate] = useState<Moment>(moment().endOf("week"));
+  const maxValue: number = 50;
 
   const isNextWeekDisabled: boolean = moment(toDate)
     .add(1, "week")
@@ -45,14 +46,14 @@ export const WeeklyVolumeChart: FC = () => {
   );
 
   const formattedChartData = {
-    Chest: chartData?.Chest || 0,
-    Shoulders: chartData?.Shoulders || 0,
-    Triceps: chartData?.Triceps || 0,
-    Back: chartData?.Back || 0,
-    Biceps: chartData?.Biceps || 0,
-    Legs: chartData?.Legs || 0,
-    Glutes: chartData?.Glutes || 0,
-    Core: chartData?.Core || 0,
+    Chest: Math.min(chartData?.Chest || 0, maxValue),
+    Shoulders: Math.min(chartData?.Shoulders || 0, maxValue),
+    Triceps: Math.min(chartData?.Triceps || 0, maxValue),
+    Back: Math.min(chartData?.Back || 0, maxValue),
+    Biceps: Math.min(chartData?.Biceps || 0, maxValue),
+    Legs: Math.min(chartData?.Legs || 0, maxValue),
+    Glutes: Math.min(chartData?.Glutes || 0, maxValue),
+    Core: Math.min(chartData?.Core || 0, maxValue),
   };
 
   return (

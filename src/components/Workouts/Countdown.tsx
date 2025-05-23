@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { Dispatch, FC, SetStateAction } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animateable, {
@@ -7,6 +7,7 @@ import Animateable, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import { TimerProps } from "../../../types/template";
 
 export const timeStringToSeconds = (time: string): number => {
   const parts = time.split(":").map(Number);
@@ -15,10 +16,11 @@ export const timeStringToSeconds = (time: string): number => {
     : parts[0] * 60 + parts[1];
 };
 
-export const Countdown: FC<{ duration: number; timerKey: number }> = ({
-  duration,
-  timerKey,
-}) => {
+export const Countdown: FC<{
+  duration: number;
+  timerKey: number;
+  setTimerKey: Dispatch<SetStateAction<TimerProps>>;
+}> = ({ duration, timerKey, setTimerKey }) => {
   const translateX = useSharedValue(100);
   const translateY = useSharedValue(100);
 
@@ -77,7 +79,7 @@ export const Countdown: FC<{ duration: number; timerKey: number }> = ({
           {({ remainingTime, color }) => {
             return remainingTime ? (
               <View className="flex-column items-center justify-center">
-                {remainingTime < 4 && (
+                {remainingTime < 15 && (
                   <Text style={{ color }} className="font-bold text-xl">
                     Get Ready!
                   </Text>
@@ -96,6 +98,25 @@ export const Countdown: FC<{ duration: number; timerKey: number }> = ({
             );
           }}
         </CountdownCircleTimer>
+        <View className="absolute bottom-[-10px] w-full flex-row justify-around mt-4 ">
+          <TouchableOpacity
+            onPress={() =>
+              setTimerKey({ key: timerKey++, duration: duration - 10 })
+            }
+            className="w-14 h-14 rounded-full border-[6px] border-[#A30000] bg-white justify-center items-center"
+          >
+            <Text className="text-l font-bold text-[#A30000] ">-10s</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() =>
+              setTimerKey({ key: timerKey++, duration: duration + 10 })
+            }
+            className="w-14 h-14 rounded-full border-[6px] border-[#004777] bg-white justify-center items-center"
+          >
+            <Text className="text-l font-bold text-[#004777]">+10s</Text>
+          </TouchableOpacity>
+        </View>
       </Animateable.View>
     </GestureDetector>
   );
