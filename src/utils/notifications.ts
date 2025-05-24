@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
 
@@ -39,28 +38,20 @@ export const registerForPushNotifications = async () => {
   return (await Notifications.getExpoPushTokenAsync()).data;
 };
 
-const cancelExistingNotification = async () => {
-  const existingNotificationId = await AsyncStorage.getItem("notificationId");
-  if (existingNotificationId) {
-    Notifications.cancelScheduledNotificationAsync(existingNotificationId);
-    AsyncStorage.removeItem("notificationId");
-  }
-};
-
 export const schedulePushNotification = async (
   scheduledTime: number,
   exerciseName: string
 ): Promise<void> => {
-  await cancelExistingNotification();
-  const notificationId: string = await Notifications.scheduleNotificationAsync({
+  await Notifications.cancelAllScheduledNotificationsAsync();
+  Notifications.scheduleNotificationAsync({
     content: {
       title: "⏳ Rest’s Over!",
       body: `Time to smash your ${exerciseName}! 💪`,
       sound: "default", // todo get cool sound from an asset
+      data: { exerciseName },
     },
     trigger: new Date(
       Date.now() + scheduledTime
     ) as unknown as Notifications.DateTriggerInput,
   });
-  AsyncStorage.setItem("notificationId", notificationId);
 };

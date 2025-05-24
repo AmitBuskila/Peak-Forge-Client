@@ -8,6 +8,8 @@ import Animateable, {
   withSpring,
 } from "react-native-reanimated";
 import { TimerProps } from "../../../types/template";
+import { schedulePushNotification } from "../../utils/notifications";
+import * as Notifications from "expo-notifications";
 
 export const timeStringToSeconds = (time: string): number => {
   const parts = time.split(":").map(Number);
@@ -100,18 +102,33 @@ export const Countdown: FC<{
         </CountdownCircleTimer>
         <View className="absolute bottom-[-10px] w-full flex-row justify-around mt-4 ">
           <TouchableOpacity
-            onPress={() =>
-              setTimerKey({ key: timerKey++, duration: duration - 10 })
-            }
+            onPress={() => {
+              const newDuration: number = duration - 10;
+              if (newDuration >= 0) {
+                Notifications.getAllScheduledNotificationsAsync().then((res) =>
+                  schedulePushNotification(
+                    newDuration * 1000,
+                    res[0].content?.data?.exerciseName as string
+                  )
+                );
+                setTimerKey({ key: timerKey++, duration: newDuration });
+              }
+            }}
             className="w-14 h-14 rounded-full border-[6px] border-[#A30000] bg-white justify-center items-center"
           >
             <Text className="text-l font-bold text-[#A30000] ">-10s</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() =>
-              setTimerKey({ key: timerKey++, duration: duration + 10 })
-            }
+            onPress={() => {
+              Notifications.getAllScheduledNotificationsAsync().then((res) =>
+                schedulePushNotification(
+                  (duration + 10) * 1000,
+                  res[0].content?.data?.exerciseName as string
+                )
+              );
+              setTimerKey({ key: timerKey++, duration: duration + 10 });
+            }}
             className="w-14 h-14 rounded-full border-[6px] border-[#004777] bg-white justify-center items-center"
           >
             <Text className="text-l font-bold text-[#004777]">+10s</Text>
