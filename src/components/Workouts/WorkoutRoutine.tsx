@@ -50,7 +50,9 @@ export const WorkoutRoutine: FC<{ template?: Template }> = ({ template }) => {
               />
             </View>
 
-            <SetList isWorkout={!!template} exerciseIndex={exerciseIndex} />
+            <View className="mx-2">
+              <SetList isWorkout={!!template} exerciseIndex={exerciseIndex} />
+            </View>
           </Animatable.View>
         </View>
       )}

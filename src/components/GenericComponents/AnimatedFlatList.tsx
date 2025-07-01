@@ -1,7 +1,14 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React from "react";
-import { FlatList, FlatListProps, ListRenderItemInfo } from "react-native";
+import {
+  Alert,
+  FlatList,
+  FlatListProps,
+  ListRenderItemInfo,
+  View,
+} from "react-native";
 import * as Animatable from "react-native-animatable";
+import { useAppContext } from "../../contexts/AppContext.context";
 import { EmptyElement } from "./EmptyElement";
 
 interface AnimatedFlatListProps<T>
@@ -58,6 +65,7 @@ export const AnimatedFlatList = <T extends { id: number }>({
 
   const [activeItem, setActiveItem] = React.useState(data[0]);
   const navigation = useNavigation<NavigationProp<string>>();
+  const [activeWorkout] = useAppContext().activeWorkout;
 
   return (
     <FlatList
@@ -74,11 +82,20 @@ export const AnimatedFlatList = <T extends { id: number }>({
         }
       }}
       ListFooterComponent={
-        <EmptyElement
-          height={200}
-          width={35}
-          handlePress={() => navigation.navigate("Create Template")}
-        />
+        <View className="mt-4">
+          <EmptyElement
+            height={200}
+            width={35}
+            handlePress={() =>
+              !activeWorkout
+                ? navigation.navigate("Create Template")
+                : Alert.alert(
+                    "You have an active workout in progress",
+                    "Please finish it before creating a new template."
+                  )
+            }
+          />
+        </View>
       }
     />
   );

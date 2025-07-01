@@ -87,6 +87,7 @@ export const TimerPicker = () => {
         }}
         modalTitle="Set Timer"
         onCancel={() => setShowPicker(false)}
+        secondInterval={10}
         closeOnOverlayPress
         Audio={Audio}
         LinearGradient={LinearGradient}

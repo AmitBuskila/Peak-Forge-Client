@@ -16,7 +16,7 @@ export const WeeklyVolumeChart: FC = () => {
   );
   const [fromDate, setFromDate] = useState<Moment>(moment().startOf("week"));
   const [toDate, setToDate] = useState<Moment>(moment().endOf("week"));
-  const maxValue: number = 50;
+  const maxValue: number = 25;
 
   const isNextWeekDisabled: boolean = moment(toDate)
     .add(1, "week")
@@ -98,7 +98,7 @@ export const WeeklyVolumeChart: FC = () => {
         }}
         labelsPositionOffset={3.8}
         chartSize={320}
-        maxValue={50}
+        maxValue={maxValue}
         isAnimated
         polygonConfig={{
           showGradient: true,

@@ -29,6 +29,7 @@ import {
   formatTemplateToServer,
   formatWorkoutToServer,
 } from "../utils/formatActions";
+import { View } from "react-native";
 
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
@@ -99,10 +100,12 @@ export const ActiveWorkout = () => {
           >
             <WorkoutRoutine template={activeWorkout as Template} />
           </KeyboardAvoidingView>
-          <CustomButton
-            title="Finish Workout"
-            handlePress={handleSubmit(handleFinishWorkout)}
-          />
+          <View className="mt-2">
+            <CustomButton
+              title="Finish Workout"
+              handlePress={handleSubmit(handleFinishWorkout)}
+            />
+          </View>
         </BottomSheetScrollView>
       </BottomSheetModal>
     </BottomSheetModalProvider>
