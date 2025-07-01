@@ -1,3 +1,4 @@
+import { BottomSheetTextInput, BottomSheetView } from "@gorhom/bottom-sheet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Haptics from "expo-haptics";
 import React, { FC } from "react";
@@ -9,13 +10,14 @@ import {
   FormWorkoutSet,
   useWorkoutFormContext,
 } from "../../contexts/WorkoutForm.context";
-import { timeStringToSeconds } from "../Workouts/Countdown";
 import { schedulePushNotification } from "../../utils/notifications";
+import { timeStringToSeconds } from "../Workouts/Countdown";
 
 export const NumericInput: FC<{
   fieldType: Path<FormWorkoutSet>;
   exerciseIndex: number;
   setIndex: number;
+
   float?: boolean;
   displayIndex?: number;
 }> = ({
@@ -26,7 +28,8 @@ export const NumericInput: FC<{
   displayIndex = -1,
 }) => {
   const { control, setValue, getValues } = useWorkoutFormContext().form;
-  const [isMainSetType, setIsMainSetType] = useWorkoutFormContext().isMainSet;
+  const [isMainSetType] = useWorkoutFormContext().isMainSet;
+  const bottomSheetRef = useWorkoutFormContext().activeWorkoutModalRef;
   const exercisesState: FormExercise[] = useWatch({
     control,
     name: `exercises`,
@@ -35,6 +38,12 @@ export const NumericInput: FC<{
   const currentSets = exercisesState[exerciseIndex].sets.filter(
     (set) => set.isSecondary === !isMainSetType
   );
+
+  const TextInputComponent = bottomSheetRef.current
+    ? BottomSheetTextInput
+    : TextInput;
+
+  const ViewComponent = bottomSheetRef.current ? View : BottomSheetView;
 
   const handleLogRepsDone = (value: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
@@ -64,27 +73,30 @@ export const NumericInput: FC<{
   };
 
   return (
-    <View>
+    <ViewComponent>
       {exercisesState[exerciseIndex].sets[setIndex] && (
-        <TextInput
-          value={exercisesState[exerciseIndex].sets[setIndex][
-            fieldType
-          ]?.toString()}
-          onChangeText={(value) => {
-            setValue(
-              `exercises.${exerciseIndex}.sets.${setIndex}.${fieldType}`,
-              value
-            );
-            if (fieldType === "done") {
-              handleLogRepsDone(value);
-            }
-          }}
-          maxLength={5}
-          keyboardType={float ? "decimal-pad" : "number-pad"}
-          className={`border-2 border-${fieldType === "done" ? "secondary" : "black"}-200  bg-primary rounded-xl
-           focus:border-secondary items-center text-center text-gray-100 w-16 py-1.5`}
-        />
+        <ViewComponent>
+          <TextInputComponent
+            value={exercisesState[exerciseIndex].sets[setIndex][
+              fieldType
+            ]?.toString()}
+            onChangeText={(value) => {
+              setValue(
+                `exercises.${exerciseIndex}.sets.${setIndex}.${fieldType}`,
+                value
+              );
+              if (fieldType === "done") {
+                handleLogRepsDone(value);
+              }
+            }}
+            maxLength={5}
+            inputAccessoryViewID={fieldType === "done" ? "fuck" : "fuck"}
+            keyboardType={float ? "decimal-pad" : "number-pad"}
+            className={`border-2 border-${fieldType === "done" ? "secondary" : "black"}-200  bg-primary rounded-xl
+              focus:border-secondary items-center text-center text-gray-100 w-16 py-1.5`}
+          />
+        </ViewComponent>
       )}
-    </View>
+    </ViewComponent>
   );
 };

@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
-import { NumericInput } from "../../GenericComponents/NumericInput";
 import { FormWorkoutSet } from "../../../contexts/WorkoutForm.context";
+import { NumericInput } from "../../GenericComponents/NumericInput";
 import { getFlexResolver } from "./utils";
 
 export const SetItem = ({

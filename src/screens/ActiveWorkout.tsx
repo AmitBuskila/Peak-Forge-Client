@@ -6,7 +6,14 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { pick } from "lodash";
-import { Alert, View } from "react-native";
+import {
+  Alert,
+  Button,
+  InputAccessoryView,
+  Platform,
+  View,
+  Text,
+} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { useSelector } from "react-redux";
@@ -37,7 +44,7 @@ export const ActiveWorkout = () => {
   const [updateTemplate] = useUpdateTemplateMutation();
   const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
   const { handleSubmit, reset } = useWorkoutFormContext().form;
-  const snapPoints: string[] = ["8%", "80%", "100%"];
+  const snapPoints: string[] = ["8%", "100%"];
   const [timer, setTimer] = useAppContext().timer;
   const user = useSelector(
     ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
@@ -61,7 +68,6 @@ export const ActiveWorkout = () => {
     );
   };
 
-  // todo make modal height scrollable with keyboard
   return (
     <BottomSheetModalProvider>
       {!!timer.key && (
@@ -71,6 +77,7 @@ export const ActiveWorkout = () => {
           setTimerKey={setTimer}
         />
       )}
+
       <BottomSheetModal
         ref={modalRef}
         index={1}
@@ -89,10 +96,20 @@ export const ActiveWorkout = () => {
         handleComponent={CustomHandle}
       >
         <BottomSheetScrollView>
+          <InputAccessoryView nativeID={"fuck"}>
+            <View
+              style={{
+                backgroundColor: "red",
+                width: "100%",
+              }}
+            >
+              <Button onPress={() => {}} title="Move to next" />
+            </View>
+          </InputAccessoryView>
           <KeyboardAwareScrollView
             enableOnAndroid={true}
             keyboardShouldPersistTaps="always"
-            keyboardOpeningTime={300}
+            keyboardOpeningTime={Math.pow(999999, 2)} // solves internal bug
             extraHeight={20}
           >
             <WorkoutRoutine template={activeWorkout as Template} />
