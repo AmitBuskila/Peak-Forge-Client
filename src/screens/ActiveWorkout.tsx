@@ -6,7 +6,8 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { pick } from "lodash";
-import { Alert, KeyboardAvoidingView } from "react-native";
+import { Alert, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { useSelector } from "react-redux";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
@@ -29,14 +30,12 @@ import {
   formatTemplateToServer,
   formatWorkoutToServer,
 } from "../utils/formatActions";
-import { View } from "react-native";
 
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
   const [addWorkout] = useAddWorkoutMutation();
   const [updateTemplate] = useUpdateTemplateMutation();
   const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
-  const [currentExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
   const { handleSubmit, reset } = useWorkoutFormContext().form;
   const snapPoints: string[] = ["8%", "80%", "100%"];
   const [timer, setTimer] = useAppContext().timer;
@@ -90,34 +89,32 @@ export const ActiveWorkout = () => {
         handleComponent={CustomHandle}
       >
         <BottomSheetScrollView>
-          <KeyboardAvoidingView
-            behavior={"position"}
-            keyboardVerticalOffset={
-              (activeWorkout?.workoutExercises[currentExerciseIndex]?.sets
-                .length || 1) * 30
-            }
-            enabled
+          <KeyboardAwareScrollView
+            enableOnAndroid={true}
+            keyboardShouldPersistTaps="always"
+            keyboardOpeningTime={300}
+            extraHeight={20}
           >
             <WorkoutRoutine template={activeWorkout as Template} />
-          </KeyboardAvoidingView>
-          <View className="mt-2">
-            <CustomButton
-              title="Finish Workout"
-              handlePress={handleSubmit((data) =>
-                Alert.alert("Finish Workout", "Are you sure?", [
-                  {
-                    text: "Cancel",
-                    style: "cancel",
-                  },
-                  {
-                    text: "Confirm",
-                    isPreferred: true,
-                    onPress: () => handleFinishWorkout(data),
-                  },
-                ])
-              )}
-            />
-          </View>
+            <View className="mt-2">
+              <CustomButton
+                title="Finish Workout"
+                handlePress={handleSubmit((data) =>
+                  Alert.alert("Finish Workout", "Are you sure?", [
+                    {
+                      text: "Cancel",
+                      style: "cancel",
+                    },
+                    {
+                      text: "Confirm",
+                      isPreferred: true,
+                      onPress: () => handleFinishWorkout(data),
+                    },
+                  ])
+                )}
+              />
+            </View>
+          </KeyboardAwareScrollView>
         </BottomSheetScrollView>
       </BottomSheetModal>
     </BottomSheetModalProvider>
