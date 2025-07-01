@@ -6,7 +6,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { pick } from "lodash";
-import { KeyboardAvoidingView } from "react-native";
+import { Alert, KeyboardAvoidingView } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { useSelector } from "react-redux";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
@@ -103,7 +103,19 @@ export const ActiveWorkout = () => {
           <View className="mt-2">
             <CustomButton
               title="Finish Workout"
-              handlePress={handleSubmit(handleFinishWorkout)}
+              handlePress={handleSubmit((data) =>
+                Alert.alert("Finish Workout", "Are you sure?", [
+                  {
+                    text: "Cancel",
+                    style: "cancel",
+                  },
+                  {
+                    text: "Confirm",
+                    isPreferred: true,
+                    onPress: () => handleFinishWorkout(data),
+                  },
+                ])
+              )}
             />
           </View>
         </BottomSheetScrollView>
