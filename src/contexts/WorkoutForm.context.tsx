@@ -2,6 +2,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, {
   createContext,
   Dispatch,
+  JSX,
   RefObject,
   SetStateAction,
   useContext,
@@ -10,6 +11,9 @@ import React, {
   useState,
 } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
+import { TextInput } from "react-native";
+import { ICarouselInstance } from "react-native-reanimated-carousel";
+import { useTextInputRefsMatrix } from "../hooks/textInputRefsMatrix.hook";
 
 export interface FormWorkoutSet {
   key: string;
@@ -37,11 +41,19 @@ export interface FormValues {
   exercises: FormExercise[];
 }
 
+export interface TextInputRef {
+  ref: RefObject<TextInput | null>;
+  isReady: boolean;
+}
+
 const Context = createContext<{
   form: UseFormReturn<FormValues>;
   currExerciseIndex: [number, Dispatch<SetStateAction<number>>];
-  activeWorkoutModalRef: RefObject<BottomSheetModal>;
+  currSetIndex: [number, Dispatch<SetStateAction<number>>];
+  activeWorkoutModalRef: RefObject<BottomSheetModal | null>;
+  carouselRef: RefObject<ICarouselInstance | null>;
   isMainSet: [number, Dispatch<SetStateAction<number>>];
+  textInputRefs: TextInputRef[][];
 } | null>(null);
 
 const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
@@ -49,8 +61,11 @@ const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
     defaultValues: { totalTime: 0, exercises: [] },
   });
   const [currExerciseIndex, setCurrExerciseIndex] = useState<number>(0);
+  const [currSetIndex, setCurrSetIndex] = useState<number>(-2);
   const activeWorkoutModalRef = useRef<BottomSheetModal>(null);
+  const carouselRef = useRef<ICarouselInstance | null>(null);
   const [isMainSetType, setIsMainSetType] = useState<number>(1);
+  const textInputRefs: TextInputRef[][] = useTextInputRefsMatrix(form);
 
   const contextValue = useMemo(
     () => ({
@@ -59,13 +74,27 @@ const WorkoutFormProvider = ({ children }: { children: JSX.Element }) => {
         number,
         Dispatch<SetStateAction<number>>,
       ],
+      currSetIndex: [currSetIndex, setCurrSetIndex] as [
+        number,
+        Dispatch<SetStateAction<number>>,
+      ],
       activeWorkoutModalRef,
+      carouselRef,
       isMainSet: [isMainSetType, setIsMainSetType] as [
         number,
         Dispatch<SetStateAction<number>>,
       ],
+      textInputRefs,
     }),
-    [form, currExerciseIndex, activeWorkoutModalRef, isMainSetType]
+    [
+      form,
+      currExerciseIndex,
+      currSetIndex,
+      activeWorkoutModalRef,
+      isMainSetType,
+      textInputRefs,
+      carouselRef,
+    ]
   );
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;

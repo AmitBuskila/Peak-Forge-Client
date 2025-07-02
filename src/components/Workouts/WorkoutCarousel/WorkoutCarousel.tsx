@@ -23,8 +23,11 @@ export const WorkoutCarousel: FC<{ workout?: Workout }> = ({ workout }) => {
   const { control } = useWorkoutFormContext().form;
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
   const [_, setCurrExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
+  const carouselRef = useWorkoutFormContext().carouselRef;
   const modalRef = useAppContext().activeWorkoutModalRef;
   const [isMainSetType, setIsMainSetType] = useWorkoutFormContext().isMainSet;
+  const [currSetIndex, setCurrSetIndex] = useWorkoutFormContext().currSetIndex;
+
   const { append, fields } = useFieldArray({
     control,
     name: "exercises",
@@ -52,6 +55,7 @@ export const WorkoutCarousel: FC<{ workout?: Workout }> = ({ workout }) => {
   return (
     <View>
       <Carousel
+        ref={carouselRef}
         width={screenWidth}
         style={{ minHeight: 265 }}
         panGestureHandlerProps={{
@@ -61,6 +65,7 @@ export const WorkoutCarousel: FC<{ workout?: Workout }> = ({ workout }) => {
         loop={false}
         scrollAnimationDuration={1000}
         onSnapToItem={(index) => {
+          setCurrSetIndex(0);
           setCurrExerciseIndex(index);
           setIsMainSetType(
             fields[index]?.sets?.some((set) => set.isSecondary && set.done)

@@ -6,14 +6,15 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { pick } from "lodash";
-import { Alert, Button, View } from "react-native";
-import { KeyboardAccessoryView } from "react-native-keyboard-accessory";
+import { Alert, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { useSelector } from "react-redux";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
 import { CustomHandle } from "../components/WorkoutModal/CustomHandle";
 import { Countdown } from "../components/Workouts/Countdown";
+import { KeyboardAccessory } from "../components/Workouts/WorkoutCarousel/KeyboardAccessory";
 import { WorkoutRoutine } from "../components/Workouts/WorkoutRoutine";
 import { useAppContext } from "../contexts/AppContext.context";
 import {
@@ -31,7 +32,6 @@ import {
   formatTemplateToServer,
   formatWorkoutToServer,
 } from "../utils/formatActions";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
@@ -73,12 +73,7 @@ export const ActiveWorkout = () => {
           setTimerKey={setTimer}
         />
       )}
-      <KeyboardAccessoryView>
-        <View className="z-10 bg-[#232533]">
-          <Button title="Send" onPress={() => console.log("Sent")} />
-        </View>
-      </KeyboardAccessoryView>
-
+      <KeyboardAccessory />
       <BottomSheetModal
         ref={modalRef}
         index={1}

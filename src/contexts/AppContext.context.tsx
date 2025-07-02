@@ -1,5 +1,5 @@
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import React, {
+import {
   createContext,
   Dispatch,
   JSX,
@@ -10,18 +10,18 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Template } from "../entities/template.entity";
 import { TimerProps } from "../../types/template";
+import { Template } from "../entities/template.entity";
 
 const Context = createContext<{
   activeWorkout: [Template | null, Dispatch<SetStateAction<Template | null>>];
-  activeWorkoutModalRef: RefObject<BottomSheetModal>;
+  activeWorkoutModalRef: RefObject<BottomSheetModal | null>;
   timer: [TimerProps, Dispatch<SetStateAction<TimerProps>>];
 } | null>(null);
 
 const AppProvider = ({ children }: { children: JSX.Element }) => {
   const [activeWorkout, setActiveWorkout] = useState<Template | null>(null);
-  const activeWorkoutModalRef = useRef<BottomSheetModal>(null);
+  const activeWorkoutModalRef = useRef<BottomSheetModal | null>(null);
   const [timer, setTimer] = useState<TimerProps>({
     key: 0,
     duration: 0,

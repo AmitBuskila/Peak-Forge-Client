@@ -1,4 +1,3 @@
-import { BottomSheetTextInput, BottomSheetView } from "@gorhom/bottom-sheet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Haptics from "expo-haptics";
 import React, { FC } from "react";
@@ -29,19 +28,18 @@ export const NumericInput: FC<{
 }) => {
   const { control, setValue, getValues } = useWorkoutFormContext().form;
   const [isMainSetType] = useWorkoutFormContext().isMainSet;
-  const bottomSheetRef = useWorkoutFormContext().activeWorkoutModalRef;
+  const textInputRef =
+    useWorkoutFormContext().textInputRefs[exerciseIndex][setIndex];
   const exercisesState: FormExercise[] = useWatch({
     control,
     name: `exercises`,
   });
-  const [_, setTimer] = useAppContext().timer;
+  const [__, setTimer] = useAppContext().timer;
   const currentSets = exercisesState[exerciseIndex].sets.filter(
     (set) => set.isSecondary === !isMainSetType
   );
 
-  const TextInputComponent = bottomSheetRef.current
-    ? BottomSheetTextInput
-    : TextInput;
+  const [_, setCurrSetIndex] = useWorkoutFormContext().currSetIndex;
 
   const handleLogRepsDone = (value: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
@@ -75,6 +73,12 @@ export const NumericInput: FC<{
       {exercisesState[exerciseIndex].sets[setIndex] && (
         <View>
           <TextInput
+            ref={(node) => {
+              textInputRef.isReady = !!node;
+              textInputRef.ref.current = node;
+            }}
+            onFocus={() => setCurrSetIndex(setIndex)}
+            onBlur={() => setCurrSetIndex(-2)}
             value={exercisesState[exerciseIndex].sets[setIndex][
               fieldType
             ]?.toString()}
@@ -88,7 +92,6 @@ export const NumericInput: FC<{
               }
             }}
             maxLength={5}
-            inputAccessoryViewID={fieldType === "done" ? "fuck" : "fuck"}
             keyboardType={float ? "decimal-pad" : "number-pad"}
             className={`border-2 border-${fieldType === "done" ? "secondary" : "black"}-200  bg-primary rounded-xl
               focus:border-secondary items-center text-center text-gray-100 w-16 py-1.5`}
