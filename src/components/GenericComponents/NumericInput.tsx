@@ -43,8 +43,6 @@ export const NumericInput: FC<{
     ? BottomSheetTextInput
     : TextInput;
 
-  const ViewComponent = bottomSheetRef.current ? View : BottomSheetView;
-
   const handleLogRepsDone = (value: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     if (value) {
@@ -73,10 +71,10 @@ export const NumericInput: FC<{
   };
 
   return (
-    <ViewComponent>
+    <View>
       {exercisesState[exerciseIndex].sets[setIndex] && (
-        <ViewComponent>
-          <TextInputComponent
+        <View>
+          <TextInput
             value={exercisesState[exerciseIndex].sets[setIndex][
               fieldType
             ]?.toString()}
@@ -95,8 +93,8 @@ export const NumericInput: FC<{
             className={`border-2 border-${fieldType === "done" ? "secondary" : "black"}-200  bg-primary rounded-xl
               focus:border-secondary items-center text-center text-gray-100 w-16 py-1.5`}
           />
-        </ViewComponent>
+        </View>
       )}
-    </ViewComponent>
+    </View>
   );
 };

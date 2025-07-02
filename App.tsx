@@ -1,10 +1,11 @@
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
-import { SafeAreaView } from "react-native";
+import { useEffect } from "react";
+import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MenuProvider } from "react-native-popup-menu";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import "./global.css";
 import { AppProvider } from "./src/contexts/AppContext.context";
@@ -15,7 +16,6 @@ import { store } from "./src/store";
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  const [barColor, setBarColor] = useState("#161622");
   const [fontsLoaded, error] = useFonts({
     "Poppins-Black": require("./assets/fonts/Poppins-Black.ttf"),
     "Poppins-Bold": require("./assets/fonts/Poppins-Bold.ttf"),
@@ -30,7 +30,6 @@ export default function App() {
 
   useEffect(() => {
     if (fontsLoaded) {
-      setBarColor("primary");
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
@@ -40,20 +39,21 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView className={`bg-${barColor} h-full color-white`}>
-      <Provider store={store}>
-        <AppProvider>
-          <MenuProvider>
-            <GestureHandlerRootView>
-              <WorkoutFormProvider>
-                <Navigation />
-              </WorkoutFormProvider>
-            </GestureHandlerRootView>
-          </MenuProvider>
-        </AppProvider>
-      </Provider>
-
-      <StatusBar backgroundColor={barColor} style="light" />
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <View className={`bg-primary h-full`}>
+        <Provider store={store}>
+          <AppProvider>
+            <MenuProvider>
+              <GestureHandlerRootView>
+                <WorkoutFormProvider>
+                  <Navigation />
+                </WorkoutFormProvider>
+              </GestureHandlerRootView>
+            </MenuProvider>
+          </AppProvider>
+        </Provider>
+        <StatusBar backgroundColor={"#161622"} style="light" />
+      </View>
+    </SafeAreaProvider>
   );
 }

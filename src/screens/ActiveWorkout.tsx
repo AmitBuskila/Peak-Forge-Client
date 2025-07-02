@@ -6,14 +6,8 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { pick } from "lodash";
-import {
-  Alert,
-  Button,
-  InputAccessoryView,
-  Platform,
-  View,
-  Text,
-} from "react-native";
+import { Alert, Button, View } from "react-native";
+import { KeyboardAccessoryView } from "react-native-keyboard-accessory";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { useSelector } from "react-redux";
@@ -37,6 +31,7 @@ import {
   formatTemplateToServer,
   formatWorkoutToServer,
 } from "../utils/formatActions";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const ActiveWorkout = () => {
   const modalRef = useAppContext().activeWorkoutModalRef;
@@ -44,7 +39,7 @@ export const ActiveWorkout = () => {
   const [updateTemplate] = useUpdateTemplateMutation();
   const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
   const { handleSubmit, reset } = useWorkoutFormContext().form;
-  const snapPoints: string[] = ["8%", "100%"];
+  const snapPoints: string[] = ["8%", "95%"];
   const [timer, setTimer] = useAppContext().timer;
   const user = useSelector(
     ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
@@ -52,6 +47,7 @@ export const ActiveWorkout = () => {
   const navigation = useNavigation<NavigationProp<string>>();
   navigation.getState()?.routes[navigation.getState().index].state?.index;
   useLoadUnsavedData();
+  const insets = useSafeAreaInsets();
 
   const handleFinishWorkout = (data: FormValues) => {
     updateTemplate({
@@ -77,6 +73,11 @@ export const ActiveWorkout = () => {
           setTimerKey={setTimer}
         />
       )}
+      <KeyboardAccessoryView bumperHeight={100}>
+        <View className="z-10 bg-[#232533]">
+          <Button title="Send" onPress={() => console.log("Sent")} />
+        </View>
+      </KeyboardAccessoryView>
 
       <BottomSheetModal
         ref={modalRef}
@@ -85,7 +86,7 @@ export const ActiveWorkout = () => {
         enablePanDownToClose={false}
         enableContentPanningGesture={false}
         backgroundStyle={{ backgroundColor: "#232533" }}
-        bottomInset={getStatusBarHeight() + 2}
+        bottomInset={insets.bottom + getStatusBarHeight() + 2}
         onDismiss={() => {
           setTimer({ key: 0, duration: 0 });
           setActiveWorkout(null);
@@ -96,16 +97,6 @@ export const ActiveWorkout = () => {
         handleComponent={CustomHandle}
       >
         <BottomSheetScrollView>
-          <InputAccessoryView nativeID={"fuck"}>
-            <View
-              style={{
-                backgroundColor: "red",
-                width: "100%",
-              }}
-            >
-              <Button onPress={() => {}} title="Move to next" />
-            </View>
-          </InputAccessoryView>
           <KeyboardAwareScrollView
             enableOnAndroid={true}
             keyboardShouldPersistTaps="always"
