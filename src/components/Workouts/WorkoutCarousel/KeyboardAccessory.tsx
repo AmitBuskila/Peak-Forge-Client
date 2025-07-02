@@ -2,6 +2,7 @@ import { FC, useEffect } from "react";
 import { Button, Keyboard, View } from "react-native";
 import { KeyboardAccessoryView } from "react-native-keyboard-accessory";
 import { useWorkoutFormContext } from "../../../contexts/WorkoutForm.context";
+import { useState } from "react";
 
 export const KeyboardAccessory: FC = () => {
   const carouselRef = useWorkoutFormContext().carouselRef;
@@ -9,17 +10,24 @@ export const KeyboardAccessory: FC = () => {
   const [currSetIndex] = useWorkoutFormContext().currSetIndex;
   const [currExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
   const nextExerciseTextInput = textInputRefs?.[currExerciseIndex]?.[0];
+  const [isProgrammedScroll, setIsProgrammedScroll] = useState<boolean>(true);
 
-  // todo trigger it only on ref driven scroll,(not user driven)
   useEffect(() => {
     if (
       currSetIndex === 0 &&
       !!nextExerciseTextInput &&
-      nextExerciseTextInput?.isReady
+      nextExerciseTextInput?.isReady &&
+      isProgrammedScroll
     ) {
       nextExerciseTextInput?.ref?.current?.focus();
+      setIsProgrammedScroll(false);
     }
-  }, [currExerciseIndex, nextExerciseTextInput, currSetIndex]);
+  }, [
+    currExerciseIndex,
+    nextExerciseTextInput,
+    currSetIndex,
+    isProgrammedScroll,
+  ]);
 
   return (
     <KeyboardAccessoryView>
@@ -36,6 +44,7 @@ export const KeyboardAccessory: FC = () => {
             } else {
               carouselRef?.current?.next();
               Keyboard.dismiss();
+              setTimeout(() => setIsProgrammedScroll(true), 1500);
             }
           }}
         />
