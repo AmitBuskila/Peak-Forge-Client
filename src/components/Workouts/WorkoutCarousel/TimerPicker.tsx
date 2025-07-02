@@ -5,11 +5,17 @@ import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { TimerPickerModal } from "react-native-timer-picker";
 import { useWorkoutFormContext } from "../../../contexts/WorkoutForm.context";
+import {
+  formatHMSToSeconds,
+  formatSecondsToHMS,
+  timeStringToSeconds,
+} from "../../../utils/timeFormats";
 
 export const TimerPicker = () => {
   const [showPicker, setShowPicker] = useState<boolean>(false);
-  const { setValue, getValues } = useWorkoutFormContext().form;
+  const { setValue, getValues, control } = useWorkoutFormContext().form;
   const [currExerciseIndex] = useWorkoutFormContext().currExerciseIndex;
+
   const currentExerciseTimer: string | null =
     getValues(`exercises.${currExerciseIndex}.timer`) || null;
 
@@ -21,29 +27,9 @@ export const TimerPicker = () => {
     setAlarmString(currentExerciseTimer);
   }, [currExerciseIndex]);
 
-  const formatTime = ({
-    hours,
-    minutes,
-    seconds,
-  }: {
-    hours?: number;
-    minutes?: number;
-    seconds?: number;
-  }) => {
-    const timeParts = [];
-
-    if (hours) {
-      timeParts.push(hours.toString().padStart(2, "0"));
-    }
-    if (minutes !== undefined) {
-      timeParts.push(minutes.toString().padStart(2, "0"));
-    }
-    if (seconds !== undefined) {
-      timeParts.push(seconds.toString().padStart(2, "0"));
-    }
-
-    return timeParts.join(":");
-  };
+  const defaultValues = formatSecondsToHMS(
+    timeStringToSeconds(alarmString || "01:00")
+  );
 
   return (
     <View className="w-1/2">
@@ -74,14 +60,16 @@ export const TimerPicker = () => {
         </View>
       </TouchableOpacity>
       <TimerPickerModal
+        initialValue={{
+          hours: defaultValues.hours,
+          minutes: defaultValues.minutes,
+          seconds: defaultValues.seconds,
+        }}
         visible={showPicker}
         setIsVisible={setShowPicker}
         onConfirm={(pickedDuration) => {
-          const formattedTime: string = formatTime(pickedDuration);
-          setValue(
-            `exercises.${currExerciseIndex}.timer`,
-            formatTime(pickedDuration)
-          );
+          const formattedTime: string = formatHMSToSeconds(pickedDuration);
+          setValue(`exercises.${currExerciseIndex}.timer`, formattedTime);
           setAlarmString(formattedTime);
           setShowPicker(false);
         }}

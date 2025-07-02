@@ -10,7 +10,7 @@ import {
   useWorkoutFormContext,
 } from "../../contexts/WorkoutForm.context";
 import { schedulePushNotification } from "../../utils/notifications";
-import { timeStringToSeconds } from "../Workouts/Countdown";
+import { timeStringToSeconds } from "../../utils/timeFormats";
 
 export const NumericInput: FC<{
   fieldType: Path<FormWorkoutSet>;

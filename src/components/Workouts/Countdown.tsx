@@ -11,13 +11,6 @@ import { TimerProps } from "../../../types/template";
 import { schedulePushNotification } from "../../utils/notifications";
 import * as Notifications from "expo-notifications";
 
-export const timeStringToSeconds = (time: string): number => {
-  const parts = time.split(":").map(Number);
-  return parts.length === 3
-    ? parts[0] * 3600 + parts[1] * 60 + parts[2]
-    : parts[0] * 60 + parts[1];
-};
-
 export const Countdown: FC<{
   duration: number;
   timerKey: number;
