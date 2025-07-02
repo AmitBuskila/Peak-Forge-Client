@@ -62,7 +62,7 @@ export const NumericInput: FC<{
           ? exerciseIndex + 1
           : exerciseIndex;
       schedulePushNotification(
-        restTime * 1000,
+        new Date().getTime() + restTime * 1000,
         exercisesState[nextExerciseIndex]?.label
       );
     }

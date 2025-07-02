@@ -56,6 +56,20 @@ export const Countdown: FC<{
     return `${minutes}:${seconds}`;
   };
 
+  const handleChangeDuration = (delta: number) => {
+    Notifications.getAllScheduledNotificationsAsync().then((res) => {
+      const newScheduledTime = new Date().getTime() + (delta + duration) * 1000;
+      setTimerKey({
+        key: timerKey++,
+        duration: duration + delta,
+      });
+      schedulePushNotification(
+        newScheduledTime,
+        res[0].content?.data?.exerciseName as string
+      );
+    });
+  };
+
   return (
     <GestureDetector gesture={panGesture}>
       <Animateable.View
@@ -74,7 +88,7 @@ export const Countdown: FC<{
           isPlaying
           duration={duration}
           colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-          colorsTime={[7, 5, 2, 0]}
+          colorsTime={[15, 10, 5, 0]}
           trailColor="#d9d9d9"
           isSmoothColorTransition
         >
@@ -102,33 +116,14 @@ export const Countdown: FC<{
         </CountdownCircleTimer>
         <View className="absolute bottom-[-10px] w-full flex-row justify-around mt-4 ">
           <TouchableOpacity
-            onPress={() => {
-              const newDuration: number = duration - 10;
-              if (newDuration >= 0) {
-                Notifications.getAllScheduledNotificationsAsync().then((res) =>
-                  schedulePushNotification(
-                    newDuration * 1000,
-                    res[0].content?.data?.exerciseName as string
-                  )
-                );
-                setTimerKey({ key: timerKey++, duration: newDuration });
-              }
-            }}
+            onPress={() => handleChangeDuration(-10)}
             className="w-14 h-14 rounded-full border-[6px] border-[#A30000] bg-white justify-center items-center"
           >
             <Text className="text-l font-bold text-[#A30000] ">-10s</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => {
-              Notifications.getAllScheduledNotificationsAsync().then((res) =>
-                schedulePushNotification(
-                  (duration + 10) * 1000,
-                  res[0].content?.data?.exerciseName as string
-                )
-              );
-              setTimerKey({ key: timerKey++, duration: duration + 10 });
-            }}
+            onPress={() => handleChangeDuration(10)}
             className="w-14 h-14 rounded-full border-[6px] border-[#004777] bg-white justify-center items-center"
           >
             <Text className="text-l font-bold text-[#004777]">+10s</Text>

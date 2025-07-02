@@ -51,7 +51,7 @@ export const schedulePushNotification = async (
       data: { exerciseName },
     },
     trigger: new Date(
-      Date.now() + scheduledTime
+      scheduledTime
     ) as unknown as Notifications.DateTriggerInput,
   });
 };
