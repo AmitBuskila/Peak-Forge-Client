@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { ScrollView, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import AnimatedFlatList from "../components/GenericComponents/AnimatedFlatList";
 import { WeeklyVolumeChart } from "../components/Statistics/WeeklyVolumeChart";
@@ -8,6 +7,7 @@ import { WorkoutTemplate } from "../components/Workouts/WorkoutTemplate";
 import { useFetchData } from "../hooks/fetchUserData.hook";
 import { useLoadUnsavedWorkout } from "../hooks/workout.hooks";
 import { UserSliceState } from "../store/slices/UserSlice";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export const HomeScreen: FC = () => {
   useFetchData();
@@ -17,8 +17,8 @@ export const HomeScreen: FC = () => {
   useLoadUnsavedWorkout(user);
 
   return (
-    <SafeAreaView>
-      <ScrollView className="bg-primary h-full">
+    <SafeAreaView className="bg-primary h-full">
+      <ScrollView>
         <View className="mt-3 px-4">
           <Text className="text-3xl font-pblack color-secondary-200">
             My Templates

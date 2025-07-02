@@ -5,6 +5,7 @@ import { Text, View } from "react-native";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
 import { FormField } from "../components/GenericComponents/FormField";
 import { useRegisterMutation } from "../store/apis/serverApi";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export interface SignUpFormValues {
   firstName: string;
@@ -45,7 +46,7 @@ export const SignUpScreen: FC = () => {
   };
 
   return (
-    <View className="bg-primary h-full">
+    <SafeAreaView className="bg-primary h-full">
       <View className="justify-center h-full w-[70vw] mx-auto">
         <FormField
           title={"First Name"}
@@ -111,6 +112,6 @@ export const SignUpScreen: FC = () => {
           />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };

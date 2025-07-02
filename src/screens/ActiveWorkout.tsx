@@ -39,7 +39,7 @@ export const ActiveWorkout = () => {
   const [updateTemplate] = useUpdateTemplateMutation();
   const [activeWorkout, setActiveWorkout] = useAppContext().activeWorkout;
   const { handleSubmit, reset } = useWorkoutFormContext().form;
-  const snapPoints: string[] = ["8%", "95%"];
+  const snapPoints: string[] = ["7%", "95%"];
   const [timer, setTimer] = useAppContext().timer;
   const user = useSelector(
     ({ userSlice }: { userSlice: UserSliceState }) => userSlice.user
@@ -73,7 +73,7 @@ export const ActiveWorkout = () => {
           setTimerKey={setTimer}
         />
       )}
-      <KeyboardAccessoryView bumperHeight={100}>
+      <KeyboardAccessoryView>
         <View className="z-10 bg-[#232533]">
           <Button title="Send" onPress={() => console.log("Sent")} />
         </View>

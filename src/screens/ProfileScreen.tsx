@@ -4,12 +4,13 @@ import { View } from "react-native";
 import { useDispatch } from "react-redux";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
 import { loginToken } from "../store/slices/UserSlice";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export const ProfileScreen: FC = () => {
   const dispatch = useDispatch();
 
   return (
-    <View className="bg-primary h-full">
+    <SafeAreaView className="bg-primary h-full">
       <CustomButton
         title="Sign out"
         handlePress={() => {
@@ -17,6 +18,6 @@ export const ProfileScreen: FC = () => {
           SecureStore.deleteItemAsync("USER_TOKEN");
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 };

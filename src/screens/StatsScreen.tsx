@@ -15,6 +15,7 @@ import {
   useLazyGetTemplateStatsQuery,
 } from "../store/apis/serverApi";
 import { UserSliceState } from "../store/slices/UserSlice";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export const Stats: FC = () => {
   const user = useSelector(
@@ -51,49 +52,55 @@ export const Stats: FC = () => {
   }, [selectedTemplate]);
 
   return (
-    <ScrollView className="bg-primary h-full">
-      <View className="mt-4">
-        <CustomSelectDropdown
-          options={[...(user?.templates || []), { name: "Specific Exercise" }]}
-          onSelect={(selectedItem) => {
-            if (selectedItem.name === "Specific Exercise") {
-              navigation.navigate("Exercises", {
-                onSelect: (exercise: Exercise) => setSelectedExercise(exercise),
-              });
-              setSelectedTemplate(null);
-            } else {
-              setSelectedTemplate(selectedItem as Template);
-              setSelectedExercise(null);
-            }
-          }}
-          selectedItem={selectedTemplate || selectedExercise}
-          placeholder="Select Routine Stats to view"
-          getLabel={(item) => item.name}
-        />
-      </View>
-      <View className="mt-4">
-        <CustomSelectDropdown
-          options={[
-            { name: "Weight" },
-            { name: "Volume" },
-            { name: "Weight & Reps" },
-          ]}
-          onSelect={(selectedItem) => {
-            setSelectedChartType(selectedItem);
-          }}
-          selectedItem={selectedChartType}
-          placeholder="Select Chart type"
-          getLabel={(item) => item.name}
-        />
-      </View>
-      {(exerciseData || templateData) &&
-        getChartsToDisplay(
-          selectedExercise,
-          selectedTemplate,
-          selectedChartType,
-          (selectedTemplate ? templateData : exerciseData)!,
-          isFetchingExercise || isFetchingTemplate
-        )}
-    </ScrollView>
+    <SafeAreaView className="bg-primary h-full">
+      <ScrollView>
+        <View className="mt-4">
+          <CustomSelectDropdown
+            options={[
+              ...(user?.templates || []),
+              { name: "Specific Exercise" },
+            ]}
+            onSelect={(selectedItem) => {
+              if (selectedItem.name === "Specific Exercise") {
+                navigation.navigate("Exercises", {
+                  onSelect: (exercise: Exercise) =>
+                    setSelectedExercise(exercise),
+                });
+                setSelectedTemplate(null);
+              } else {
+                setSelectedTemplate(selectedItem as Template);
+                setSelectedExercise(null);
+              }
+            }}
+            selectedItem={selectedTemplate || selectedExercise}
+            placeholder="Select Routine Stats to view"
+            getLabel={(item) => item.name}
+          />
+        </View>
+        <View className="mt-4">
+          <CustomSelectDropdown
+            options={[
+              { name: "Weight" },
+              { name: "Volume" },
+              { name: "Weight & Reps" },
+            ]}
+            onSelect={(selectedItem) => {
+              setSelectedChartType(selectedItem);
+            }}
+            selectedItem={selectedChartType}
+            placeholder="Select Chart type"
+            getLabel={(item) => item.name}
+          />
+        </View>
+        {(exerciseData || templateData) &&
+          getChartsToDisplay(
+            selectedExercise,
+            selectedTemplate,
+            selectedChartType,
+            (selectedTemplate ? templateData : exerciseData)!,
+            isFetchingExercise || isFetchingTemplate
+          )}
+      </ScrollView>
+    </SafeAreaView>
   );
 };

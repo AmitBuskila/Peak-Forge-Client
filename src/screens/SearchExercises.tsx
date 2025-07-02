@@ -20,6 +20,7 @@ import { Exercise as ExerciseEntity } from "../entities/exercise.entity";
 import { UserSliceState } from "../store/slices/UserSlice";
 import { ScrollView } from "react-native-gesture-handler";
 import { muscles } from "../../constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export const SearchExercisesScreen: FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -51,7 +52,7 @@ export const SearchExercisesScreen: FC = () => {
   };
 
   return (
-    <View className="bg-primary h-full">
+    <SafeAreaView className="bg-primary h-full">
       <SearchBar
         lightTheme={false}
         placeholder="Search here"
@@ -114,6 +115,6 @@ export const SearchExercisesScreen: FC = () => {
           disabled={!selectedExercise}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };

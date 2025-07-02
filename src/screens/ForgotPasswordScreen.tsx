@@ -6,7 +6,7 @@ import {
 } from "@react-navigation/native";
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Text, View } from "react-native";
+import { SafeAreaView, Text, View } from "react-native";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
 import { DigitCode } from "../components/GenericComponents/DigitCode";
 import { FormField } from "../components/GenericComponents/FormField";
@@ -32,7 +32,7 @@ export const ForgotPasswordScreen: FC = () => {
   };
 
   return (
-    <View className="bg-primary h-full">
+    <SafeAreaView className="bg-primary h-full">
       <View className="h-full my-[50%] mx-auto">
         {!isCodeCorrect ? (
           <View>
@@ -69,6 +69,6 @@ export const ForgotPasswordScreen: FC = () => {
           </View>
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };

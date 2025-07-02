@@ -10,6 +10,7 @@ import {
   useLoginMutation,
   useSendEmailResetCodeMutation,
 } from "../store/apis/serverApi";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export const LoginScreen: FC = () => {
   const [username, setUsername] = useState<string>("");
@@ -49,7 +50,7 @@ export const LoginScreen: FC = () => {
   };
 
   return (
-    <View className="bg-primary h-full">
+    <SafeAreaView className="bg-primary h-full">
       <View className="flex flex-col justify-center h-full w-[70vw] mx-auto">
         <Text className="text-3xl text-gray-100 font-pbold text-center mb-5">
           My Gym Bro💪
@@ -97,6 +98,6 @@ export const LoginScreen: FC = () => {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
