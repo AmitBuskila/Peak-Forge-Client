@@ -30,25 +30,28 @@ export const KeyboardAccessory: FC = () => {
   ]);
 
   return (
-    <KeyboardAccessoryView>
-      <View className="z-10 bg-gray-100 w-full opacity-95 ">
-        <Button
-          title="Go to next"
-          color={"#48138b"}
-          onPress={() => {
-            const nextTextInput =
-              textInputRefs[currExerciseIndex][currSetIndex + 1]?.ref?.current;
+    !!textInputRefs[currExerciseIndex] && (
+      <KeyboardAccessoryView>
+        <View className="z-10 bg-gray-100 w-full opacity-95 ">
+          <Button
+            title="Go to next"
+            color={"#48138b"}
+            onPress={() => {
+              const nextTextInput =
+                textInputRefs[currExerciseIndex][currSetIndex + 1]?.ref
+                  ?.current;
 
-            if (nextTextInput) {
-              nextTextInput.focus();
-            } else {
-              carouselRef?.current?.next();
-              Keyboard.dismiss();
-              setTimeout(() => setIsProgrammedScroll(true), 1500);
-            }
-          }}
-        />
-      </View>
-    </KeyboardAccessoryView>
+              if (nextTextInput) {
+                nextTextInput.focus();
+              } else {
+                carouselRef?.current?.next();
+                Keyboard.dismiss();
+                setTimeout(() => setIsProgrammedScroll(true), 1500);
+              }
+            }}
+          />
+        </View>
+      </KeyboardAccessoryView>
+    )
   );
 };
