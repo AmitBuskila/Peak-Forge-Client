@@ -8,6 +8,7 @@ import { WeeklyVolumeStats } from "../../../types/template";
 import { useGetWorkoutsStatsMutation } from "../../store/apis/serverApi";
 import { UserSliceState } from "../../store/slices/UserSlice";
 import { muscleToGeneral } from "./utils";
+import { screenWidth } from "../../../constants";
 
 export const WeeklyVolumeChart: FC = () => {
   const [getWorkoutsResults, { data }] = useGetWorkoutsStatsMutation();
@@ -86,32 +87,34 @@ export const WeeklyVolumeChart: FC = () => {
         />
       </View>
 
-      <RadarChart
-        data={Object.values(formattedChartData)}
-        labels={Object.keys(formattedChartData)}
-        labelConfig={{
-          stroke: "#5f2aa1",
-          fontWeight: "bold",
-          fontSize: 14,
-          fontFamily: "Poppins-SemiBold",
-          textAnchor: "middle",
-        }}
-        labelsPositionOffset={3.8}
-        chartSize={320}
-        maxValue={maxValue}
-        isAnimated
-        polygonConfig={{
-          showGradient: true,
-          gradientColor: "#48138b",
-          gradientOpacity: 0.7,
-          stroke: "#5f2aa1",
-          strokeWidth: 2.5,
-        }}
-        gridConfig={{
-          strokeWidth: 0.5,
-          stroke: "#5f2aa1",
-        }}
-      />
+      <View className="overflow-visible items-center p-4">
+        <RadarChart
+          data={Object.values(formattedChartData)}
+          labels={Object.keys(formattedChartData)}
+          labelConfig={{
+            stroke: "#5f2aa1",
+            fontWeight: "bold",
+            fontSize: 14,
+            fontFamily: "Poppins-SemiBold",
+            textAnchor: "middle",
+          }}
+          labelsPositionOffset={2}
+          chartSize={screenWidth * 0.75}
+          maxValue={maxValue}
+          isAnimated
+          polygonConfig={{
+            showGradient: true,
+            gradientColor: "#48138b",
+            gradientOpacity: 0.7,
+            stroke: "#5f2aa1",
+            strokeWidth: 2.5,
+          }}
+          gridConfig={{
+            strokeWidth: 0.5,
+            stroke: "#5f2aa1",
+          }}
+        />
+      </View>
     </View>
   );
 };

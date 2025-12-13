@@ -6,7 +6,8 @@ import {
 } from "@react-navigation/native";
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
-import { SafeAreaView, Text, View } from "react-native";
+import {  Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { CustomButton } from "../components/GenericComponents/CustomButton";
 import { DigitCode } from "../components/GenericComponents/DigitCode";
 import { FormField } from "../components/GenericComponents/FormField";
