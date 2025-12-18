@@ -77,6 +77,7 @@ export const LoginScreen: FC = () => {
            focus:border-secondary text-gray-100 h-10`}
             onChangeText={(value) => setPassword(value)}
             value={password}
+            secureTextEntry={true}
           />
         </View>
         {isError && (

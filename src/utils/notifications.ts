@@ -25,7 +25,6 @@ export const registerForPushNotifications = async () => {
     }
     Notifications.setNotificationHandler({
       handleNotification: async () => ({
-        shouldShowAlert: true,
         shouldPlaySound: true,
         shouldSetBadge: false,
         shouldShowBanner: true,
@@ -50,8 +49,9 @@ export const schedulePushNotification = async (
       sound: "default", // todo get cool sound from an asset
       data: { exerciseName },
     },
-    trigger: new Date(
-      scheduledTime
-    ) as unknown as Notifications.DateTriggerInput,
+    trigger: {
+      date:new Date(scheduledTime),
+      type:Notifications.SchedulableTriggerInputTypes.DATE
+    },
   });
 };

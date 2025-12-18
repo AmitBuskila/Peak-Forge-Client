@@ -28,6 +28,7 @@ export const WeightChart = ({
         <LineChart
           data={data}
           maxValue={maxValue}
+          scrollToEnd={true}
           thickness={3}
           hideDataPoints={false}
           color="#5f2aa1"

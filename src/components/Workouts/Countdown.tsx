@@ -58,7 +58,7 @@ export const Countdown: FC<{
       });
       schedulePushNotification(
         newScheduledTime,
-        res[0].content?.data?.exerciseName as string
+        res?.[0]?.content?.data?.exerciseName as string || 'Exercise' 
       );
     });
   };

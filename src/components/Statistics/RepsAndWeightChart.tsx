@@ -28,6 +28,7 @@ export const RepsAndWeightChart: FC<{
         <BarChart
           data={barData}
           maxValue={maxValue}
+          scrollToEnd={true}
           barWidth={16}
           initialSpacing={12}
           frontColor="#7448ac"

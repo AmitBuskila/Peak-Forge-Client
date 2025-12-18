@@ -1,6 +1,6 @@
 import { faImage } from "@fortawesome/free-solid-svg-icons/faImage";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import * as FileSystem from "expo-file-system";
+import * as FileSystem from 'expo-file-system/legacy';
 import * as ImagePicker from "expo-image-picker";
 import React, { FC } from "react";
 import { FieldValues, SetFieldValue } from "react-hook-form";
@@ -26,6 +26,7 @@ export const CustomImagePicker: FC<{
         aspect: [1, 1],
         quality: 1,
       });
+      // todo migrate to not use legacy
       if (!result.canceled) {
         const localUri: string = result?.assets?.[0].uri;
         const fileName: string = localUri.split("/").pop() || "";

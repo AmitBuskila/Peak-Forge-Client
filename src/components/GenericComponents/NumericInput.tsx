@@ -66,7 +66,7 @@ export const NumericInput: FC<{
         exercisesState[nextExerciseIndex]?.label
       );
     }
-  };
+  };  
 
   return (
     <View>

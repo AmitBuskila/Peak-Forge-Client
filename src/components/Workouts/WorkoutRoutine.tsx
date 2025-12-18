@@ -28,7 +28,7 @@ export const WorkoutRoutine: FC<{ template?: Template }> = ({ template }) => {
     <View>
       <WorkoutCarousel />
       {!!exercises[exerciseIndex]?.sets && (
-        <View>
+        <View >
           <Animatable.View style={animatedStyle}>
             <View className="w-[95vw] mx-auto flex-row justify-around">
               <TimerPicker />
