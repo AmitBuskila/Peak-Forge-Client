@@ -1,0 +1,160 @@
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { SetStats, WeeklyVolumeStats } from "../../../types/template";
+import { FormValues } from "../../contexts/WorkoutForm.context";
+import { Exercise } from "../../entities/exercise.entity";
+import { Template } from "../../entities/template.entity";
+import { User } from "../../entities/user.entity";
+import { Workout } from "../../entities/workout.entity";
+import { SignUpFormValues } from "../../screens/SignUpScreen";
+import { customBaseQuery } from "../baseQuery";
+
+export const serverApi = createApi({
+  reducerPath: "serverApi",
+  baseQuery: customBaseQuery,
+  endpoints: (build) => ({
+    login: build.mutation<
+      { token: string },
+      { email: string; password: string }
+    >({
+      query: (credentials) => ({
+        url: `users/login`,
+        method: "POST",
+        body: credentials,
+      }),
+    }),
+    register: build.mutation<void, SignUpFormValues>({
+      query: (userData) => ({
+        url: `users/register`,
+        method: "POST",
+        body: userData,
+      }),
+    }),
+    addTemplate: build.mutation<Template, FormValues>({
+      query: (template) => ({
+        url: `templates/addTemplate`,
+        method: "POST",
+        body: template,
+      }),
+    }),
+    addWorkout: build.mutation<Workout, FormValues>({
+      query: (workout) => ({
+        url: `workouts/addWorkout`,
+        method: "POST",
+        body: workout,
+      }),
+    }),
+    updateTemplate: build.mutation<
+      Template,
+      { template: any; templateId: number }
+    >({
+      query: ({ template, templateId }) => ({
+        url: `templates/updateTemplate/${templateId}`,
+        method: "PUT",
+        body: template,
+      }),
+    }),
+    updateUser: build.mutation<User, Partial<User>>({
+      query: (user) => ({
+        url: `users/updateUser`,
+        method: "PUT",
+        body: user,
+      }),
+    }),
+    removeTemplate: build.mutation<
+      { deletedId: number },
+      { templateId: number }
+    >({
+      query: ({ templateId }) => ({
+        url: `templates/removeTemplate/${templateId}`,
+        method: "DELETE",
+        body: templateId,
+      }),
+    }),
+    sendEmailResetCode: build.mutation<{ status: number }, string>({
+      query: (username) => ({
+        url: `users/getResetCode`,
+        method: "POST",
+        body: { username },
+      }),
+    }),
+    validateResetCode: build.mutation<
+      { status: number },
+      { code: string; username: string }
+    >({
+      query: ({ code, username }) => ({
+        url: `users/validateCode`,
+        method: "POST",
+        body: { code, username },
+      }),
+    }),
+    getExercisesLatestResults: build.mutation<
+      Workout,
+      { userId: number; exerciseIds: number[] }
+    >({
+      query: ({ userId, exerciseIds }) => ({
+        url: `exercises/getLatestResults`,
+        method: "POST",
+        body: { userId, exerciseIds },
+      }),
+    }),
+    getUserData: build.query<User, number>({
+      query: (userId) => `users/getData/${userId}`,
+    }),
+    getUserWorkouts: build.query<Workout[], number>({
+      query: (userId) => `workouts/getWorkouts/${userId}`,
+    }),
+    getLatestWorkout: build.query<Workout | null, number>({
+      query: (templateId) => `workouts/getLatestWorkout/${templateId}`,
+    }),
+    getTemplates: build.query<Template[], number>({
+      query: (userId) => `templates/getTemplates/${userId}`,
+    }),
+    getExercises: build.query<Exercise[], void>({
+      query: () => `exercises/getExercises`,
+    }),
+    getExerciseStats: build.query<
+      SetStats[],
+      { userId: number; exerciseId: number }
+    >({
+      query: ({ exerciseId, userId }) =>
+        `workouts/users/${userId}/exercises/${exerciseId}/results`,
+    }),
+    getTemplateStats: build.query<SetStats[][], number>({
+      query: (templateId) => `templates/getTemplateStats/${templateId}`,
+    }),
+    getWorkoutsStats: build.mutation<
+      WeeklyVolumeStats[],
+      { userId: number; fromDate: string; toDate: string }
+    >({
+      query: ({ userId, fromDate, toDate }) => ({
+        url: `workouts/workoutsResults/users/${userId}`,
+        method: "POST",
+        body: {
+          fromDate,
+          toDate,
+        },
+      }),
+    }),
+  }),
+});
+
+export const {
+  useGetTemplatesQuery,
+  useLoginMutation,
+  useRemoveTemplateMutation,
+  useRegisterMutation,
+  useLazyGetUserDataQuery,
+  useLazyGetExercisesQuery,
+  useAddTemplateMutation,
+  useAddWorkoutMutation,
+  useUpdateTemplateMutation,
+  useLazyGetUserWorkoutsQuery,
+  useGetExercisesLatestResultsMutation,
+  useLazyGetLatestWorkoutQuery,
+  useSendEmailResetCodeMutation,
+  useValidateResetCodeMutation,
+  useUpdateUserMutation,
+  useLazyGetExerciseStatsQuery,
+  useLazyGetTemplateStatsQuery,
+  useGetWorkoutsStatsMutation,
+} = serverApi;

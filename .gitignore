@@ -2,6 +2,8 @@
 
 # dependencies
 node_modules/
+.env
+src/entities/
 
 # Expo
 .expo/
@@ -16,6 +18,8 @@ expo-env.d.ts
 *.p12
 *.key
 *.mobileprovision
+
+android/
 
 # Metro
 .metro-health-check*

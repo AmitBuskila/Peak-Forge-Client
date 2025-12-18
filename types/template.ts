@@ -1,0 +1,36 @@
+import { Set as SetEntity } from "../src/entities/set.entity";
+
+export interface Workout {
+  id: number;
+  name: string;
+  description?: string;
+  templateImage: string;
+  workoutImage?: string;
+  exercises: Exercise[];
+}
+
+export interface Set {
+  id: number;
+  previous?: string;
+  weight: number;
+  minReps: number;
+  maxReps: number;
+  done?: number;
+}
+
+export interface Exercise {
+  id: number;
+  label: string;
+  imageUri: string;
+  sets: Set[];
+  timer?: string;
+  notes?: string;
+}
+
+export interface TimerProps {
+  key: number;
+  duration: number;
+}
+
+export type SetStats = SetEntity & { date: string; exerciseName: string };
+export type WeeklyVolumeStats = SetStats & { muscleGroups: string[] };

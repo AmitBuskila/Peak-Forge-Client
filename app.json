@@ -1,28 +1,60 @@
 {
   "expo": {
-    "name": "peak-forgs",
-    "slug": "peak-forgs",
+    "name": "my-gym-bro",
+    "slug": "my-gym-bro",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/appLogo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      "expo-secure-store"
+    ],
     "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/appLogo.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#161622"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "bundleIdentifier": "com.amitbuskila.mygymbro"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/appLogo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.amitbuskila.mygymbro"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "extra": {
+      "EXPO_PUBLIC_API_URL": "https://mygymbro-server.onrender.com/",
+      "eas": {
+        "projectId": "51722d0a-57e5-4832-bbb0-1eeb437bf5f7"
+      }
+    },
+    "owner": "amitbuskila",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/51722d0a-57e5-4832-bbb0-1eeb437bf5f7"
     }
   }
 }
